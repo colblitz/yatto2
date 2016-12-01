@@ -11,7 +11,8 @@ export class Artifact {
     this.adpl = this.effects[BonusType.ArtifactDamage];
   }
 
-  getCostToLevel(cLevel) {
+  // TODO: precompute
+  getCostToLevelUp(cLevel) {
     if (cLevel == 0 || (this.maxLevel != null && cLevel >= this.maxLevel)) {
       return Infinity;
     } else {
@@ -25,6 +26,7 @@ export class Artifact {
 }
 
 export const ArtifactInfo = {
+// copy from CSVs
    1: new Artifact( 1, "Heroic Shield"         , 0.70, 1.8,  0, {[BonusType.ArtifactDamage]:  50, [BonusType.GoldBoss                 ]:  20.0}),
    2: new Artifact( 2, "Stone of the Valrunes" , 0.70, 1.8,  0, {[BonusType.ArtifactDamage]:  50, [BonusType.GoldMonster              ]:  10.0}),
    3: new Artifact( 3, "The Arcana Cloak"      , 0.60, 3.0, 40, {[BonusType.ArtifactDamage]:  80, [BonusType.HelperBoostSkillMana     ]: 100.0}),

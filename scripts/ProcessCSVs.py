@@ -19,3 +19,11 @@ with open('ArtifactInfo.csv', 'r') as f:
 		print s
 
 print "\n\n"
+
+with open('HelperImprovementsInfo.csv', 'r') as f:
+	f.readline()
+	for line in f:
+		s = line.strip().split(',')
+		level = int(s[0])
+		multiplier = float(s[1])
+		print '  {:4d}: {:5.1f},'.format(level, multiplier)
