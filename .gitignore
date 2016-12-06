@@ -35,3 +35,6 @@ bower_components
 # Compiled files
 public/css/*
 public/js/*
+
+scripts/output.txt
+todo.txt

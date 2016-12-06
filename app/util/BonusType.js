@@ -62,3 +62,50 @@ export const BonusType = {
   TapDamage                : 60,
   TapDamageFromHelpers     : 61,
 };
+
+export const additiveBonuses = {
+  [BonusType.ArtifactDamage           ]: true,
+  [BonusType.BossTimer                ]: true,
+  [BonusType.BurstDamageSkillMana     ]: true,
+  [BonusType.ChestChance              ]: true,
+  [BonusType.CritBoostSkillDuration   ]: true,
+  [BonusType.CritBoostSkillMana       ]: true,
+  [BonusType.CritChance               ]: true,
+  [BonusType.DoubleFairyChance        ]: true,
+  [BonusType.Goldx10Chance            ]: true,
+  [BonusType.HandOfMidasSkillDuration ]: true,
+  [BonusType.HandOfMidasSkillMana     ]: true,
+  [BonusType.HelperBoostSkillDuration ]: true,
+  [BonusType.HelperBoostSkillMana     ]: true,
+  [BonusType.HelperUpgradeCost        ]: true,
+  [BonusType.HelperQTECount           ]: true,
+  [BonusType.InactiveAdvance          ]: true,
+  [BonusType.ManaPoolCap              ]: true,
+  [BonusType.ManaRegen                ]: true,
+  [BonusType.ManaMonsterMana          ]: true,
+  [BonusType.ManaTapRegen             ]: true,
+  [BonusType.Memory                   ]: true,
+  [BonusType.MonsterCountPerStage     ]: true,
+  [BonusType.PetDamage                ]: true,
+  [BonusType.PetBossCount             ]: true,
+  [BonusType.PetQTEGold               ]: true,
+  [BonusType.PetOfflineDamage         ]: true,
+  [BonusType.ShadowCloneSkillDuration ]: true,
+  [BonusType.ShadowCloneSkillMana     ]: true,
+  [BonusType.SplashDamage             ]: true,
+  [BonusType.TapBoostSkillDuration    ]: true,
+  [BonusType.TapBoostSkillMana        ]: true,
+  [BonusType.TapDamageFromHelpers     ]: true,
+};
+
+export function addBonus(allBonuses, bonusType, magnitude) {
+  if (bonusType in allBonuses) {
+    if (bonusType in additiveBonuses) {
+      allBonuses[bonusType] += magnitude;
+    } else {
+      allBonuses[bonusType] *= magnitude;
+    }
+  } else {
+    allBonuses[bonusType] = magnitude;
+  }
+}
