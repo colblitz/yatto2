@@ -6,6 +6,9 @@ def writeLineToFile(s):
 	outputFile.write(s)
 	outputFile.write('\n')
 
+def getPercent(s):
+	return int(float(s) * 100)
+
 writeLineToFile('  --  ArtifactInfo.js')
 with open('ArtifactInfo.csv', 'r') as f:
 	f.readline()
@@ -17,7 +20,7 @@ with open('ArtifactInfo.csv', 'r') as f:
 		costc = float(s[6])
 		coste = float(s[7])
 		maxLevel = int(s[1])
-		adpl = int(float(s[5]) * 100)
+		adpl = getPercent(s[5])
 		bType = 'BonusType.' + s[3]
 		bAmount = float(s[4]) * 100
 		alls.append('  {:>2}: new Artifact( {:>2}, {:24}, {:4.2f}, {:3.1f}, {:2d}, {{[BonusType.ArtifactDamage]: {:3d}, [{:35}]: {:5.1f}}}),'.format(aid, aid, name, costc, coste, maxLevel, adpl, bType, bAmount))
@@ -85,9 +88,28 @@ with open('HelperSkillInfo.csv', 'r') as f:
 		writeLineToFile(s)
 print 'Done with HeroSkills'
 
+writeLineToFile('  --  Pet.js')
+with open('PetInfo.csv', 'r') as f:
+	f.readline()
+	alls = []
+	for line in f:
+		s = line.strip().split(',')
+		pid = int(s[0][3:])
+		pids = s[0]
 
+		damageBase = getPercent(s[1])
+		inc1 = getPercent(s[2])
+		inc2 = getPercent(s[3])
+		inc3 = getPercent(s[4])
+		bonusType = 'BonusType.' + s[5]
+		bonusBase = float(s[6])
+		bonusInc = float(s[7])
 
-
+		alls.append('  {:>2}: new Pet( {:>2}, {:5}, {:3}, {:>3}, {:>3}, {:>3}, {:29}, {:4.2f}, {:5.3f}),'.format(pid, pid, pids, damageBase, inc1, inc2, inc3, bonusType, bonusBase, bonusInc))
+	alls.sort()
+	for s in alls:
+		writeLineToFile(s)
+print 'Done with PetInfo'
 
 
 outputFile.close()

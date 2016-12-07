@@ -1,5 +1,6 @@
 import { Artifact, ArtifactInfo } from './Artifact';
 import { Hero, HeroInfo } from './Hero';
+import { Pet, PetInfo } from './Pet';
 import { getImprovementBonus } from './HeroImprovementBonus';
 
 export function test() {
