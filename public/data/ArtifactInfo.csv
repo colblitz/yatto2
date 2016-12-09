@@ -1,0 +1,39 @@
+ArtifactID,MaxLevel,TT1,BonusType,EffectPerLevel,DamageBonus,CostCoef,CostExpo,Note,Name
+Artifact1,0,GoldBoss,GoldBoss,0.2,0.5,0.7,1.8,+2% Gold from Boss Monsters,Heroic Shield
+Artifact2,0,GoldMinion,GoldMonster,0.1,0.5,0.7,1.8,Gold Per Minions,Stone of the Valrunes
+Artifact4,20,CritChance,CritChance,0.005,3,0.8,2.5,Critical Strike Chance,Axe of Muerte
+Artifact5,20,BossTime,DoubleFairyChance,0.005,1.6,0.5,2.1,Chance to get double fairy,Invader's Shield
+Artifact6,0,SkillConstantDamageCD,ShadowCloneSkillAmount,0.2,0.4,0.6,1.7,Increase this active skill's effect,Elixir of Eden
+Artifact7,0,SkillCriticalChanceBoostCD,HelperBoostSkillAmount,0.2,0.4,0.6,1.7,Increase this active skill's effect,Parchment of Foresight
+Artifact9,0,SkillTapGoldCD,HandOfMidasSkillAmount,0.2,0.4,0.6,1.7,Increase this active skill's effect,Laborer's Pendant
+Artifact10,0,SkillTapDamageIncreaseCD,TapBoostSkillAmount,0.2,0.4,0.6,1.7,Increase this active skill's effect,Bringer of Ragnarok
+Artifact11,0,SkillBurstDamageCD,BurstDamageSkillAmount,0.2,0.4,0.6,1.7,Increase this active skill's effect,Titan's Mask
+Artifact12,30,SkillConstantDamageDuration,ShadowCloneSkillDuration,2,1.5,0.6,2.4,Increase this active skill duration,Swamp Gauntlet
+Artifact13,30,SkillCriticalChanceBoostDuration,CritBoostSkillDuration,2,1.5,0.6,2.4,Increase this active skill duration,Forbidden Scroll
+Artifact14,30,SkillHeroesAttackSpeedIncreaseDuration,HelperBoostSkillDuration,2,1.5,0.6,2.4,Increase this active skill duration,Aegis
+Artifact15,30,SKillTapGoldDuration,HandOfMidasSkillDuration,2,1.5,0.6,2.4,Increase this active skill duration,Ring of Fealty
+Artifact16,30,SkillTapDamageIncreaseDuration,TapBoostSkillDuration,2,1.5,0.6,2.4,Increase this active skill duration,Glacial Axe
+Artifact18,10,TreasureChance,ChestChance,0.01,0.3,1.4,3,Treasure Box Chance,Egg of Fortune
+Artifact19,0,GoldTreasureArtifact,ChestAmount,0.1,0.4,1,1.8,Treasure Box Amount,Chest of Contentment
+Artifact20,0,GoldAll,GoldAll,0.05,0.3,0.7,2.2,Extra Gold for everything,Book of Prophecy
+Artifact21,50,Gold10xChance,Goldx10Chance,0.01,0.8,0.8,2.6,Chances of 10x money,Divine Chalice
+Artifact22,0,PrestigeRelic,PrestigeRelic,0.05,0.3,0.6,2.5,Bonus Relics every pretige,Book of Shadows
+Artifact24,25,AllUpgradeCost,HelperUpgradeCost,0.02,0.8,0.5,2.6,Heroes & Upgrade Cost,Staff of Radiance
+Artifact17,0,CritDamageArtifact,HelmetBoost,0.05,0.3,0.65,2,HelmetBoost,Hero's Blade
+Artifact23,0,ReviveTime,ArmorBoost,0.05,0.3,0.65,2,Armor Boost,Helmet of Madness
+Artifact25,0,MonstersRequiredToAdvance,SwordBoost,0.05,0.3,0.65,2,SwordBoost,Lethe Water
+Artifact28,0,HeroDeathChance,SlashBoost,0.05,0.3,0.65,2,SlashBoost,Amethyst Staff
+Artifact26,0,ArtifactDamageBoost,ArtifactDamage,0.05,0.3,0.7,2.2,Increase all artifact damage,Heavenly Sword
+Artifact29,0,TapDamageArtifact,TapDamage,0.01,0.3,0.6,1.7,Increase Tap Damage,Drunken Hammer
+Artifact31,0,,AllDamage,0.02,0.3,1,2,"All damage from prestige count, up to max",Divine Retribution
+Artifact32,0,,MeleeHelperDamage,0.15,0.6,0.7,1.7,Increase Melee helpers damage,Fruit of Eden
+Artifact33,0,,RangedHelperDamage,0.15,0.5,0.7,1.7,Increase Range helpers damage,The Sword of Storms
+Artifact34,0,,SpellHelperDamage,0.15,0.6,0.7,1.7,Increase magic helpers' damage,Charm of the Ancient
+Artifact35,0,,AllHelperDamage,0.05,0.5,0.7,1.7,Increase all helpers' damage,Blade of Damocles
+Artifact38,0,,PetDamageMult,0.1,0.3,0.7,2,Increase Pet Damage,Furies Bow
+Artifact36,20,,BurstDamageSkillMana,1,0.9,0.6,3,Decrease this active skill mana cost,Infinity Pendulum
+Artifact3,40,,HelperBoostSkillMana,1,0.8,0.6,3,Decrease this active skill mana cost,The Arcana Cloak
+Artifact8,40,SkillHeroesAttackSpeedIncreaseCD,ShadowCloneSkillMana,1,0.8,0.6,3,Decrease this active skill mana cost,Hunter's Ointment
+Artifact27,30,,CritBoostSkillMana,1,0.8,0.6,3,Decrease this active skill mana cost,Glove of Kuma
+Artifact37,30,,TapBoostSkillMana,1,0.8,0.6,3,Decrease this active skill mana cost,Oak Staff
+Artifact39,40,,HandOfMidasSkillMana,1,0.8,0.6,3,Decrease this active skill mana cost,Titan Spear

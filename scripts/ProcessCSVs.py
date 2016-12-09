@@ -95,7 +95,7 @@ with open('PetInfo.csv', 'r') as f:
 	for line in f:
 		s = line.strip().split(',')
 		pid = int(s[0][3:])
-		pids = s[0]
+		pids = '"' + s[0] + '"'
 
 		damageBase = getPercent(s[1])
 		inc1 = getPercent(s[2])
@@ -105,11 +105,25 @@ with open('PetInfo.csv', 'r') as f:
 		bonusBase = float(s[6])
 		bonusInc = float(s[7])
 
-		alls.append('  {:>2}: new Pet( {:>2}, {:5}, {:3}, {:>3}, {:>3}, {:>3}, {:29}, {:4.2f}, {:5.3f}),'.format(pid, pid, pids, damageBase, inc1, inc2, inc3, bonusType, bonusBase, bonusInc))
+		alls.append('  {:>2}: new Pet( {:>2}, {:7}, {:3}, {:>3}, {:>3}, {:>3}, {:29}, {:4.2f}, {:5.3f}),'.format(pid, pid, pids, damageBase, inc1, inc2, inc3, bonusType, bonusBase, bonusInc))
 	alls.sort()
 	for s in alls:
 		writeLineToFile(s)
 print 'Done with PetInfo'
 
+writeLineToFile('  --  Equipment.js')
+with open('EquipmentInfo.csv', 'r') as f:
+	f.readline()
+	alls = []
+	for line in f:
+		s = line.strip().split(',')
+		eid = '"' + s[0] + '"'
+		category = 'EquipmentType.' + s[1]
+		rarity = s[3]
+		bonusType = 'BonusType.' + s[2]
+		bonusBase = float(s[4])
+		bonusInc = float(s[5])
+		writeLineToFile('  {:23}: new Equipment({:23}, {:21}, {}, {:29}, {:4.2f}, {: 6.4f}),'.format(eid, eid, category, rarity, bonusType, bonusBase, bonusInc))
+print 'Done with EquipmentInfo'
 
 outputFile.close()

@@ -66,7 +66,7 @@ Slash_Rainbow,Slash,PetDamageMult,2,1,0.05
 Slash_Leaves,Slash,PetDamageMult,2,1,0.06
 Slash_FireBlack,Slash,PetDamageMult,3,1,0.018
 Slash_Smelly,Slash,PetDamageMult,3,1,0.2
-Slash_Petals,Slash,None,0,0,0
+Slash_Petals,Slash,None,0,,
 Suit_ArmorFace,Suit,GoldAll,1,1,0.01
 Suit_ArmorIce,Suit,GoldAll,1,1,0.011
 Suit_Casual,Suit,GoldAll,1,1,0.012
