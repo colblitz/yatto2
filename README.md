@@ -10,6 +10,17 @@ This README would normally document whatever steps are necessary to get your app
 
 ### How do I get set up? ###
 
+npm install -g gulp
+npm install -g bower
+npm install -g nodemon
+
+npm install
+npm install --only=dev
+bower install
+
+npm run watch
+gulp
+
 * Summary of set up
 * Configuration
 * Dependencies
