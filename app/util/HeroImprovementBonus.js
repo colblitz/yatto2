@@ -1,146 +1,32 @@
-const HeroImprovementsInfo = {
-// copy from CSVs
-    10:   2.0,
-    30:   2.0,
-    50:   2.0,
-    70:   2.0,
-    90:   2.0,
-   110:   3.0,
-   130:   3.0,
-   150:   3.0,
-   170:   3.0,
-   190:   3.0,
-   210:   4.0,
-   230:   3.0,
-   250:   3.0,
-   270:   3.0,
-   290:   3.0,
-   310:   4.0,
-   330:   3.0,
-   350:   3.0,
-   370:   3.0,
-   400:   4.0,
-   430:   3.0,
-   460:   3.0,
-   490:   3.0,
-   520:   4.0,
-   550:   3.0,
-   580:   3.0,
-   610:   4.0,
-   640:   3.0,
-   670:   3.0,
-   700:   4.0,
-   730:   3.0,
-   760:   3.0,
-   790:   3.0,
-   820:   4.0,
-   850:   3.0,
-   880:   3.0,
-   910:   4.0,
-   940:   3.0,
-   970:   3.0,
-  1000: 100.0,
-  1040:   8.0,
-  1080:   7.0,
-  1120:   8.0,
-  1160:   9.0,
-  1200:  10.0,
-  1240:  11.0,
-  1280:  12.0,
-  1320:  13.0,
-  1360:  12.0,
-  1400:  11.0,
-  1440:  12.0,
-  1480:  13.0,
-  1520:  12.0,
-  1560:  11.0,
-  1600:  10.0,
-  1640:   9.0,
-  1680:  10.0,
-  1720:  11.0,
-  1760:  10.0,
-  1800:   9.0,
-  1840:  10.0,
-  1880:   9.0,
-  1920:  10.0,
-  1960:   9.0,
-  2000: 100.0,
-  2050:   9.0,
-  2100:  10.0,
-  2150:  11.0,
-  2200:  12.0,
-  2250:  13.0,
-  2300:  12.0,
-  2350:  11.0,
-  2400:  12.0,
-  2450:  13.0,
-  2500:  12.0,
-  2550:  11.0,
-  2600:  10.0,
-  2650:   9.0,
-  2700:  10.0,
-  2750:  11.0,
-  2800:  12.0,
-  2850:  11.0,
-  2900:  10.0,
-  2950:   9.0,
-  3000: 100.0,
-  3050:   5.0,
-  3100:  15.0,
-  3150:   6.0,
-  3200:  14.0,
-  3250:  10.0,
-  3300:  13.0,
-  3350:  12.0,
-  3400:  11.0,
-  3450:   8.0,
-  3500:  12.0,
-  3550:  15.0,
-  3600:   5.0,
-  3650:   9.0,
-  3700:   7.0,
-  3750:  14.0,
-  3800:  12.0,
-  3850:  13.0,
-  3900:  10.0,
-  3950:   9.0,
-  4000: 100.0,
-  4100:  20.0,
-  4200:  20.0,
-  4300:  20.0,
-  4400:  20.0,
-  4500:  20.0,
-  4600:  20.0,
-  4700:  20.0,
-  4800:  20.0,
-  4900:  20.0,
-  5000: 100.0,
-  5100:  20.0,
-  5200:  20.0,
-  5300:  20.0,
-  5400:  20.0,
-  5500:  20.0,
-  5600:  20.0,
-  5700:  20.0,
-  5800:  20.0,
-  5900:  20.0,
-  6000: 100.0,
-};
+import { csv }  from 'd3';
 
-const MIN_LEVEL = Math.min.apply(null, Object.keys(HeroImprovementsInfo));
-const MAX_LEVEL = Math.max.apply(null, Object.keys(HeroImprovementsInfo));
-
+const HeroImprovementsInfo = {}
 const HeroImprovementsTotals = {};
 
-var multiplier = 1.0;
-for (var level = 0; level <= MAX_LEVEL; level += 10) {
-  if (level in HeroImprovementsInfo) {
-    multiplier *= HeroImprovementsInfo[level];
-    HeroImprovementsTotals[level] = multiplier;
-  }
-}
+var MIN_LEVEL = 0;
+var MAX_LEVEL = 10000;
 
-export function getImprovementBonus(cLevel) {
+var multiplier = 1.0;
+
+csv("./data/HelperImprovementsInfo.csv", function(data) {
+  for (var row of data) {
+    HeroImprovementsInfo[row.Level] = row.Amount;
+  }
+  console.log("done loading HeroImprovementsInfo");
+  MIN_LEVEL = Math.min.apply(null, Object.keys(HeroImprovementsInfo));
+  MAX_LEVEL = Math.max.apply(null, Object.keys(HeroImprovementsInfo));
+
+  var multiplier = 1.0;
+  for (var level = 0; level <= MAX_LEVEL; level += 10) {
+    if (level in HeroImprovementsInfo) {
+      multiplier *= HeroImprovementsInfo[level];
+      HeroImprovementsTotals[level] = multiplier;
+    }
+  }
+  console.log("done loading HeroImprovementsTotals");
+});
+
+export function getHeroImprovementBonus(cLevel) {
   if (cLevel < MIN_LEVEL) {
     return 1.0;
   } else if (cLevel > MAX_LEVEL) {
@@ -153,4 +39,3 @@ export function getImprovementBonus(cLevel) {
     return HeroImprovementsTotals[cLevel];
   }
 }
-

@@ -1,166 +1,41 @@
-const PlayerImprovementsInfo = {
-// copy from CSVs
-    10:   2.0,
-    30:   2.0,
-    50:   2.0,
-    70:   2.0,
-    90:   2.0,
-   110:   2.0,
-   130:   2.0,
-   150:   2.0,
-   170:   2.0,
-   190:   2.0,
-   210:   3.0,
-   230:   3.0,
-   250:   2.0,
-   270:   2.0,
-   290:   2.0,
-   310:   3.0,
-   330:   2.0,
-   350:   2.0,
-   370:   2.0,
-   400:   2.0,
-   420:   3.0,
-   440:   3.0,
-   460:   3.0,
-   480:   2.0,
-   500:   2.0,
-   520:   2.0,
-   540:   2.0,
-   560:   2.0,
-   580:   2.0,
-   600:   2.0,
-   620:   2.0,
-   640:   2.0,
-   660:   2.0,
-   680:   2.0,
-   700:   2.0,
-   720:   2.0,
-   740:   2.0,
-   760:   2.0,
-   780:   2.0,
-   800:   2.0,
-   820:   2.0,
-   840:   2.0,
-   860:   2.0,
-   880:   2.0,
-   900:   2.0,
-   920:   2.0,
-   940:   2.0,
-   960:   2.0,
-   980:   2.0,
-  1000:  10.0,
-  1040:   5.0,
-  1080:   5.0,
-  1120:   5.0,
-  1160:   5.0,
-  1200:  10.0,
-  1240:   5.0,
-  1280:   5.0,
-  1320:   5.0,
-  1360:   5.0,
-  1400:  10.0,
-  1440:   5.0,
-  1480:   5.0,
-  1520:   5.0,
-  1560:   5.0,
-  1600:  10.0,
-  1640:   5.0,
-  1680:   5.0,
-  1720:   5.0,
-  1760:   5.0,
-  1800:  10.0,
-  1840:   5.0,
-  1880:   5.0,
-  1920:   5.0,
-  1960:   5.0,
-  2000:  20.0,
-  2050:   5.0,
-  2100:  10.0,
-  2150:   5.0,
-  2200:  10.0,
-  2250:   5.0,
-  2300:  10.0,
-  2350:   5.0,
-  2400:  10.0,
-  2450:   5.0,
-  2500:  10.0,
-  2550:   5.0,
-  2600:  10.0,
-  2650:   5.0,
-  2700:  10.0,
-  2750:   5.0,
-  2800:  10.0,
-  2850:   5.0,
-  2900:  10.0,
-  2950:   5.0,
-  3000:  30.0,
-  3050:   5.0,
-  3100:   5.0,
-  3150:   5.0,
-  3200:  10.0,
-  3250:   5.0,
-  3300:   5.0,
-  3350:   5.0,
-  3400:  10.0,
-  3450:   5.0,
-  3500:   5.0,
-  3550:   5.0,
-  3600:  10.0,
-  3650:   5.0,
-  3700:   5.0,
-  3750:   5.0,
-  3800:  10.0,
-  3850:   5.0,
-  3900:   5.0,
-  3950:   5.0,
-  4000:  40.0,
-  4100:  12.0,
-  4200:  12.0,
-  4300:  12.0,
-  4400:  12.0,
-  4500:  12.0,
-  4600:  12.0,
-  4700:  12.0,
-  4800:  12.0,
-  4900:  12.0,
-  5000:  50.0,
-  5100:  12.0,
-  5200:  12.0,
-  5300:  12.0,
-  5400:  12.0,
-  5500:  12.0,
-  5600:  12.0,
-  5700:  12.0,
-  5800:  12.0,
-  5900:  12.0,
-  6000:  60.0,
-};
+import { csv }  from 'd3';
 
-const MIN_LEVEL = Math.min.apply(null, Object.keys(PlayerImprovementsInfo));
-const MAX_LEVEL = Math.max.apply(null, Object.keys(PlayerImprovementsInfo));
-
+const PlayerImprovementsInfo = {}
 const PlayerImprovementsTotals = {};
 
-var multiplier = 1.0;
-for (var level = 0; level <= MAX_LEVEL; level += 10) {
-  if (level in PlayerImprovementsInfo) {
-    multiplier *= PlayerImprovementsInfo[level];
-    PlayerImprovementsInfo[level] = multiplier;
-  }
-}
+var MIN_LEVEL = 0;
+var MAX_LEVEL = 10000;
 
-export function getImprovementBonus(cLevel) {
+var multiplier = 1.0;
+
+csv("./data/PlayerImprovementsInfo.csv", function(data) {
+  for (var row of data) {
+    PlayerImprovementsInfo[row.Level] = row.Amount;
+  }
+  console.log("done loading PlayerImprovementsInfo");
+  MIN_LEVEL = Math.min.apply(null, Object.keys(PlayerImprovementsInfo));
+  MAX_LEVEL = Math.max.apply(null, Object.keys(PlayerImprovementsInfo));
+
+  var multiplier = 1.0;
+  for (var level = 0; level <= MAX_LEVEL; level += 10) {
+    if (level in PlayerImprovementsInfo) {
+      multiplier *= PlayerImprovementsInfo[level];
+      PlayerImprovementsTotals[level] = multiplier;
+    }
+  }
+  console.log("done loading PlayerImprovementsTotals");
+});
+
+export function getPlayerImprovementBonus(cLevel) {
   if (cLevel < MIN_LEVEL) {
     return 1.0;
   } else if (cLevel > MAX_LEVEL) {
     return getImprovementBonus(MAX_LEVEL);
   } else {
     cLevel = Math.floor(cLevel / 10) * 10;
-    while (!(cLevel in PlayerImprovementsInfo)) {
+    while (!(cLevel in PlayerImprovementsTotals)) {
       cLevel -= 10;
     }
-    return PlayerImprovementsInfo[cLevel];
+    return PlayerImprovementsTotals[cLevel];
   }
 }
-
