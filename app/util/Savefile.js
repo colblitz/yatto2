@@ -1,3 +1,4 @@
+// [12/12/16]ISavableGlobal.adat
 //  Our onLoad handler kicks off the collection of entropy for key generation
 function nowLoaded() {
     ce();                   // Add time we got here to entropy
