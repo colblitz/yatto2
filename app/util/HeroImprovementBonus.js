@@ -24,6 +24,7 @@ csv("./data/HelperImprovementsInfo.csv", function(data) {
     }
   }
   console.log("done loading HeroImprovementsTotals");
+  console.log(HeroImprovementsInfo);
 });
 
 export function getHeroImprovementBonus(cLevel) {

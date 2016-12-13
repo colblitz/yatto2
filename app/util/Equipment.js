@@ -36,16 +36,16 @@ export class Equipment {
 
 export const EquipmentInfo = {};
 
-csv("./data/EquipmentInfo.csv", function(data) {
-  for (var equipment of data) {
-    EquipmentInfo[equipment.EquipmentID] = new Equipment(
-      equipment.EquipmentID,
-      stringToEquipmentType[equipment.EquipmentCategory],
-      equipment.Rarity,
-      stringToBonus[equipment.BonusType],
-      parseFloat(equipment.AttributeBaseAmount),
-      parseFloat(equipment.AttributeBaseInc)
-    );
-  }
-  console.log("done loading EquipmentInfo");
-});
+// csv("./data/EquipmentInfo.csv", function(data) {
+//   for (var equipment of data) {
+//     EquipmentInfo[equipment.EquipmentID] = new Equipment(
+//       equipment.EquipmentID,
+//       stringToEquipmentType[equipment.EquipmentCategory],
+//       equipment.Rarity,
+//       stringToBonus[equipment.BonusType],
+//       parseFloat(equipment.AttributeBaseAmount),
+//       parseFloat(equipment.AttributeBaseInc)
+//     );
+//   }
+//   console.log("done loading EquipmentInfo");
+// });

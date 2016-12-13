@@ -59,27 +59,27 @@ export class Hero {
 
 export const HeroInfo = {};
 
-csv("./data/HelperInfo.csv", function(data) {
-  var heroIdToId = {};
-  for (var hero of data) {
-    var id = parseInt(hero.UnlockOrder);
-    heroIdToId[hero.HelperID] = id;
-    HeroInfo[id] = new Hero(
-      id,
-      hero.HelperID,
-      stringToBonus[hero.HelperType + 'HelperDamage'],
-      hero.PurchaseCost1
-    );
-  }
-  console.log("done loading HeroInfo");
+// csv("./data/HelperInfo.csv", function(data) {
+//   var heroIdToId = {};
+//   for (var hero of data) {
+//     var id = parseInt(hero.UnlockOrder);
+//     heroIdToId[hero.HelperID] = id;
+//     HeroInfo[id] = new Hero(
+//       id,
+//       hero.HelperID,
+//       stringToBonus[hero.HelperType + 'HelperDamage'],
+//       hero.PurchaseCost1
+//     );
+//   }
+//   console.log("done loading HeroInfo");
 
-  csv("./data/HelperSkillInfo.csv", function(data) {
-    for (var skill of data) {
-      HeroInfo[heroIdToId[skill.Owner]].addSkill(
-        skill.RequiredLevel,
-        stringToBonus[skill.BonusType],
-        skill.Magnitude);
-    }
-    console.log("done loading HeroSkilInfo");
-  });
-});
+//   csv("./data/HelperSkillInfo.csv", function(data) {
+//     for (var skill of data) {
+//       HeroInfo[heroIdToId[skill.Owner]].addSkill(
+//         skill.RequiredLevel,
+//         stringToBonus[skill.BonusType],
+//         skill.Magnitude);
+//     }
+//     console.log("done loading HeroSkilInfo");
+//   });
+// });

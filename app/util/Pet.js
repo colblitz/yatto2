@@ -50,20 +50,20 @@ export class Pet {
 
 export const PetInfo = {};
 
-csv("./data/PetInfo.csv", function(data) {
-  for (var pet of data) {
-    var id = parseInt(pet.PetID.substring(3));
-    PetInfo[id] = new Pet(
-      id,
-      pet.PetID,
-      pet.DamageBase,
-      pet.DamageInc1to40,
-      pet.DamageInc41to80,
-      pet.DamageInc80on,
-      stringToBonus[pet.BonusType],
-      pet.BonusBase,
-      pet.BonusInc
-    );
-  }
-  console.log("done loading PetInfo");
-});
+// csv("./data/PetInfo.csv", function(data) {
+//   for (var pet of data) {
+//     var id = parseInt(pet.PetID.substring(3));
+//     PetInfo[id] = new Pet(
+//       id,
+//       pet.PetID,
+//       pet.DamageBase,
+//       pet.DamageInc1to40,
+//       pet.DamageInc41to80,
+//       pet.DamageInc80on,
+//       stringToBonus[pet.BonusType],
+//       pet.BonusBase,
+//       pet.BonusInc
+//     );
+//   }
+//   console.log("done loading PetInfo");
+// });

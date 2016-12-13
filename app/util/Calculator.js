@@ -3,7 +3,11 @@ import { Hero, HeroInfo } from './Hero';
 import { Pet, PetInfo } from './Pet';
 import { getImprovementBonus } from './HeroImprovementBonus';
 import { csv }  from 'd3';
-const fs = require('fs');
+var fs = require('fs');
+
+// console.log("outside of test");
+// console.log(fs);
+// console.log(fs.readFile);
 
 export function test() {
   // console.log(ArtifactInfo);
@@ -24,4 +28,8 @@ export function test() {
     console.log(data);
   });
 
+}
+
+export function test2() {
+  console.log("test 2 from calculator");
 }
