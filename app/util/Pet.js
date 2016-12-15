@@ -1,6 +1,8 @@
 import { BonusType, stringToBonus, addBonus } from './BonusType';
 import { ServerVarsModel } from './ServerVarsModel';
-// import { csv }  from 'd3';
+var parse = require('csv-parse');
+
+var petCSV = require('../data/PetInfo.csv');
 
 function getPassivePercentage(level) {
   return Math.min(1.0, Math.floor(level / ServerVarsModel.petPassiveLevelGap) * ServerVarsModel.petPassiveLevelGap * ServerVarsModel.petPassiveLevelIncrement);
@@ -50,20 +52,20 @@ export class Pet {
 
 export const PetInfo = {};
 
-// csv("./data/PetInfo.csv", function(data) {
-//   for (var pet of data) {
-//     var id = parseInt(pet.PetID.substring(3));
-//     PetInfo[id] = new Pet(
-//       id,
-//       pet.PetID,
-//       pet.DamageBase,
-//       pet.DamageInc1to40,
-//       pet.DamageInc41to80,
-//       pet.DamageInc80on,
-//       stringToBonus[pet.BonusType],
-//       pet.BonusBase,
-//       pet.BonusInc
-//     );
-//   }
-//   console.log("done loading PetInfo");
-// });
+parse(petCSV, {delimiter: ',', columns: true}, function(err, data) {
+  for (var pet of data) {
+    var id = parseInt(pet.PetID.substring(3));
+    PetInfo[id] = new Pet(
+      id,
+      pet.PetID,
+      pet.DamageBase,
+      pet.DamageInc1to40,
+      pet.DamageInc41to80,
+      pet.DamageInc80on,
+      stringToBonus[pet.BonusType],
+      pet.BonusBase,
+      pet.BonusInc
+    );
+  }
+  console.log("Done loading PetInfo");
+});

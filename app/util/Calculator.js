@@ -1,7 +1,8 @@
 import { Artifact, ArtifactInfo } from './Artifact';
 import { Hero, HeroInfo } from './Hero';
 import { Pet, PetInfo } from './Pet';
-import { getImprovementBonus } from './HeroImprovementBonus';
+import { getHeroImprovementBonus } from './HeroImprovementBonus';
+import { getPlayerImprovementBonus } from './PlayerImprovementBonus';
 
 // var fs = require('fs');
 
@@ -15,7 +16,8 @@ export function test() {
   console.log(Object.keys(ArtifactInfo));
   console.log(ArtifactInfo[5]);
   console.log(ArtifactInfo[5].name);
-  console.log(getImprovementBonus(1234));
+  console.log(getHeroImprovementBonus(1234));
+  console.log(getPlayerImprovementBonus(1234));
   console.log(HeroInfo[2]);
 
   // console.log("alksdjfljalsjdlfjalksdf");

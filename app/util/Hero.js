@@ -1,7 +1,10 @@
 import { BonusType, stringToBonus, addBonus } from './BonusType';
 import { ServerVarsModel } from './ServerVarsModel';
 import { getImprovementBonus } from './HeroImprovementBonus';
-// import { csv }  from 'd3';
+var parse = require('csv-parse');
+
+var heroCSV = require('../data/HelperInfo.csv');
+var heroSkillCSV = require('../data/HelperSkillInfo.csv');
 
 const UPGRADE_CONSTANT = 1.0 / (ServerVarsModel.helperUpgradeBase - 1.0);
 
@@ -59,27 +62,27 @@ export class Hero {
 
 export const HeroInfo = {};
 
-// csv("./data/HelperInfo.csv", function(data) {
-//   var heroIdToId = {};
-//   for (var hero of data) {
-//     var id = parseInt(hero.UnlockOrder);
-//     heroIdToId[hero.HelperID] = id;
-//     HeroInfo[id] = new Hero(
-//       id,
-//       hero.HelperID,
-//       stringToBonus[hero.HelperType + 'HelperDamage'],
-//       hero.PurchaseCost1
-//     );
-//   }
-//   console.log("done loading HeroInfo");
+var heroIdToId = {};
+parse(heroCSV, {delimiter: ',', columns: true}, function(err, data) {
+  for (var hero of data) {
+    var id = parseInt(hero.UnlockOrder);
+    heroIdToId[hero.HelperID] = id;
+    HeroInfo[id] = new Hero(
+      id,
+      hero.HelperID,
+      stringToBonus[hero.HelperType + 'HelperDamage'],
+      hero.PurchaseCost1
+    );
+  }
+  console.log("Done loading HelperInfo");
+});
 
-//   csv("./data/HelperSkillInfo.csv", function(data) {
-//     for (var skill of data) {
-//       HeroInfo[heroIdToId[skill.Owner]].addSkill(
-//         skill.RequiredLevel,
-//         stringToBonus[skill.BonusType],
-//         skill.Magnitude);
-//     }
-//     console.log("done loading HeroSkilInfo");
-//   });
-// });
+parse(heroSkillCSV, {delimiter: ',', columns: true}, function(err, data) {
+  for (var skill of data) {
+    HeroInfo[heroIdToId[skill.Owner]].addSkill(
+      skill.RequiredLevel,
+      stringToBonus[skill.BonusType],
+      skill.Magnitude);
+  }
+  console.log("Done loading HelperSkillInfo");
+});

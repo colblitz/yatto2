@@ -1,4 +1,6 @@
-// import { csv }  from 'd3';
+var parse = require('csv-parse');
+
+var playerImprovementCSV = require('../data/PlayerImprovementsInfo.csv');
 
 const PlayerImprovementsInfo = {}
 const PlayerImprovementsTotals = {};
@@ -8,23 +10,23 @@ var MAX_LEVEL = 10000;
 
 var multiplier = 1.0;
 
-// csv("./data/PlayerImprovementsInfo.csv", function(data) {
-//   for (var row of data) {
-//     PlayerImprovementsInfo[row.Level] = row.Amount;
-//   }
-//   console.log("done loading PlayerImprovementsInfo");
-//   MIN_LEVEL = Math.min.apply(null, Object.keys(PlayerImprovementsInfo));
-//   MAX_LEVEL = Math.max.apply(null, Object.keys(PlayerImprovementsInfo));
+parse(playerImprovementCSV, {delimiter: ',', columns: true}, function(err, data) {
+  for (var row of data) {
+    PlayerImprovementsInfo[row.Level] = row.Amount;
+  }
+  console.log("Done loading PlayerImprovementsInfo");
+  MIN_LEVEL = Math.min.apply(null, Object.keys(PlayerImprovementsInfo));
+  MAX_LEVEL = Math.max.apply(null, Object.keys(PlayerImprovementsInfo));
 
-//   var multiplier = 1.0;
-//   for (var level = 0; level <= MAX_LEVEL; level += 10) {
-//     if (level in PlayerImprovementsInfo) {
-//       multiplier *= PlayerImprovementsInfo[level];
-//       PlayerImprovementsTotals[level] = multiplier;
-//     }
-//   }
-//   console.log("done loading PlayerImprovementsTotals");
-// });
+  var multiplier = 1.0;
+  for (var level = 0; level <= MAX_LEVEL; level += 10) {
+    if (level in PlayerImprovementsInfo) {
+      multiplier *= PlayerImprovementsInfo[level];
+      PlayerImprovementsTotals[level] = multiplier;
+    }
+  }
+  console.log("done loading PlayerImprovementsTotals");
+});
 
 export function getPlayerImprovementBonus(cLevel) {
   if (cLevel < MIN_LEVEL) {
