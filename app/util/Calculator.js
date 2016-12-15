@@ -10,13 +10,13 @@ import { getImprovementBonus } from './HeroImprovementBonus';
 // console.log(fs.readFile);
 
 export function test() {
-  // console.log(ArtifactInfo);
-  // console.log(typeof(ArtifactInfo));
-  // console.log(Object.keys(ArtifactInfo));
-  // console.log(ArtifactInfo[5]);
-  // console.log(ArtifactInfo[5].name);
-  // console.log(getImprovementBonus(1234));
-  // console.log(HeroInfo[2]);
+  console.log(ArtifactInfo);
+  console.log(typeof(ArtifactInfo));
+  console.log(Object.keys(ArtifactInfo));
+  console.log(ArtifactInfo[5]);
+  console.log(ArtifactInfo[5].name);
+  console.log(getImprovementBonus(1234));
+  console.log(HeroInfo[2]);
 
   // console.log("alksdjfljalsjdlfjalksdf");
   // console.log(fs);
@@ -32,4 +32,5 @@ export function test() {
 
 export function test2() {
   console.log("test 2 from calculator");
+  test();
 }

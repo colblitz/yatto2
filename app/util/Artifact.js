@@ -1,8 +1,11 @@
 import { BonusType, stringToBonus } from './BonusType';
+var parse = require('csv-parse');
+// import * as parse from 'csv-parse';
+// import { parse } from 'csv-parse';
 // var fs = require('fs');
 
 
-// var artifactData = require('../data/ArtifactInfo.csv');
+var artifactData = require('../data/ArtifactInfo.csv');
 
 export class Artifact {
   constructor(id, name, costc, coste, maxLevel, effects) {
@@ -32,8 +35,26 @@ export class Artifact {
 export const ArtifactInfo = {};
 
 console.log("artifact data:");
-// console.log(artifactData);
+console.log(artifactData);
 
+
+parse(artifactData, {delimiter: ',', columns: true}, function(err, output) {
+  for (var artifact of output) {
+    var id = parseInt(artifact.ArtifactID.substring(8));
+    ArtifactInfo[id] = new Artifact(
+      id,
+      artifact.Name,
+      parseFloat(artifact.CostCoef),
+      parseFloat(artifact.CostExpo),
+      parseInt(artifact.MaxLevel),
+      {
+        [BonusType.ArtifactDamage] : parseFloat(artifact.DamageBonus),
+        [stringToBonus[artifact.BonusType]]: parseFloat(artifact.EffectPerLevel),
+      }
+    );
+  }
+  console.log("Done loading ArtifactInfo");
+});
 // console.log(fs);
 console.log("asdf");
 

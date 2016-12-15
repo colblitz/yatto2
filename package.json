@@ -10,9 +10,6 @@
     "presets": [
       "es2015",
       "react"
-    ],
-    "ignore": [
-      "*.csv"
     ]
   },
   "dependencies": {
@@ -39,7 +36,6 @@
     "serve-favicon": "^2.3.2",
     "socket.io": "^1.7.2",
     "stringify": "^5.1.0",
-    "swig": "^1.4.2",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
