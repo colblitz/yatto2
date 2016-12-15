@@ -1,7 +1,7 @@
 import { BonusType, stringToBonus, addBonus } from './BonusType';
 import { ServerVarsModel } from './ServerVarsModel';
 import { getImprovementBonus } from './HeroImprovementBonus';
-import { csv }  from 'd3';
+// import { csv }  from 'd3';
 
 const UPGRADE_CONSTANT = 1.0 / (ServerVarsModel.helperUpgradeBase - 1.0);
 

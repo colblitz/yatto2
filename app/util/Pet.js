@@ -1,6 +1,6 @@
 import { BonusType, stringToBonus, addBonus } from './BonusType';
 import { ServerVarsModel } from './ServerVarsModel';
-import { csv }  from 'd3';
+// import { csv }  from 'd3';
 
 function getPassivePercentage(level) {
   return Math.min(1.0, Math.floor(level / ServerVarsModel.petPassiveLevelGap) * ServerVarsModel.petPassiveLevelGap * ServerVarsModel.petPassiveLevelIncrement);

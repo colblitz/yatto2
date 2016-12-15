@@ -1,5 +1,5 @@
 import { BonusType, addBonus, stringToBonus } from './BonusType';
-import { csv }  from 'd3';
+// import { csv }  from 'd3';
 
 export const EquipmentType = {
   Aura   : 0,

@@ -13,6 +13,7 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
+var stringify = require('stringify');
 
 var production = process.env.NODE_ENV === 'production';
 
@@ -63,7 +64,11 @@ gulp.task('browserify-vendor', function() {
 gulp.task('browserify', ['browserify-vendor'], function() {
   return browserify({ entries: 'app/main.js', debug: true })
     .external(dependencies)
-    .transform(babelify, { presets: ['es2015', 'react'] })
+    .transform(babelify, { presets: ['es2015', 'react'], ignore: ['*.csv'] })
+    .transform(stringify, {
+      appliesTo: { includeExtensions: ['.csv'] },
+      minify: true
+    })
     .bundle()
     .pipe(source('bundle.js'))
     .pipe(buffer())
@@ -81,7 +86,14 @@ gulp.task('browserify', ['browserify-vendor'], function() {
 gulp.task('browserify-watch', ['browserify-vendor'], function() {
   var bundler = watchify(browserify({ entries: 'app/main.js', debug: true }, watchify.args));
   bundler.external(dependencies);
-  bundler.transform(babelify, { presets: ['es2015', 'react'] });
+  bundler
+  .transform(babelify, { presets: ['es2015', 'react'], ignore: ['*.csv'] })
+    .transform(stringify, {
+      appliesTo: { includeExtensions: ['.csv'] },
+      minify: true
+    })
+    ;
+
   bundler.on('update', rebundle);
   return rebundle();
 
