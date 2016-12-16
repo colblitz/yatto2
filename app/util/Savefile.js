@@ -1,42 +1,14 @@
+// Thanks to https://etherhack.co.uk/symmetric/des_3des/des_3des.html
 const DECRYPT_KEY = "4bc07927192f4e9a";
 
 export function ReadSavefile(f) {
   var r = new FileReader();
   r.onload = function(e) {
     var contents = e.target.result;
-    // TODO: maybe this is converting back and forth?
-    // var hexString, n, aByte, byteStr;
-    // hexString = '';
-
-    // for (n = 0; n < contents.length; ++n) {
-    //   aByte = contents.charCodeAt(n);
-    //   byteStr = aByte.toString(16);
-    //   if (byteStr.length < 2) {
-    //     byteStr = '0' + byteStr;
-    //   }
-    //   hexString += byteStr;
-    // }
-
-    // var charsFromHex = chars_from_hex(hexString);
-    // for (n = 10; n < contents.length; n += 10) {
-    //   if (contents.substring(n-10, n) != charsFromHex.substring(n-10, n)) {
-    //     console.log(n);
-    //     console.log(contents.substring(n-10, n));
-    //     console.log(charsFromHex.substring(n-10, n));
-    //   }
-    // }
-
-    // console.log(contents === charsFromHex);
-
-    // console.log(contents.substring(0, 100));
-    // console.log(chars_from_hex(hexString).substring(0, 100));
 
     var key = chars_from_hex(DECRYPT_KEY);
     var vector = contents.substring(0, 8);
     var input = contents.substring(8);
-
-    // var vector = chars_from_hex(hexString.substring(0, 16));
-    // var input = chars_from_hex(hexString.substring(16));
 
     var decrypted = des(key, input, 0, vector ? 1 : 0, vector);
 
@@ -49,23 +21,7 @@ export function ReadSavefile(f) {
   }
   r.readAsBinaryString(f);
 }
-// [0x4b,0xc0,0x79,0x27,0x19,0x2f,0x4e,0x9a]
 
-// Thanks to https://etherhack.co.uk/symmetric/des_3des/des_3des.html
-
-// [12/12/16]ISavableGlobal.adat
-//  Our onLoad handler kicks off the collection of entropy for key generation
-function nowLoaded() {
-    ce();                   // Add time we got here to entropy
-    mouseMotionEntropy(60);     // Initialise collection of mouse motion entropy
-}
-function genkey() {
-    //8 byte / 64 bit Key (DES) or 192 bit Key
-    var strvalue = Generate_key();//generate key returns a 32 byte / 64 hex / 256 bit key.
-    document.getElementById("key").value = strvalue.slice(0,48);
-    document.getElementById("vector").value = strvalue.slice(48,64);
-}
-// end key generator stuff
 function chars_from_hex(inputstr) {
   var outputstr = '';
   inputstr = inputstr.replace(/^(0x)?/g, '');
@@ -76,53 +32,6 @@ function chars_from_hex(inputstr) {
   }
   return outputstr;
 }
-function hex_from_chars(inputstr) {
-  var delimiter = '';
-  var outputstr = '';
-  var hex = "0123456789abcdef";
-  hex = hex.split('');
-  var i, n;
-  var inputarr = inputstr.split('');
-  for(var i=0; i<inputarr.length; i++) {
-    if(i > 0) outputstr += delimiter;
-    if(!delimiter && i % 32 == 0 && i > 0) outputstr += '\n';
-    n = inputstr.charCodeAt(i);
-    outputstr += hex[(n >> 4) & 0xf] + hex[n & 0xf];
-  }
-  return outputstr;
-}
-function encrypt_string() {
-    var input = document.getElementById("input").value;
-    var key = document.getElementById("key").value;
-    key = chars_from_hex(key);
-    var vector = document.getElementById("vector").value;
-    vector = chars_from_hex(vector);
-    var vector = (vector.length > 7) ? vector : null;
-    var output = des(key, input, 1, vector ? 1 : 0, vector);
-    document.getElementById("output").value = hex_from_chars(output);
-}
-function decrypt_string() {
-    var input = document.getElementById("input").value;
-    var key = document.getElementById("key").value;
-    key = chars_from_hex(key);
-    var vector = document.getElementById("vector").value;
-    vector = chars_from_hex(vector);
-    var vector = (vector.length > 7) ? vector : null;
-    input = chars_from_hex(input);
-    document.getElementById("output").value = des(key, input, 0, vector ? 1 : 0, vector);
-}
-function swap() {
-    var src = document.getElementById("input");
-    var dst = document.getElementById("output");
-    var tmp = src.value;
-    src.value = dst.value;
-    dst.value = tmp;
-}
-
-
-
-
-
 
 //Paul Tero, July 2001
 //http://www.tero.co.uk/des/
@@ -319,5 +228,3 @@ function des_createKeys (key) {
   //return the keys we've created
   return keys;
 } //end of des_createKeys
-
-
