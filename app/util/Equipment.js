@@ -21,7 +21,7 @@ const stringToEquipmentType = {
 
 export class Equipment {
   constructor(id, category, rarity, bonusType, bonusBase, bonusInc) {
-    this.id = id;
+    this.id = id; // Aura_Dizzy
     this.category = category;
     this.rarity = rarity;
     this.bonusType = bonusType;
@@ -29,8 +29,8 @@ export class Equipment {
     this.bonusInc = bonusInc;
   }
 
-  getBonus(level) {
-    var allBonuses = {};
+  getBonus(level, allBonuses = {}) {
+    console.log(this.id);
     addBonus(allBonuses, this.bonusType, this.bonusBase + level * this.bonusInc);
     return allBonuses;
   }

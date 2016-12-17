@@ -9,14 +9,14 @@ var heroSkillCSV = require('../data/HelperSkillInfo.csv');
 const UPGRADE_CONSTANT = 1.0 / (ServerVarsModel.helperUpgradeBase - 1.0);
 
 export class Hero {
-  constructor(id, heroId, type, cost) {
-    this.id = id; // unlock order
-    this.heroId = heroId;
+  constructor(id, order, type, cost) {
+    this.id = id; // H18
+    this.order = order; // 0
     this.type = type;
     this.cost = cost;
 
-    var a = 1.0 - ServerVarsModel.helperInefficiency * Math.min(this.id, ServerVarsModel.helperInefficiencySlowDown);
-    this.efficiency = Math.pow(a, this.id);
+    var a = 1.0 - ServerVarsModel.helperInefficiency * Math.min(this.order, ServerVarsModel.helperInefficiencySlowDown);
+    this.efficiency = Math.pow(a, this.order);
     this.constant1 = this.cost * ServerVarsModel.dMGScaleDown * this.efficiency;
     this.skills = {};
   }
@@ -44,32 +44,24 @@ export class Hero {
     return this.constant1 * cLevel * getImprovementBonus(cLevel);
   }
 
-  getAllBonuses(level) {
-    var allBonuses = {};
-    this.addBonuses(allBonuses, level);
-    return allBonuses;
-  }
-
-  addBonuses(allBonuses, level) {
-    Object.keys(this.skills).forEach(function(key, index) {
-      if (key <= level) {
-        var bonus = this.skills[key];
-        addBonus(allBonuses, bonus.type, bonus.magnitude);
+  getAllBonuses(level, allBonuses = {}) {
+    console.log(this.id + "(" + this.order + ")");
+    for (var l in this.skills) {
+      if (l <= level) {
+        addBonus(allBonuses, this.skills[l].type, this.skills[l].magnitude);
       }
-    });
+    }
+    return allBonuses;
   }
 }
 
 export const HeroInfo = {};
 
-var heroIdToId = {};
 parse(heroCSV, {delimiter: ',', columns: true}, function(err, data) {
   for (var hero of data) {
-    var id = parseInt(hero.UnlockOrder);
-    heroIdToId[hero.HelperID] = id;
-    HeroInfo[id] = new Hero(
-      id,
+    HeroInfo[hero.HelperID] = new Hero(
       hero.HelperID,
+      parseInt(hero.UnlockOrder),
       stringToBonus[hero.HelperType + 'HelperDamage'],
       hero.PurchaseCost1
     );
@@ -79,10 +71,10 @@ parse(heroCSV, {delimiter: ',', columns: true}, function(err, data) {
 
 parse(heroSkillCSV, {delimiter: ',', columns: true}, function(err, data) {
   for (var skill of data) {
-    HeroInfo[heroIdToId[skill.Owner]].addSkill(
+    HeroInfo[skill.Owner].addSkill(
       skill.RequiredLevel,
       stringToBonus[skill.BonusType],
-      skill.Magnitude);
+      parseFloat(skill.Magnitude));
   }
   console.log("Done loading HelperSkillInfo");
 });

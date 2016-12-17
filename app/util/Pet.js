@@ -1,4 +1,4 @@
-import { BonusType, stringToBonus, addBonus } from './BonusType';
+import { BonusType, stringToBonus, addBonus, notPercentageBonuses } from './BonusType';
 import { ServerVarsModel } from './ServerVarsModel';
 var parse = require('csv-parse');
 
@@ -9,9 +9,9 @@ function getPassivePercentage(level) {
 }
 
 export class Pet {
-  constructor(id, pid, baseDamage, inc1, inc2, inc3, bonusType, bonusBase, bonusInc) {
+  constructor(id, number, baseDamage, inc1, inc2, inc3, bonusType, bonusBase, bonusInc) {
     this.id = id;
-    this.pid = pid;
+    this.number = number;
     this.baseDamage = baseDamage;
     this.inc1 = inc1;
     this.inc2 = inc2;
@@ -34,18 +34,27 @@ export class Pet {
     }
   }
 
-  getActiveBonuses(level) {
-    var allBonuses = {};
-    addBonus(allBonuses, BonusType.PetDamage, getDamage(level));
-    addBonus(allBonuses, this.bonusType, this.bonusBase + level * this.bonusInc);
+  getActiveBonus(level) {
+    return this.bonusBase + level * this.bonusInc;
+  }
+
+  getActiveBonuses(level, allBonuses = {}) {
+    console.log("active: " + this.id);
+    addBonus(allBonuses, BonusType.PetDamage, this.getDamage(level));
+    addBonus(allBonuses, this.bonusType, this.getActiveBonus(level));
     return allBonuses;
   }
 
-  getPassiveBonuses(level) {
+  getPassiveBonuses(level, allBonuses = {}) {
+    console.log("passive: " + this.id);
     var pMultiplier = getPassivePercentage(level);
-    var allBonuses = {};
-    addBonus(allBonuses, BonusType.PetDamage, getDamage(level) * pMultiplier);
-    addBonus(allBonuses, this.bonusType, (this.bonusBase + level * this.bonusInc) * pMultiplier);
+
+    addBonus(allBonuses, BonusType.PetDamage, this.getDamage(level) * pMultiplier);
+    if (!(this.bonusType in notPercentageBonuses)) {
+      addBonus(allBonuses, this.bonusType, (this.getActiveBonus(level) - 1) * pMultiplier + 1);
+    } else {
+      addBonus(allBonuses, this.bonusType, this.getActiveBonus(level) * pMultiplier);
+    }
     return allBonuses;
   }
 }
@@ -54,17 +63,16 @@ export const PetInfo = {};
 
 parse(petCSV, {delimiter: ',', columns: true}, function(err, data) {
   for (var pet of data) {
-    var id = parseInt(pet.PetID.substring(3));
-    PetInfo[id] = new Pet(
-      id,
+    PetInfo[pet.PetID] = new Pet(
       pet.PetID,
-      pet.DamageBase,
-      pet.DamageInc1to40,
-      pet.DamageInc41to80,
-      pet.DamageInc80on,
+      parseInt(pet.PetID.substring(3)),
+      parseFloat(pet.DamageBase),
+      parseFloat(pet.DamageInc1to40),
+      parseFloat(pet.DamageInc41to80),
+      parseFloat(pet.DamageInc80on),
       stringToBonus[pet.BonusType],
-      pet.BonusBase,
-      pet.BonusInc
+      parseFloat(pet.BonusBase),
+      parseFloat(pet.BonusInc)
     );
   }
   console.log("Done loading PetInfo");

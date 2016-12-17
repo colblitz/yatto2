@@ -1,7 +1,7 @@
 // Thanks to https://etherhack.co.uk/symmetric/des_3des/des_3des.html
 const DECRYPT_KEY = "4bc07927192f4e9a";
 
-export function ReadSavefile(f) {
+export function ReadSavefile(f, callback) {
   var r = new FileReader();
   r.onload = function(e) {
     var contents = e.target.result;
@@ -16,8 +16,9 @@ export function ReadSavefile(f) {
     var e = decrypted.indexOf("playerData");
     var s = decrypted.substring(b + 12, e-2);
 
-    var j = JSON.parse(JSON.parse(s));
-    console.log(j);
+    var j = JSON.parse(JSON.parse(s), (k, v) => (k === '$type') ? undefined : v);
+    console.log("Done parsing savefile");
+    callback(j);
   }
   r.readAsBinaryString(f);
 }

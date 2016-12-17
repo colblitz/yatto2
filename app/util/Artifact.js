@@ -1,11 +1,12 @@
-import { BonusType, stringToBonus } from './BonusType';
+import { BonusType, stringToBonus, addBonus, additiveBonuses } from './BonusType';
 var parse = require('csv-parse');
 
 var artifactCSV = require('../data/ArtifactInfo.csv');
 
 export class Artifact {
-  constructor(id, name, costc, coste, maxLevel, effects) {
-    this.id = id;
+  constructor(id, number, name, costc, coste, maxLevel, effects) {
+    this.id = id; // Artifact1
+    this.number = number; // 1
     this.name = name;
     this.costc = costc;
     this.coste = coste;
@@ -23,8 +24,23 @@ export class Artifact {
     }
   }
 
-  getAD(cLevel) {
-    return cLevel > 0 ? adpl * cLevel : 0;
+  getAllBonuses(level, allBonuses = {}) {
+    console.log(this.name);
+    // TODO: remove this hack for bugged Heavenly Sword
+    if (this.id === "Artifact26") {
+      addBonus(allBonuses, BonusType.ArtifactDamage, level * 0.3);
+      addBonus(allBonuses, BonusType.ArtifactDamage, 1 + level * 0.05);
+      return allBonuses;
+    } else {
+      for (var bonusType in this.effects) {
+        if (!(bonusType in additiveBonuses)) {
+          addBonus(allBonuses, bonusType, 1 + level * this.effects[bonusType]);
+        } else {
+          addBonus(allBonuses, bonusType, level * this.effects[bonusType]);
+        }
+      }
+    }
+    return allBonuses;
   }
 }
 
@@ -32,9 +48,9 @@ export const ArtifactInfo = {};
 
 parse(artifactCSV, {delimiter: ',', columns: true}, function(err, data) {
   for (var artifact of data) {
-    var id = parseInt(artifact.ArtifactID.substring(8));
-    ArtifactInfo[id] = new Artifact(
-      id,
+    ArtifactInfo[artifact.ArtifactID] = new Artifact(
+      artifact.ArtifactID,
+      parseInt(artifact.ArtifactID.substring(8)),
       artifact.Name,
       parseFloat(artifact.CostCoef),
       parseFloat(artifact.CostExpo),

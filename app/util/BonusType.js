@@ -61,6 +61,7 @@ export const BonusType = {
   TapBoostSkillMana        : 59,
   TapDamage                : 60,
   TapDamageFromHelpers     : 61,
+  None                     : 62,
 };
 
 export const stringToBonus = {
@@ -126,7 +127,21 @@ export const stringToBonus = {
   "TapBoostSkillMana"        : BonusType.TapBoostSkillMana        ,
   "TapDamage"                : BonusType.TapDamage                ,
   "TapDamageFromHelpers"     : BonusType.TapDamageFromHelpers     ,
+  "None"                     : BonusType.None                     ,
 };
+
+const bonusToString = {};
+for (var s in stringToBonus) {
+  bonusToString[stringToBonus[s]] = s;
+}
+
+export function printBonuses(allBonuses) {
+  var bonuses = {};
+  for (var b in allBonuses) {
+    bonuses[bonusToString[b]] = getBonus(allBonuses, b);
+  }
+  console.log(bonuses);
+}
 
 export const additiveBonuses = {
   [BonusType.ArtifactDamage           ]: true,
@@ -163,14 +178,61 @@ export const additiveBonuses = {
   [BonusType.TapDamageFromHelpers     ]: true,
 };
 
+export const notPercentageBonuses = {
+  [BonusType.BossTimer                ]: false,
+  [BonusType.BurstDamageSkillMana     ]: false,
+  [BonusType.ChestChance              ]: false,
+  [BonusType.CritBoostSkillDuration   ]: false,
+  [BonusType.CritBoostSkillMana       ]: false,
+  [BonusType.CritChance               ]: false,
+  [BonusType.DoubleFairyChance        ]: false,
+  [BonusType.Goldx10Chance            ]: false,
+  [BonusType.HandOfMidasSkillDuration ]: false,
+  [BonusType.HandOfMidasSkillMana     ]: false,
+  [BonusType.HelperBoostSkillDuration ]: false,
+  [BonusType.HelperBoostSkillMana     ]: false,
+  [BonusType.HelperUpgradeCost        ]: false,
+  [BonusType.HelperQTECount           ]: false,
+  [BonusType.InactiveAdvance          ]: false,
+  [BonusType.ManaPoolCap              ]: false,
+  [BonusType.ManaRegen                ]: false,
+  [BonusType.ManaMonsterMana          ]: false,
+  [BonusType.ManaTapRegen             ]: false,
+  [BonusType.Memory                   ]: false,
+  [BonusType.MonsterCountPerStage     ]: false,
+  [BonusType.MonsterHP                ]: false,
+  [BonusType.PetDamage                ]: false,
+  [BonusType.PetBossCount             ]: false,
+  [BonusType.PetQTEGold               ]: false,
+  [BonusType.PetOfflineDamage         ]: false,
+  [BonusType.ShadowCloneSkillDuration ]: false,
+  [BonusType.ShadowCloneSkillMana     ]: false,
+  [BonusType.SplashDamage             ]: false,
+  [BonusType.TapBoostSkillDuration    ]: false,
+  [BonusType.TapBoostSkillMana        ]: false,
+  [BonusType.TapDamageFromHelpers     ]: false,
+};
+
 export function addBonus(allBonuses, bonusType, magnitude) {
+  if (bonusType == BonusType.AllDamage) {
+   console.log("  adding: " + bonusToString[bonusType] + ", " + magnitude);
+  }
   if (bonusType in allBonuses) {
     if (bonusType in additiveBonuses) {
       allBonuses[bonusType] += magnitude;
     } else {
-      allBonuses[bonusType] *= magnitude;
+      if (magnitude != 0) {
+        allBonuses[bonusType] *= magnitude;
+      }
     }
   } else {
     allBonuses[bonusType] = magnitude;
   }
+}
+
+export function getBonus(allBonuses, bonusType) {
+  if (bonusType in additiveBonuses && !(bonusType in notPercentageBonuses)) {
+    return 1 + allBonuses[bonusType];
+  }
+  return allBonuses[bonusType];
 }
