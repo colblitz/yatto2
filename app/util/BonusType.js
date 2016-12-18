@@ -214,9 +214,6 @@ export const notPercentageBonuses = {
 };
 
 export function addBonus(allBonuses, bonusType, magnitude) {
-  if (bonusType == BonusType.AllDamage) {
-   console.log("  adding: " + bonusToString[bonusType] + ", " + magnitude);
-  }
   if (bonusType in allBonuses) {
     if (bonusType in additiveBonuses) {
       allBonuses[bonusType] += magnitude;

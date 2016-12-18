@@ -39,14 +39,12 @@ export class Pet {
   }
 
   getActiveBonuses(level, allBonuses = {}) {
-    console.log("active: " + this.id);
     addBonus(allBonuses, BonusType.PetDamage, this.getDamage(level));
     addBonus(allBonuses, this.bonusType, this.getActiveBonus(level));
     return allBonuses;
   }
 
   getPassiveBonuses(level, allBonuses = {}) {
-    console.log("passive: " + this.id);
     var pMultiplier = getPassivePercentage(level);
 
     addBonus(allBonuses, BonusType.PetDamage, this.getDamage(level) * pMultiplier);
