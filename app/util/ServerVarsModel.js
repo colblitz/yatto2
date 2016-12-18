@@ -1,11 +1,16 @@
 export const ServerVarsModel = {
   dMGScaleDown               :    0.1  ,
-  helperInefficiency         :    0.025,
+  helperInefficiency         :    0.023,
   helperInefficiencySlowDown :   34    ,
-  helperUpgradeBase          :    1.08 ,
+  helperUpgradeBase          :    1.082,
   evolveCostMultiplier       : 1000    ,
   petPassiveLevelGap         :    5    ,
   petPassiveLevelIncrement   :    0.01 ,
   petDamageIncLevel1         :   40    ,
   petDamageIncLevel2         :   80    ,
+  playerDamageMult           :    1    ,
+  playerCritChance           :    0.002,
+  maxCritChance              :    0.5  ,
+  playerCritMinMult          :    3    ,
+  playerCritMaxMult          :   20    ,
 };

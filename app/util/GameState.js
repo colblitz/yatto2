@@ -5,7 +5,8 @@ import { Equipment, EquipmentInfo } from './Equipment';
 import { Skill, SkillInfo } from './Skill';
 import { getHeroImprovementBonus } from './HeroImprovementBonus';
 import { getPlayerImprovementBonus } from './PlayerImprovementBonus';
-import { BonusType } from './BonusType';
+import { ServerVarsModel } from './ServerVarsModel';
+import { BonusType, getBonus } from './BonusType';
 /*
   "info":{
     "playerId":"ebd20042-c0c6-4abd-aafd-22099b9dc3b9",
@@ -54,6 +55,7 @@ export class GameState {
     this.equipment = equipment;
     this.pets = pets;
     this.skills = skills;
+    this.bonuses = this.getBonuses();
   }
 
   getBonuses() {
@@ -89,8 +91,21 @@ export class GameState {
     return allBonuses;
   }
 
-  getTapDamage() {
+  getBaseTapDamage() {
+    var swordmaster = this.swordmaster.level *
+                      getPlayerImprovementBonus(this.swordmaster.level) *
+                      ServerVarsModel.playerDamageMult *
+                      getBonus(this.bonuses, BonusType.TapDamage) *
+                      getBonus(this.bonuses, BonusType.AllDamage);
+    var heroDamage = this.getHeroDamage() * getBonus(this.bonuses, BonusType.TapDamageFromHelpers);
+    return swordmaster + heroDamage;
+  }
 
+  getAverageCritDamage() {
+    var critChance = Math.min(ServerVarsModel.maxCritChance, ServerVarsModel.playerCritChance + getBonus(this.bonuses, BonusType.CritChance));
+    var critMinMult = ServerVarsModel.playerCritMinMult * getBonus(this.bonuses, BonusType.CritDamage);
+    var critMaxMult = ServerVarsModel.playerCritMaxMult * getBonus(this.bonuses, BonusType.CritDamage);
+    return this.getBaseTapDamage() * (1 + critChance * (critMinMult + critMaxMult) / 2);
   }
 
   getPetDamage() {
