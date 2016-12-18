@@ -4,6 +4,7 @@ import { Pet, PetInfo } from './Pet';
 import { Skill, SkillInfo } from './Skill';
 import { getHeroImprovementBonus } from './HeroImprovementBonus';
 import { getPlayerImprovementBonus } from './PlayerImprovementBonus';
+import { LocalizationInfo, Languages } from './Localization';
 
 // var fs = require('fs');
 

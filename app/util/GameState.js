@@ -6,7 +6,9 @@ import { Skill, SkillInfo } from './Skill';
 import { getHeroImprovementBonus } from './HeroImprovementBonus';
 import { getPlayerImprovementBonus } from './PlayerImprovementBonus';
 import { ServerVarsModel } from './ServerVarsModel';
-import { BonusType, getBonus } from './BonusType';
+import { BonusType, addBonus, getBonus, printBonuses } from './BonusType';
+import { getHeroName } from './Localization';
+
 /*
   "info":{
     "playerId":"ebd20042-c0c6-4abd-aafd-22099b9dc3b9",
@@ -47,7 +49,7 @@ import { BonusType, getBonus } from './BonusType';
 */
 
 export class GameState {
-  constructor(info, swordmaster, artifacts, heroes, equipment, pets, skills) {
+  constructor(info, swordmaster, artifacts, heroes, equipment, pets, skills, clan) {
     this.info = info;
     this.swordmaster = swordmaster;
     this.artifacts = artifacts;
@@ -55,7 +57,17 @@ export class GameState {
     this.equipment = equipment;
     this.pets = pets;
     this.skills = skills;
+    this.clan = clan;
+    console.log(this.clan);
     this.bonuses = this.getBonuses();
+  }
+
+  printStats() {
+    printBonuses(this.bonuses);
+    console.log("base tap damage: " + this.getBaseTapDamage());
+    console.log("average crit damage: " + this.getAverageCritDamage());
+    console.log("pet damage: " + this.getPetDamage());
+    console.log("hero damage: " + this.getHeroDamage(true));
   }
 
   getBonuses() {
@@ -64,6 +76,9 @@ export class GameState {
     for (var artifact in this.artifacts) {
       ArtifactInfo[artifact].getAllBonuses(this.artifacts[artifact], allBonuses);
     }
+    // dafuq... ArtifactModel.ApplyAllArtifactBonuses
+    addBonus(allBonuses, BonusType.AllDamage, getBonus(allBonuses, BonusType.ArtifactDamage));
+
     console.log(" --- adding heroes");
     for (var hero in this.heroes.levels) {
       HeroInfo[hero].getAllBonuses(this.heroes.levels[hero], allBonuses);
@@ -88,32 +103,59 @@ export class GameState {
         SkillInfo[skill].getBonus(this.skills[skill], allBonuses);
       }
     }
+    console.log(" --- adding clan bonus");
+    addBonus(allBonuses, BonusType.AllDamage, Math.pow(ServerVarsModel.clanBonusBase, this.clan.score));
+    addBonus(allBonuses, BonusType.Memory, Math.min(ServerVarsModel.maxMemoryAmount, ServerVarsModel.clanMemoryBase * this.clan.score));
     return allBonuses;
+  }
+
+  getBonus(bonusType) {
+    return getBonus(this.bonuses, bonusType);
   }
 
   getBaseTapDamage() {
     var swordmaster = this.swordmaster.level *
                       getPlayerImprovementBonus(this.swordmaster.level) *
                       ServerVarsModel.playerDamageMult *
-                      getBonus(this.bonuses, BonusType.TapDamage) *
-                      getBonus(this.bonuses, BonusType.AllDamage);
-    var heroDamage = this.getHeroDamage() * getBonus(this.bonuses, BonusType.TapDamageFromHelpers);
+                      this.getBonus(BonusType.TapDamage) *
+                      this.getBonus(BonusType.AllDamage);
+    console.log("swordmaster: " + swordmaster);
+    var heroDamage = this.getHeroDamage() * this.getBonus(BonusType.TapDamageFromHelpers);
     return swordmaster + heroDamage;
   }
 
   getAverageCritDamage() {
-    var critChance = Math.min(ServerVarsModel.maxCritChance, ServerVarsModel.playerCritChance + getBonus(this.bonuses, BonusType.CritChance));
-    var critMinMult = ServerVarsModel.playerCritMinMult * getBonus(this.bonuses, BonusType.CritDamage);
-    var critMaxMult = ServerVarsModel.playerCritMaxMult * getBonus(this.bonuses, BonusType.CritDamage);
+    var critChance = Math.min(ServerVarsModel.maxCritChance, ServerVarsModel.playerCritChance + this.getBonus(BonusType.CritChance));
+    var critMinMult = ServerVarsModel.playerCritMinMult * this.getBonus(BonusType.CritDamage);
+    var critMaxMult = ServerVarsModel.playerCritMaxMult * this.getBonus(BonusType.CritDamage);
     return this.getBaseTapDamage() * (1 + critChance * (critMinMult + critMaxMult) / 2);
   }
 
   getPetDamage() {
-
+    return this.getAverageCritDamage() * this.getBonus(BonusType.PetDamage) * this.getBonus(BonusType.PetDamageMult);
   }
 
-  getHeroDamage() {
+  getWeaponMultiplier(hero) {
+    if (hero in this.heroes.weapons) {
+      return this.heroes.weapons[hero] * 0.5;
+    }
+    return 0;
+  }
 
+  getHeroDamage(print = false) {
+    var allHeroDamage = 0;
+    for (var hero in this.heroes.levels) {
+      var heroDamage = HeroInfo[hero].getBaseDamage(this.heroes.levels[hero]) *
+                       this.getBonus(HeroInfo[hero].type) *
+                       this.getBonus(BonusType.AllDamage) *
+                       this.getBonus(BonusType.AllHelperDamage) *
+                       (1 + this.getWeaponMultiplier(hero));
+      if (print) {
+        console.log(" - " + getHeroName(hero) + ": " + heroDamage);
+      }
+      allHeroDamage += heroDamage;
+    }
+    return allHeroDamage;
   }
 
   getDPS() {
@@ -184,6 +226,12 @@ export function fromSaveFile(saveJSON) {
       equipped: saveJSON.PetModel.currentPet.$content,
     },
     // skills
-    skillLevels
+    skillLevels,
+    // clan
+    {
+      id: saveJSON.ClanModel.clan.clanID,
+      name: saveJSON.ClanModel.clan.name,
+      score: saveJSON.ClanModel.clan.score,
+    }
   );
 }

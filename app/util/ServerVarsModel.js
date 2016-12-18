@@ -13,4 +13,7 @@ export const ServerVarsModel = {
   maxCritChance              :    0.5  ,
   playerCritMinMult          :    3    ,
   playerCritMaxMult          :   20    ,
+  clanBonusBase              :    1.1  ,
+  clanMemoryBase             :    0.001,
+  maxMemoryAmount            :    0.5  ,
 };

@@ -231,8 +231,16 @@ export function addBonus(allBonuses, bonusType, magnitude) {
 }
 
 export function getBonus(allBonuses, bonusType) {
-  if (bonusType in additiveBonuses && !(bonusType in notPercentageBonuses)) {
-    return 1 + allBonuses[bonusType];
+  if (bonusType in allBonuses) {
+    if (bonusType in additiveBonuses && !(bonusType in notPercentageBonuses)) {
+      return 1 + allBonuses[bonusType];
+    }
+    return allBonuses[bonusType];
+  } else {
+    if (bonusType in additiveBonuses) {
+      return 0;
+    } else {
+      return 1;
+    }
   }
-  return allBonuses[bonusType];
 }

@@ -1,8 +1,8 @@
 import { BonusType, stringToBonus, addBonus } from './BonusType';
 import { ServerVarsModel } from './ServerVarsModel';
-import { getImprovementBonus } from './HeroImprovementBonus';
-var parse = require('csv-parse');
+import { getHeroImprovementBonus } from './HeroImprovementBonus';
 
+var parse = require('csv-parse');
 var heroCSV = require('../data/HelperInfo.csv');
 var heroSkillCSV = require('../data/HelperSkillInfo.csv');
 
@@ -41,7 +41,7 @@ export class Hero {
 
   // Without BonusType, BonusAll, BonusAllHelper, Weapons
   getBaseDamage(cLevel) {
-    return this.constant1 * cLevel * getImprovementBonus(cLevel);
+    return this.constant1 * cLevel * getHeroImprovementBonus(cLevel);
   }
 
   getAllBonuses(level, allBonuses = {}) {

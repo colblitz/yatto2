@@ -11,8 +11,7 @@ class FilePicker extends React.Component {
       console.log("Create gamestate");
       var g = fromSaveFile(saveJSON);
       console.log("Game state created");
-      console.log(g);
-      printBonuses(g.getBonuses());
+      g.printStats();
     });
 
   }
