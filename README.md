@@ -1,24 +1,31 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This is YATTO2, name TBD
 
 ### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Code
 
 ### How do I get set up? ###
 
+# install things
 npm install -g gulp
+
 npm install -g bower
+
 npm install -g nodemon
 
+# install libraries
 npm install
-npm install --only=dev
+
 bower install
 
+# install dev libraries
+npm install --only=dev
+
+# run these in terminals
 npm run watch
+
 gulp
 
 * Summary of set up
@@ -36,5 +43,4 @@ gulp
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+* Me

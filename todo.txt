@@ -1,0 +1,6 @@
+ * Re-check skills<->bonuses
+ * How to graphically skill tree
+ * Optimal hero/swordmaster - greedy cost to next breakpoint
+ * Damage Equivalence - with ^, then get proportion and current factors?
+ * relic steps, gold steps - pet steps? which pet, which equipment
+ * Everything else
