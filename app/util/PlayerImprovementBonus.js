@@ -28,16 +28,46 @@ parse(playerImprovementCSV, {delimiter: ',', columns: true}, function(err, data)
   console.log("done loading PlayerImprovementsTotals");
 });
 
+const memoizedBonus = {};
 export function getPlayerImprovementBonus(cLevel) {
-  if (cLevel < MIN_LEVEL) {
-    return 1.0;
-  } else if (cLevel > MAX_LEVEL) {
-    return getImprovementBonus(MAX_LEVEL);
-  } else {
-    cLevel = Math.floor(cLevel / 10) * 10;
-    while (!(cLevel in PlayerImprovementsTotals)) {
-      cLevel -= 10;
-    }
-    return PlayerImprovementsTotals[cLevel];
+  if (cLevel in memoizedBonus) {
+    return memoizedBonus[cLevel];
   }
+
+  var answer;
+  if (cLevel < MIN_LEVEL) {
+    answer = 1.0;
+  } else if (cLevel > MAX_LEVEL) {
+    answer = getImprovementBonus(MAX_LEVEL);
+  } else {
+    var tLevel = Math.floor(cLevel / 10) * 10;
+    while (!(tLevel in PlayerImprovementsTotals)) {
+      tLevel -= 10;
+    }
+    answer = PlayerImprovementsTotals[tLevel];
+  }
+  memoizedBonus[cLevel] = answer;
+  return answer;
+}
+
+const memoizedNext = {};
+export function getNextPlayerImprovement(cLevel) {
+  if (cLevel in memoizedNext) {
+    return memoizedNext[cLevel];
+  }
+
+  var answer;
+  if (cLevel < MIN_LEVEL) {
+    answer = MIN_LEVEL;
+  } else if (cLevel >= MAX_LEVEL) {
+    answer = Infinity;
+  } else {
+    var tLevel = Math.floor(cLevel / 10) * 10;
+    while (!(tLevel in PlayerImprovementsTotals)) {
+      tLevel += 10;
+    }
+    answer = tLevel;
+  }
+  memoizedNext[cLevel] = answer;
+  return answer;
 }

@@ -28,16 +28,46 @@ parse(heroImprovementCSV, {delimiter: ',', columns: true}, function(err, data) {
   console.log("Done loading HeroImprovementsTotals");
 });
 
+const memoizedBonus = {};
 export function getHeroImprovementBonus(cLevel) {
-  if (cLevel < MIN_LEVEL) {
-    return 1.0;
-  } else if (cLevel > MAX_LEVEL) {
-    return getImprovementBonus(MAX_LEVEL);
-  } else {
-    cLevel = Math.floor(cLevel / 10) * 10;
-    while (!(cLevel in HeroImprovementsTotals)) {
-      cLevel -= 10;
-    }
-    return HeroImprovementsTotals[cLevel];
+  if (cLevel in memoizedBonus) {
+    return memoizedBonus[cLevel];
   }
+
+  var answer;
+  if (cLevel < MIN_LEVEL) {
+    answer = 1.0;
+  } else if (cLevel > MAX_LEVEL) {
+    answer = getImprovementBonus(MAX_LEVEL);
+  } else {
+    var tLevel = Math.floor(cLevel / 10) * 10;
+    while (!(tLevel in HeroImprovementsTotals)) {
+      tLevel -= 10;
+    }
+    answer = HeroImprovementsTotals[tLevel];
+  }
+  memoizedBonus[cLevel] = answer;
+  return answer;
+}
+
+const memoizedNext = {};
+export function getNextHeroImprovement(cLevel) {
+  if (cLevel in memoizedNext) {
+    return memoizedNext[cLevel];
+  }
+
+  var answer;
+  if (cLevel < MIN_LEVEL) {
+    answer = MIN_LEVEL;
+  } else if (cLevel >= MAX_LEVEL) {
+    answer = Infinity;
+  } else {
+    var tLevel = Math.floor(cLevel / 10) * 10;
+    while (!(tLevel in HeroImprovementsTotals)) {
+      tLevel += 10;
+    }
+    answer = tLevel;
+  }
+  memoizedNext[cLevel] = answer;
+  return answer;
 }

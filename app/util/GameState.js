@@ -63,10 +63,28 @@ export class GameState {
     this.pets = pets;
     this.skills = skills;
     this.clan = clan;
+  }
+
+  calculateBonuses() {
     this.bonuses = this.getBonuses();
   }
 
+  getCopy() {
+    // TODO: is this really the best way to deep copy -__-
+    return new GameState(
+      JSON.parse(JSON.stringify(info)),
+      JSON.parse(JSON.stringify(swordmaster)),
+      JSON.parse(JSON.stringify(artifacts)),
+      JSON.parse(JSON.stringify(heroes)),
+      JSON.parse(JSON.stringify(equipment)),
+      JSON.parse(JSON.stringify(pets)),
+      JSON.parse(JSON.stringify(skills)),
+      JSON.parse(JSON.stringify(clan))
+    );
+  }
+
   printStats() {
+    this.calculateBonuses();
     printBonuses(this.bonuses);
     console.log("base tap damage: " + this.getBaseTapDamage());
     console.log("average crit damage: " + this.getAverageCritDamage());
@@ -124,6 +142,10 @@ export class GameState {
   getMaxHeroUpgrades(hero, cLevel, gold) {
     var num = 1 - this.getBonus(BonusType.HelperUpgradeCost);
     return Math.floor(Math.log(gold * (ServerVarsModel.helperUpgradeBase - 1) / (num * hero.cost * Math.pow(ServerVarsModel.helperUpgradeBase, cLevel)) + 1) / Math.log(ServerVarsModel.helperUpgradeBase));
+  }
+
+  getPlayerUpgradeCost(sLevel, eLevel) {
+
   }
 
   // getGoldEquivalence() {
