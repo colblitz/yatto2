@@ -62,6 +62,7 @@ export const BonusType = {
   TapDamage                : 60,
   TapDamageFromHelpers     : 61,
   None                     : 62,
+  MultiMonster             : 63,
 };
 
 export const stringToBonus = {
@@ -128,6 +129,7 @@ export const stringToBonus = {
   "TapDamage"                : BonusType.TapDamage                ,
   "TapDamageFromHelpers"     : BonusType.TapDamageFromHelpers     ,
   "None"                     : BonusType.None                     ,
+  "MultiMonster"             : BonusType.MultiMonster             ,
 };
 
 const bonusToString = {};
@@ -176,6 +178,7 @@ export const additiveBonuses = {
   [BonusType.TapBoostSkillDuration    ]: true,
   [BonusType.TapBoostSkillMana        ]: true,
   [BonusType.TapDamageFromHelpers     ]: true,
+  [BonusType.MultiMonster             ]: true,
 };
 
 export const notPercentageBonuses = {
@@ -211,6 +214,7 @@ export const notPercentageBonuses = {
   [BonusType.TapBoostSkillDuration    ]: false,
   [BonusType.TapBoostSkillMana        ]: false,
   [BonusType.TapDamageFromHelpers     ]: false,
+  [BonusType.MultiMonster             ]: false,
 };
 
 export function addBonus(allBonuses, bonusType, magnitude) {
