@@ -45,7 +45,6 @@ export class Hero {
   }
 
   getAllBonuses(level, allBonuses = {}) {
-    console.log(this.id + "(" + this.order + ")");
     for (var l in this.skills) {
       if (l <= level) {
         addBonus(allBonuses, this.skills[l].type, this.skills[l].magnitude);
@@ -53,6 +52,14 @@ export class Hero {
     }
     return allBonuses;
   }
+}
+
+export function printHeroLevels(levels) {
+  var l = [];
+  for (var hero of Object.keys(levels).sort(function(a, b) { return HeroInfo[a].order - HeroInfo[b].order; })) {
+    l.push(levels[hero]);
+  }
+  console.log(l);
 }
 
 export const HeroInfo = {};

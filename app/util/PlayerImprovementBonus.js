@@ -63,7 +63,7 @@ export function getNextPlayerImprovement(cLevel) {
     answer = Infinity;
   } else {
     var tLevel = Math.floor(cLevel / 10) * 10;
-    while (!(tLevel in PlayerImprovementsTotals)) {
+    while (!(tLevel in PlayerImprovementsTotals) || cLevel >= tLevel) {
       tLevel += 10;
     }
     answer = tLevel;

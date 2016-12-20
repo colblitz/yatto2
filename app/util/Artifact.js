@@ -1,4 +1,5 @@
 import { BonusType, stringToBonus, addBonus, additiveBonuses } from './BonusType';
+import { ServerVarsModel } from './ServerVarsModel';
 var parse = require('csv-parse');
 
 var artifactCSV = require('../data/ArtifactInfo.csv');
@@ -20,12 +21,11 @@ export class Artifact {
     if (cLevel == 0 || (this.maxLevel != null && cLevel >= this.maxLevel)) {
       return Infinity;
     } else {
-      return Math.round(costc * Math.pow(cLevel + 1, coste));
+      return Math.round(this.costc * Math.pow(cLevel + 1, this.coste));
     }
   }
 
   getAllBonuses(level, allBonuses = {}) {
-    console.log(this.name);
     // TODO: remove this hack for bugged Heavenly Sword
     if (this.id === "Artifact26") {
       addBonus(allBonuses, BonusType.ArtifactDamage, level * 0.3);
@@ -42,6 +42,18 @@ export class Artifact {
     }
     return allBonuses;
   }
+}
+
+export function printArtifactLevels(levels) {
+  var l = {};
+  for (var artifact of Object.keys(levels).sort(function(a, b) { return ArtifactInfo[a].name.localeCompare(ArtifactInfo[b].name); })) {
+    l[ArtifactInfo[artifact].name] = levels[artifact];
+  }
+  console.log(JSON.stringify(l));
+}
+
+export function nextArtifactCost(owned) {
+  return Math.floor((owned + 1) * Math.pow(ServerVarsModel.artifactCostBase, (owned + 1)));
 }
 
 export const ArtifactInfo = {};

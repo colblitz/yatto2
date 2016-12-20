@@ -30,7 +30,6 @@ export class Equipment {
   }
 
   getBonus(level, allBonuses = {}) {
-    console.log(this.id);
     addBonus(allBonuses, this.bonusType, this.bonusBase + level * this.bonusInc);
     return allBonuses;
   }

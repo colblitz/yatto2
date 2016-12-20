@@ -42,7 +42,6 @@ export class Skill {
   }
 
   getBonus(level, allBonuses = {}) {
-    console.log(this.id);
     addBonus(allBonuses, this.bonusType, this.amounts[level]);
     return allBonuses;
   }

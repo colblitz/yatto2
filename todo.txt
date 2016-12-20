@@ -3,4 +3,5 @@
  * Optimal hero/swordmaster - greedy cost to next breakpoint
  * Damage Equivalence - with ^, then get proportion and current factors?
  * relic steps, gold steps - pet steps? which pet, which equipment
+ * Check hero skill bonuses compared with everything else (weight for gold optimizer)
  * Everything else

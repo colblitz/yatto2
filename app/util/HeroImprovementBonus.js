@@ -63,7 +63,7 @@ export function getNextHeroImprovement(cLevel) {
     answer = Infinity;
   } else {
     var tLevel = Math.floor(cLevel / 10) * 10;
-    while (!(tLevel in HeroImprovementsTotals)) {
+    while (!(tLevel in HeroImprovementsTotals) || cLevel >= tLevel) {
       tLevel += 10;
     }
     answer = tLevel;

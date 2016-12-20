@@ -72,14 +72,14 @@ export class GameState {
   getCopy() {
     // TODO: is this really the best way to deep copy -__-
     return new GameState(
-      JSON.parse(JSON.stringify(info)),
-      JSON.parse(JSON.stringify(swordmaster)),
-      JSON.parse(JSON.stringify(artifacts)),
-      JSON.parse(JSON.stringify(heroes)),
-      JSON.parse(JSON.stringify(equipment)),
-      JSON.parse(JSON.stringify(pets)),
-      JSON.parse(JSON.stringify(skills)),
-      JSON.parse(JSON.stringify(clan))
+      JSON.parse(JSON.stringify(this.info)),
+      JSON.parse(JSON.stringify(this.swordmaster)),
+      JSON.parse(JSON.stringify(this.artifacts)),
+      JSON.parse(JSON.stringify(this.heroes)),
+      JSON.parse(JSON.stringify(this.equipment)),
+      JSON.parse(JSON.stringify(this.pets)),
+      JSON.parse(JSON.stringify(this.skills)),
+      JSON.parse(JSON.stringify(this.clan))
     );
   }
 
@@ -145,7 +145,10 @@ export class GameState {
   }
 
   getPlayerUpgradeCost(sLevel, eLevel) {
-
+    return ServerVarsModel.playerUpgradeCostBase *
+           (Math.pow(ServerVarsModel.playerUpgradeCostGrowth, eLevel) -
+            Math.pow(ServerVarsModel.playerUpgradeCostGrowth, sLevel)) /
+           (ServerVarsModel.playerUpgradeCostGrowth - 1);
   }
 
   // getGoldEquivalence() {
@@ -236,7 +239,7 @@ export class GameState {
     // TODO: war cry
     var petDPS = this.getPetTotalLevels() > ServerVarsModel.petAutoAttackLevel ?
       this.getPetDamage() / ServerVarsModel.petAutoAttackDuration :
-      this.getPetDamage() * (tps / petTapAmount);
+      this.getPetDamage() * (tps / ServerVarsModel.petTapAmount);
     var heroDPS = this.getHeroDamage();
     return (tapDPS + petDPS + heroDPS) / this.getBonus(BonusType.MonsterHP);
   }
@@ -245,7 +248,10 @@ export class GameState {
     return this.getAverageMonsterGold();
   }
 
-  getDamageEquivalence(tps) {
+  getDamageEquivalent(tps) {
+    if (!this.bonuses) {
+      this.calculateBonuses();
+    }
     // TODO: lol
     return Math.pow(1.05, (Math.log(this.getGoldMultiplier()) / Math.log(1.072))) * this.getDPS(tps);
   }
@@ -297,8 +303,8 @@ export class GameState {
         ServerVarsModel.maxBossGoldMultiplier,
         Math.min(
           1.0,
-          Math.ceiling((stageNum - 5) / 5) * ServerVarsModel.bossGoldMultiplierSlope)) *
-      GetBonus(BonusType.GoldBoss);
+          Math.ceil((this.info.maxStage - 5) / 5) * ServerVarsModel.bossGoldMultiplierSlope)) *
+      this.getBonus(BonusType.GoldBoss);
 
     // (1 - bossChance) * chestersonChance of the time, it's a chesterson
     // (1 - bossChance)  * (1 - chestersonChance) of the time, it's a normal
@@ -323,6 +329,34 @@ export class GameState {
     var nonBossMultiplier = familyMultiplier * (chestersonChance * chestersonMultiplier + monsterChance * monsterMultiplier);
     return base * goldx10Multiplier * (bossChance * bossMultiplier + nonBossChance * nonBossMultiplier);
   }
+}
+
+// For swordmaster levels, hero levels, artifact levels
+export function getDiff(g1, g2) {
+  var outcome = {};
+  var changes = {};
+  if (g1.swordmaster.level != g2.swordmaster.level) {
+    outcome["swordmaster"] = g2.swordmaster.level;
+    changes["swordmaster"] = g2.swordmaster.level - g1.swordmaster.level;
+  }
+  for (var hero in g2.heroes.levels) {
+    var newLevel = g2.heroes.levels[hero];
+    if (newLevel != g1.heroes.levels[hero]) {
+      outcome[hero] = newLevel;
+      changes[hero] = newLevel - g1.heroes.levels[hero];
+    }
+  }
+  for (var artifact in g2.artifacts) {
+    var newLevel = g2.artifacts[artifact];
+    if (newLevel != g1.artifacts[artifact]) {
+      outcome[artifact] = newLevel;
+      changes[artifact] = newLevel - g1.artifacts[artifact];
+    }
+  }
+  return {
+    outcome: outcome,
+    changes: changes
+  };
 }
 
 export function fromSaveFile(saveJSON) {

@@ -40,4 +40,5 @@ export const ServerVarsModel = {
   goldx10Chance: 0.005,
   playerUpgradeCostGrowth: 1.062,
   playerUpgradeCostBase: 5,
+  artifactCostBase: 1.31,
 };
