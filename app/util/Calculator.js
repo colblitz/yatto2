@@ -25,14 +25,9 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
   // Given this, the only meaningful jumps in damage come from these improvement breakpoints
   // Given that, greedy knapsack should basically be an approximation of optimal damage given gold
 
-  // console.log(gamestate.swordmaster.level);
-  // console.log(gamestate.heroes.levels);
-
   var currentState = gamestate.getCopy();
   var goldLeft = gold;
-  // console.log("get gold steps");
   while (goldLeft > 0) {
-    // console.log(goldLeft);
     var options = [];
 
     // get base values
@@ -43,7 +38,7 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
     var oLevel = newState.swordmaster.level;
     var nLevel = getNextPlayerImprovement(oLevel);
     var cost = newState.getPlayerUpgradeCost(oLevel, nLevel);
-    // console.log("swordmaster o: " + oLevel + " n: " + nLevel + " cost: " + cost);
+
     if (cost < goldLeft) {
       newState.swordmaster.level = nLevel;
       options.push({
@@ -59,7 +54,6 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
       if (!(hero in currentState.heroes.levels) && HeroInfo[hero].cost < goldLeft) {
         var newHState = currentState.getCopy();
         newHState.heroes.levels[hero] = 1;
-        // console.log("cost to buy " + hero + ": " + HeroInfo[hero].cost);
         options.push({
           text: "buying " + hero,
           result: newHState,
@@ -68,13 +62,12 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
         });
       // heroes that can be leveled
       } else if (hero in currentState.heroes.levels) {
-        // console.log("checking leveling of " + hero);
         var newHState = currentState.getCopy();
         var oHLevel = newHState.heroes.levels[hero];
         var nHLevel = getNextHeroImprovement(oHLevel);
         // TODO: this doesn't include skills
         var costH = HeroInfo[hero].getCostToLevelFromTo(oHLevel, nHLevel);
-        // console.log("hero " + hero + ": " + oHLevel + " n: " + nHLevel + " cost: " + costH);
+
         if (costH < goldLeft) {
           newHState.heroes.levels[hero] = nHLevel;
           options.push({
@@ -87,36 +80,23 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
       }
     }
 
-    // console.log("options");
-    // console.log(options);
-
     // get max efficiency
     if (options.length > 0) {
       var bestOption = getMax(options, function(o1, o2) {
         return o1.efficiency > o2.efficiency;
       });
-      // console.log("best:");
-      // console.log(bestOption.text);
       currentState = bestOption.result;
       goldLeft -= bestOption.resultCost;
-      // console.log("got a step, goldLeft: "+  goldLeft);
     } else {
       goldLeft = 0;
-      // console.log("breaking");
       break;
     }
   } // end while
 
-  // console.log("done getting things");
-  console.log(currentState.swordmaster.level);
-  printHeroLevels(currentState.heroes.levels);
-  currentState.getDPS(tps);
-  // console.log("--------------------");
   return currentState;
 }
 
 export function getRelicSteps(gamestate, relics, tps = 15) {
-  console.log("------------------------------------------------------------");
   var t0 = performance.now();
   // ASSUMPTION: SM/heroes are already optimal and won't change
   var currentState = gamestate.getCopy();
@@ -164,7 +144,6 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
         return o1.efficiency > o2.efficiency;
       });
       if (!(bestOption.result)) {
-        console.log("alksjdflkjasldkfjlasdf");
         // best option is to buy an artifact - terminate
         shouldBuy = true;
         relicsLeft = 0;
@@ -178,16 +157,10 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
     }
   } // end while
 
-  var diff = getDiff(gamestate, currentState);
-  console.log("outcome");
-  printArtifactLevels(diff.outcome);
-  console.log("changes");
-  printArtifactLevels(diff.changes);
-  console.log("buy: " + shouldBuy);
   var t1 = performance.now();
   console.log("took: " + (t1-t0) + " milliseconds for " + relics);
   return {
-    diff: diff,
+    diff: getDiff(gamestate, currentState),
     buy: shouldBuy
   };
 }
