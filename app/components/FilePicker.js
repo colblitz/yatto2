@@ -18,10 +18,10 @@ class FilePicker extends React.Component {
       //   getGoldSteps(g, i, 20);
       // }
       var newG = getGoldSteps(g, 1e45, 20);
-      getRelicSteps(newG, 600, 20);
-      getRelicSteps(newG, 6000, 20);
-      getRelicSteps(newG, 60000, 20);
-      getRelicSteps(newG, 600000, 20);
+      getRelicSteps(newG.getCopy(), 600, 20);
+      getRelicSteps(newG.getCopy(), 6000, 20);
+      getRelicSteps(newG.getCopy(), 60000, 20);
+      getRelicSteps(newG.getCopy(), 600000, 20);
     });
   }
 
@@ -30,7 +30,7 @@ class FilePicker extends React.Component {
       <form>
         <FileInput name="saveFilePicker"
                    accept=".fadat,.adat"
-                   placeholder="ASDF"
+                   placeholder="Choose File"
                    className="inputClass"
                    onChange={this.handleChange} />
       </form>
