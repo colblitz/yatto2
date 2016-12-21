@@ -20,7 +20,7 @@ class ArtifactList extends React.Component {
     this.setState({[aid]: event.target.value});
   }
   renderArtifactInput(aid) {
-    return <ArtifactInput name={aid} value={this.state[aid]} onChange={event => this.artifactChanged(aid, event)} />;
+    return <ArtifactInput key={aid} name={aid} value={this.state[aid]} onChange={event => this.artifactChanged(aid, event)} />;
   }
   getArtifacts() {
     return Object.keys(ArtifactInfo)
