@@ -1,5 +1,4 @@
 import React from 'react';
-import Test from './Test';
 import FilePicker from './FilePicker';
 import ArtifactList from './ArtifactList';
 
