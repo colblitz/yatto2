@@ -25,6 +25,7 @@
     "express-session": "^1.14.2",
     "heap": "^0.2.6",
     "history": "^4.4.1",
+    "immutable": "^3.8.1",
     "mongoose": "^4.7.2",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
