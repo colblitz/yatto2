@@ -181,7 +181,7 @@ export class GameState {
   // }
 
 
-
+  // PlayerModel.GetCurrentDamageFromLevel()
   getBaseTapDamage() {
     var swordmaster = this.swordmaster.level *
                       getPlayerImprovementBonus(this.swordmaster.level) *

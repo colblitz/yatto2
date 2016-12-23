@@ -26,18 +26,11 @@ export class Artifact {
   }
 
   getAllBonuses(level, allBonuses = {}) {
-    // TODO: remove this hack for bugged Heavenly Sword
-    if (this.id === "Artifact26") {
-      addBonus(allBonuses, BonusType.ArtifactDamage, level * 0.3);
-      addBonus(allBonuses, BonusType.ArtifactDamage, 1 + level * 0.05);
-      return allBonuses;
-    } else {
-      for (var bonusType in this.effects) {
-        if (!(bonusType in additiveBonuses)) {
-          addBonus(allBonuses, bonusType, 1 + level * this.effects[bonusType]);
-        } else {
-          addBonus(allBonuses, bonusType, level * this.effects[bonusType]);
-        }
+    for (var bonusType in this.effects) {
+      if (!(bonusType in additiveBonuses)) {
+        addBonus(allBonuses, bonusType, 1 + level * this.effects[bonusType]);
+      } else {
+        addBonus(allBonuses, bonusType, level * this.effects[bonusType]);
       }
     }
     return allBonuses;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import Header from './Header';
 import Navbar from './Navbar';
 import Footer from './Footer';

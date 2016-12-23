@@ -4,4 +4,8 @@
  * Damage Equivalence - with ^, then get proportion and current factors?
  * relic steps, gold steps - pet steps? which pet, which equipment
  * Check hero skill bonuses compared with everything else (weight for gold optimizer)
+ * relics from stage
+ * salvage cost
+ * active skills
+ * document where formulas come from
  * Everything else

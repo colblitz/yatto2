@@ -63,6 +63,7 @@ export const BonusType = {
   TapDamageFromHelpers     : 61,
   None                     : 62,
   MultiMonster             : 63,
+  HSArtifactDamage         : 64,
 };
 
 export const stringToBonus = {
@@ -130,6 +131,7 @@ export const stringToBonus = {
   "TapDamageFromHelpers"     : BonusType.TapDamageFromHelpers     ,
   "None"                     : BonusType.None                     ,
   "MultiMonster"             : BonusType.MultiMonster             ,
+  "HSArtifactDamage"         : BonusType.HSArtifactDamage         ,
 };
 
 const bonusToString = {};
@@ -145,6 +147,7 @@ export function printBonuses(allBonuses) {
   console.log(bonuses);
 }
 
+// BonusModel.cs
 export const additiveBonuses = {
   [BonusType.ArtifactDamage           ]: true,
   [BonusType.BossTimer                ]: true,
