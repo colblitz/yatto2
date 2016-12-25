@@ -333,8 +333,8 @@ export class GameState {
 
 // For swordmaster levels, hero levels, artifact levels
 export function getDiff(g1, g2) {
-  var outcome = {};
-  var changes = {};
+  var outcome = {"heroes": {}, "artifacts": {}};
+  var changes = {"heroes": {}, "artifacts": {}};
   if (g1.swordmaster.level != g2.swordmaster.level) {
     outcome["swordmaster"] = g2.swordmaster.level;
     changes["swordmaster"] = g2.swordmaster.level - g1.swordmaster.level;
@@ -342,15 +342,15 @@ export function getDiff(g1, g2) {
   for (var hero in g2.heroes.levels) {
     var newLevel = g2.heroes.levels[hero];
     if (newLevel != g1.heroes.levels[hero]) {
-      outcome[hero] = newLevel;
-      changes[hero] = newLevel - g1.heroes.levels[hero];
+      outcome.heroes[hero] = newLevel;
+      changes.heroes[hero] = newLevel - g1.heroes.levels[hero];
     }
   }
   for (var artifact in g2.artifacts) {
     var newLevel = g2.artifacts[artifact];
     if (newLevel != g1.artifacts[artifact]) {
-      outcome[artifact] = newLevel;
-      changes[artifact] = newLevel - g1.artifacts[artifact];
+      outcome.artifacts[artifact] = newLevel;
+      changes.artifacts[artifact] = newLevel - g1.artifacts[artifact];
     }
   }
   return {

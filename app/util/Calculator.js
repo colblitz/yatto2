@@ -96,6 +96,38 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
   return currentState;
 }
 
+function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficiency) {
+  var newState = startState.getCopy();
+
+  var totalCost = 0;
+
+  var currentLevel = 1;
+  var currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
+
+  newState.artifacts[artifact] = ++currentLevel;
+  totalCost += currentCost;
+  var currentDmgEquivalent = newState.getDamageEquivalent(tps);
+  var currentEfficiency = currentDmgEquivalent / currentCost;
+
+  while (currentEfficiency > bestLevelEfficiency) {
+    currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
+
+    newState.artifacts[artifact] = ++currentLevel;
+    totalCost += currentCost;
+    currentDmgEquivalent = newState.getDamageEquivalent(tps);
+    currentEfficiency = currentDmgEquivalent / currentCost;
+  }
+
+  // "undo" the latest levelup
+  var canLevelTo = currentLevel - 1;
+  totalCost -= currentCost;
+
+  newState.artifacts[artifact] = canLevelTo;
+  currentDmgEquivalent = newState.getDamageEquivalent(tps);
+  totalCost += costToBuy;
+  return currentDmgEquivalent / totalCost;
+}
+
 export function getRelicSteps(gamestate, relics, tps = 15) {
   var t0 = performance.now();
   // ASSUMPTION: SM/heroes are already optimal and won't change
@@ -122,21 +154,36 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
     }
 
     var costToBuy = nextArtifactCost(Object.keys(currentState.artifacts).length);
-    if (costToBuy < relicsLeft) {
-      var dmgEquivalents = [];
-      for (var artifact in ArtifactInfo) {
-        if (!(artifact in currentState.artifacts)) {
-          // don't own
-          var newState = currentState.getCopy();
-          newState.artifacts[artifact] = 1;
-          dmgEquivalents.push(newState.getDamageEquivalent(tps));
-        }
-      }
-      var averageDamageEquivalent = dmgEquivalents.reduce(function(a, b) { return a + b; }) / dmgEquivalents.length;
-      options.push({
-        resultCost: costToBuy,
-        efficiency: (averageDamageEquivalent - baseValue) / costToBuy,
+    if (options.length > 0) {
+      var bestOption = getMax(options, function(o1, o2) {
+        return o1.efficiency > o2.efficiency;
       });
+      var bestLevelEfficiency = bestOption.efficiency;
+
+      // if we can buy an artifact, then for each artifact that we don't own, simulate buying and then 
+      // leveling it up until the next level-up efficiency is lower than the best level up efficiency 
+      // of the previously owned artifacts, then get the overall efficiency with the costToBuy factored in.
+      // Then take the average of all these overall efficiencies to get a "buy" efficiency
+      if (costToBuy < relicsLeft) {
+        var overallEfficiencies = [];
+        for (var artifact in ArtifactInfo) {
+          if (!(artifact in currentState.artifacts)) {
+            overallEfficiencies.push(getOverallEfficiency(currentState, artifact, costToBuy, bestLevelEfficiency));
+          }
+        }
+        var averageOverallEfficiency = overallEfficiencies.reduce(function(a, b) { return a + b; }) / overallEfficiencies.length;
+        options.push({
+          efficiency: averageOverallEfficiency,
+        });
+      }
+
+    } else if (costToBuy < relicsLeft) {
+      // only option is to buy another artifact
+      options.push({
+        efficiency: 0,
+      });
+    } else {
+      // no options - go prestige more
     }
 
     if (options.length > 0) {
