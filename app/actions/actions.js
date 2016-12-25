@@ -14,3 +14,10 @@ export const artifactChanged = (aid, newLevel) => {
     newLevel
   }
 }
+
+export const test = (value) => {
+  return {
+    type: types.TEST,
+    value
+  }
+}

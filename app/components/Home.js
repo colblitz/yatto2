@@ -1,14 +1,16 @@
 import React from 'react';
 import FilePicker from './FilePicker';
-import ArtifactList from './ArtifactList';
+import OrderedArtifactList from './OrderedArtifactList';
+import Test from './Test';
 
 class Home extends React.Component {
   render() {
     return (
       <div className='alert alert-info'>
+        <Test />
         <div>~*~*YATTO*~*~</div>
         <FilePicker />
-        <ArtifactList />
+        <OrderedArtifactList />
       </div>
     );
   }

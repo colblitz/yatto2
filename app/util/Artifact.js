@@ -51,20 +51,23 @@ export function nextArtifactCost(owned) {
 
 export const ArtifactInfo = {};
 
-parse(artifactCSV, {delimiter: ',', columns: true}, function(err, data) {
-  for (var artifact of data) {
-    ArtifactInfo[artifact.ArtifactID] = new Artifact(
-      artifact.ArtifactID,
-      parseInt(artifact.ArtifactID.substring(8)),
-      artifact.Name,
-      parseFloat(artifact.CostCoef),
-      parseFloat(artifact.CostExpo),
-      parseInt(artifact.MaxLevel),
-      {
-        [BonusType.ArtifactDamage] : parseFloat(artifact.DamageBonus),
-        [stringToBonus[artifact.BonusType]]: parseFloat(artifact.EffectPerLevel),
-      }
-    );
-  }
-  console.log("Done loading ArtifactInfo");
-});
+export function loadArtifactInfo(callback) {
+  parse(artifactCSV, {delimiter: ',', columns: true}, function(err, data) {
+    for (var artifact of data) {
+      ArtifactInfo[artifact.ArtifactID] = new Artifact(
+        artifact.ArtifactID,
+        parseInt(artifact.ArtifactID.substring(8)),
+        artifact.Name,
+        parseFloat(artifact.CostCoef),
+        parseFloat(artifact.CostExpo),
+        parseInt(artifact.MaxLevel),
+        {
+          [BonusType.ArtifactDamage] : parseFloat(artifact.DamageBonus),
+          [stringToBonus[artifact.BonusType]]: parseFloat(artifact.EffectPerLevel),
+        }
+      );
+    }
+    console.log("loader - Done loading ArtifactInfo");
+    callback(true);
+  });
+}
