@@ -6,7 +6,7 @@ import Test from './Test';
 class Home extends React.Component {
   render() {
     return (
-      <div className='alert alert-info'>
+      <div className="mainPage">
         <Test />
         <div>~*~*YATTO*~*~</div>
         <FilePicker />

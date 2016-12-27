@@ -5,7 +5,7 @@ import ArtifactList from './ArtifactList';
 const OrderedArtifactList = ({ artifactLoaded }) => {
   console.log(artifactLoaded);
   return (
-    <div>
+    <div className="orderedArtifactList">
       { artifactLoaded &&
         <ArtifactList />
       }
@@ -14,8 +14,6 @@ const OrderedArtifactList = ({ artifactLoaded }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("ordered map state to props");
-  console.log(state.getIn(['infoDocs', 'ArtifactInfo']));
   return {
     artifactLoaded: state.getIn(['infoDocs', 'ArtifactInfo'])
   }

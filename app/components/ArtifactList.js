@@ -25,6 +25,9 @@ class ArtifactList extends React.Component {
     console.log(artifacts.length);
     return (
       <div className='artifactList'>
+        <h3>
+          Artifacts
+        </h3>
         { artifacts }
       </div>
     );

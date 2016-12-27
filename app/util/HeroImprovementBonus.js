@@ -10,23 +10,26 @@ var MAX_LEVEL = 10000;
 
 var multiplier = 1.0;
 
-parse(heroImprovementCSV, {delimiter: ',', columns: true}, function(err, data) {
-  for (var row of data) {
-    HeroImprovementsInfo[row.Level] = row.Amount;
-  }
-  console.log("Done loading HelperImprovementsInfo");
-  MIN_LEVEL = Math.min.apply(null, Object.keys(HeroImprovementsInfo));
-  MAX_LEVEL = Math.max.apply(null, Object.keys(HeroImprovementsInfo));
-
-  var multiplier = 1.0;
-  for (var level = 0; level <= MAX_LEVEL; level += 10) {
-    if (level in HeroImprovementsInfo) {
-      multiplier *= HeroImprovementsInfo[level];
-      HeroImprovementsTotals[level] = multiplier;
+export function loadHeroImprovementInfo(callback) {
+  parse(heroImprovementCSV, {delimiter: ',', columns: true}, function(err, data) {
+    for (var row of data) {
+      HeroImprovementsInfo[row.Level] = row.Amount;
     }
-  }
-  console.log("Done loading HeroImprovementsTotals");
-});
+    console.log("Done loading HeroImprovementsInfo");
+    MIN_LEVEL = Math.min.apply(null, Object.keys(HeroImprovementsInfo));
+    MAX_LEVEL = Math.max.apply(null, Object.keys(HeroImprovementsInfo));
+
+    var multiplier = 1.0;
+    for (var level = 0; level <= MAX_LEVEL; level += 10) {
+      if (level in HeroImprovementsInfo) {
+        multiplier *= HeroImprovementsInfo[level];
+        HeroImprovementsTotals[level] = multiplier;
+      }
+    }
+    callback(true);
+    console.log("Done loading HeroImprovementsTotals");
+  });
+}
 
 const memoizedBonus = {};
 export function getHeroImprovementBonus(cLevel) {

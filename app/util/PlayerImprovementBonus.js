@@ -10,23 +10,26 @@ var MAX_LEVEL = 10000;
 
 var multiplier = 1.0;
 
-parse(playerImprovementCSV, {delimiter: ',', columns: true}, function(err, data) {
-  for (var row of data) {
-    PlayerImprovementsInfo[row.Level] = row.Amount;
-  }
-  console.log("Done loading PlayerImprovementsInfo");
-  MIN_LEVEL = Math.min.apply(null, Object.keys(PlayerImprovementsInfo));
-  MAX_LEVEL = Math.max.apply(null, Object.keys(PlayerImprovementsInfo));
-
-  var multiplier = 1.0;
-  for (var level = 0; level <= MAX_LEVEL; level += 10) {
-    if (level in PlayerImprovementsInfo) {
-      multiplier *= PlayerImprovementsInfo[level];
-      PlayerImprovementsTotals[level] = multiplier;
+export function loadPlayerImprovementInfo(callback) {
+  parse(playerImprovementCSV, {delimiter: ',', columns: true}, function(err, data) {
+    for (var row of data) {
+      PlayerImprovementsInfo[row.Level] = row.Amount;
     }
-  }
-  console.log("done loading PlayerImprovementsTotals");
-});
+    console.log("Done loading PlayerImprovementsInfo");
+    MIN_LEVEL = Math.min.apply(null, Object.keys(PlayerImprovementsInfo));
+    MAX_LEVEL = Math.max.apply(null, Object.keys(PlayerImprovementsInfo));
+
+    var multiplier = 1.0;
+    for (var level = 0; level <= MAX_LEVEL; level += 10) {
+      if (level in PlayerImprovementsInfo) {
+        multiplier *= PlayerImprovementsInfo[level];
+        PlayerImprovementsTotals[level] = multiplier;
+      }
+    }
+    callback(true);
+    console.log("done loading PlayerImprovementsTotals");
+  });
+}
 
 const memoizedBonus = {};
 export function getPlayerImprovementBonus(cLevel) {

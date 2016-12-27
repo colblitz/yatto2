@@ -53,23 +53,26 @@ export class Skill {
 
 export const SkillInfo = {};
 
-parse(skillCSV, {delimiter: ',', columns: true}, function(err, data) {
-  for (var skill of data) {
+export function loadSkillInfo(callback) {
+  parse(skillCSV, {delimiter: ',', columns: true}, function(err, data) {
+    for (var skill of data) {
 
-    var costs = Object.keys(skill).filter(function(k){return /C\d+/.test(k);})
-                                  .sort(function(k1, k2){return parseInt(k1.substring(1)) - parseInt(k2.substring(1));})
-                                  .map(function(k){return parseInt(skill[k])});
-    var amounts = Object.keys(skill).filter(function(k){return /A\d+/.test(k);})
+      var costs = Object.keys(skill).filter(function(k){return /C\d+/.test(k);})
                                     .sort(function(k1, k2){return parseInt(k1.substring(1)) - parseInt(k2.substring(1));})
-                                    .map(function(k){return parseFloat(skill[k])});
+                                    .map(function(k){return parseInt(skill[k])});
+      var amounts = Object.keys(skill).filter(function(k){return /A\d+/.test(k);})
+                                      .sort(function(k1, k2){return parseInt(k1.substring(1)) - parseInt(k2.substring(1));})
+                                      .map(function(k){return parseFloat(skill[k])});
 
-    SkillInfo[skill.Attributes] = new Skill(
-      skill.Attributes,
-      skill.Req,
-      skill.StageReq,
-      costs,
-      amounts
-    );
-  }
-  console.log("Done loading SkillInfo");
-});
+      SkillInfo[skill.Attributes] = new Skill(
+        skill.Attributes,
+        skill.Req,
+        skill.StageReq,
+        costs,
+        amounts
+      );
+    }
+    callback(true);
+    console.log("Done loading SkillInfo");
+  });
+}

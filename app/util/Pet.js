@@ -59,19 +59,22 @@ export class Pet {
 
 export const PetInfo = {};
 
-parse(petCSV, {delimiter: ',', columns: true}, function(err, data) {
-  for (var pet of data) {
-    PetInfo[pet.PetID] = new Pet(
-      pet.PetID,
-      parseInt(pet.PetID.substring(3)),
-      parseFloat(pet.DamageBase),
-      parseFloat(pet.DamageInc1to40),
-      parseFloat(pet.DamageInc41to80),
-      parseFloat(pet.DamageInc80on),
-      stringToBonus[pet.BonusType],
-      parseFloat(pet.BonusBase),
-      parseFloat(pet.BonusInc)
-    );
-  }
-  console.log("Done loading PetInfo");
-});
+export function loadPetInfo(callback) {
+  parse(petCSV, {delimiter: ',', columns: true}, function(err, data) {
+    for (var pet of data) {
+      PetInfo[pet.PetID] = new Pet(
+        pet.PetID,
+        parseInt(pet.PetID.substring(3)),
+        parseFloat(pet.DamageBase),
+        parseFloat(pet.DamageInc1to40),
+        parseFloat(pet.DamageInc41to80),
+        parseFloat(pet.DamageInc80on),
+        stringToBonus[pet.BonusType],
+        parseFloat(pet.BonusBase),
+        parseFloat(pet.BonusInc)
+      );
+    }
+    callback(true);
+    console.log("Done loading PetInfo");
+  });
+}

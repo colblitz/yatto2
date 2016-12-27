@@ -64,24 +64,30 @@ export function printHeroLevels(levels) {
 
 export const HeroInfo = {};
 
-parse(heroCSV, {delimiter: ',', columns: true}, function(err, data) {
-  for (var hero of data) {
-    HeroInfo[hero.HelperID] = new Hero(
-      hero.HelperID,
-      parseInt(hero.UnlockOrder),
-      stringToBonus[hero.HelperType + 'HelperDamage'],
-      hero.PurchaseCost1
-    );
-  }
-  console.log("Done loading HelperInfo");
-});
+export function loadHeroInfo(callback) {
+  parse(heroCSV, {delimiter: ',', columns: true}, function(err, data) {
+    for (var hero of data) {
+      HeroInfo[hero.HelperID] = new Hero(
+        hero.HelperID,
+        parseInt(hero.UnlockOrder),
+        stringToBonus[hero.HelperType + 'HelperDamage'],
+        hero.PurchaseCost1
+      );
+    }
+    callback(true);
+    console.log("Done loading HelperInfo");
+  });
+}
 
-parse(heroSkillCSV, {delimiter: ',', columns: true}, function(err, data) {
-  for (var skill of data) {
-    HeroInfo[skill.Owner].addSkill(
-      skill.RequiredLevel,
-      stringToBonus[skill.BonusType],
-      parseFloat(skill.Magnitude));
-  }
-  console.log("Done loading HelperSkillInfo");
-});
+export function loadHeroSkillInfo(callback) {
+  parse(heroSkillCSV, {delimiter: ',', columns: true}, function(err, data) {
+    for (var skill of data) {
+      HeroInfo[skill.Owner].addSkill(
+        skill.RequiredLevel,
+        stringToBonus[skill.BonusType],
+        parseFloat(skill.Magnitude));
+    }
+    callback(true);
+    console.log("Done loading HelperSkillInfo");
+  });
+}

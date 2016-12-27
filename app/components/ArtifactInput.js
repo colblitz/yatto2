@@ -1,13 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ArtifactInfo } from '../util/Artifact';
+import { artifactChanged } from '../actions/actions';
 
 class ArtifactInput extends React.Component {
   render() {
     const a = ArtifactInfo[this.props.aid];
     return (
-      <div className='artifactInput'>
-        <input type="number" className="input artifactInput" value={this.props.level} max={a.maxLevel}/>
+      <div className='artifactInputBox'>
+        <input type="number"
+               className="input artifactInput"
+               value={this.props.level}
+               min="0"
+               max={a.maxLevel}
+               onChange={(e) => this.props.onArtifactChange(this.props.aid, e)}/>
         <div className="label artifactLabel">
           {a.name}
         </div>
@@ -23,4 +29,15 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-export default connect(mapStateToProps)(ArtifactInput);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onArtifactChange: (id, e) => {
+      var level = parseInt(e.target.value);
+      if (!isNaN(level)) {
+        dispatch(artifactChanged(id, level))
+      }
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArtifactInput);

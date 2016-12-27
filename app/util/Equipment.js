@@ -37,16 +37,19 @@ export class Equipment {
 
 export const EquipmentInfo = {};
 
-parse(equipmentCSV, {delimiter: ',', columns: true}, function(err, data) {
-  for (var equipment of data) {
-    EquipmentInfo[equipment.EquipmentID] = new Equipment(
-      equipment.EquipmentID,
-      stringToEquipmentType[equipment.EquipmentCategory],
-      equipment.Rarity,
-      stringToBonus[equipment.BonusType],
-      parseFloat(equipment.AttributeBaseAmount),
-      parseFloat(equipment.AttributeBaseInc)
-    );
-  }
-  console.log("Done loading EquipmentInfo");
-});
+export function loadEquipmentInfo(callback) {
+  parse(equipmentCSV, {delimiter: ',', columns: true}, function(err, data) {
+    for (var equipment of data) {
+      EquipmentInfo[equipment.EquipmentID] = new Equipment(
+        equipment.EquipmentID,
+        stringToEquipmentType[equipment.EquipmentCategory],
+        equipment.Rarity,
+        stringToBonus[equipment.BonusType],
+        parseFloat(equipment.AttributeBaseAmount),
+        parseFloat(equipment.AttributeBaseInc)
+      );
+    }
+    callback(true);
+    console.log("Done loading EquipmentInfo");
+  });
+}

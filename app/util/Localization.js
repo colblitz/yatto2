@@ -23,29 +23,32 @@ export const Languages = {
 
 export const LocalizationInfo = {};
 
-parse(localizationCSV, {delimiter: ',', columns: true}, function(err, data) {
-  for (var row of data) {
-    LocalizationInfo[row.StringID] = {
-      [Languages.English    ] : row.English,
-      [Languages.ChineseTrad] : row.ChineseTrad,
-      [Languages.ChineseSimp] : row.ChineseSimp,
-      [Languages.Japanese   ] : row.Japanese,
-      [Languages.Korean     ] : row.Korean,
-      [Languages.Danish     ] : row.Danish,
-      [Languages.Dutch      ] : row.Dutch,
-      [Languages.French     ] : row.French,
-      [Languages.German     ] : row.German,
-      [Languages.Italian    ] : row.Italian,
-      [Languages.Norwegian  ] : row.Norwegian,
-      [Languages.Russian    ] : row.Russian,
-      [Languages.Spanish    ] : row.Spanish,
-      [Languages.Swedish    ] : row.Swedish,
-      [Languages.Turkish    ] : row.Turkish,
-      [Languages.Portuguese ] : row.Portuguese,
-    };
-  }
-  console.log("Done loading LocalizationInfo");
-});
+export function loadLocalizationInfo(callback) {
+  parse(localizationCSV, {delimiter: ',', columns: true}, function(err, data) {
+    for (var row of data) {
+      LocalizationInfo[row.StringID] = {
+        [Languages.English    ] : row.English,
+        [Languages.ChineseTrad] : row.ChineseTrad,
+        [Languages.ChineseSimp] : row.ChineseSimp,
+        [Languages.Japanese   ] : row.Japanese,
+        [Languages.Korean     ] : row.Korean,
+        [Languages.Danish     ] : row.Danish,
+        [Languages.Dutch      ] : row.Dutch,
+        [Languages.French     ] : row.French,
+        [Languages.German     ] : row.German,
+        [Languages.Italian    ] : row.Italian,
+        [Languages.Norwegian  ] : row.Norwegian,
+        [Languages.Russian    ] : row.Russian,
+        [Languages.Spanish    ] : row.Spanish,
+        [Languages.Swedish    ] : row.Swedish,
+        [Languages.Turkish    ] : row.Turkish,
+        [Languages.Portuguese ] : row.Portuguese,
+      };
+    }
+    callback(true);
+    console.log("Done loading LocalizationInfo");
+  });
+}
 
 export function getHeroName(hid, language = Languages.English) {
   return LocalizationInfo["HELPERNAME_" + hid][language];
