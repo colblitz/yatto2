@@ -24,21 +24,11 @@ loadArtifactInfo(function(loaded) {
   }
 });
 
-// console.log(store.getState());
-
 // let unsubscribe = store.subscribe(() =>
 //   console.log(store.getState().toJS())
 // )
 
-// store.dispatch(loadedCSV("ArtifactInfo"));
-// store.dispatch(artifactChanged("Artifact1", 5));
-// store.dispatch(artifactChanged("Artifact1", 2));
-// store.dispatch(artifactChanged("Artifact1", 78));
-
 // unsubscribe();
-
-store.dispatch(test(5));
-
 
 render((
   <Provider store={store}>
@@ -49,15 +39,3 @@ render((
     </Router>
   </Provider>
 ), document.getElementById('app'))
-
-
-console.log("after render");
-
-console.log(store.getState().toJS());
-
-store.dispatch(test(15));
-
-setTimeout(function() {
-  console.log("after 1 seconds");
-  console.log(store.getState().toJS());
-}, 1000);
