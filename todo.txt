@@ -7,5 +7,7 @@
  * relics from stage
  * salvage cost
  * active skills
+ * UA
+ * option to include steps that go over relic count (always optimal vs use all relics)
  * document where formulas come from
  * Everything else

@@ -16,6 +16,10 @@ export class Artifact {
     this.adpl = this.effects[BonusType.ArtifactDamage];
   }
 
+  canLevel(cLevel) {
+    return this.maxLevel == null || cLevel < this.maxLevel;
+  }
+
   // TODO: precompute
   getCostToLevelUp(cLevel) {
     if (cLevel == 0 || (this.maxLevel != null && cLevel >= this.maxLevel)) {

@@ -20,14 +20,14 @@ class FilePicker extends React.Component {
       //   getGoldSteps(g, i, 20);
       // }
       console.log(g.info.relics);
-      var newG = getGoldSteps(g, 1e135, 20);
+      var newG = getGoldSteps(g, 1e145, 20);
       var diff = getDiff(g, newG);
       console.log("sm: " + diff.outcome.swordmaster);
       printHeroLevels(diff.outcome.heroes);
 
       var r = getRelicSteps(newG.getCopy(), g.info.relics, 20);
-      printArtifactLevels(r.diff.outcome.artifacts);
-      console.log("should buy: " + r.shouldBuy);
+      printArtifactLevels(r.diff.changes.artifacts);
+      console.log("should buy: " + r.buy);
       // getRelicSteps(newG.getCopy(), 600, 20);
       // getRelicSteps(newG.getCopy(), 6000, 20);
       // getRelicSteps(newG.getCopy(), 60000, 20);

@@ -248,8 +248,8 @@ export class GameState {
     return this.getAverageMonsterGold();
   }
 
-  getDamageEquivalent(tps) {
-    if (!this.bonuses) {
+  getDamageEquivalent(tps, reload = false) {
+    if (!this.bonuses || reload) {
       this.calculateBonuses();
     }
     // TODO: lol
