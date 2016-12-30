@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { ArtifactInfo } from '../util/Artifact';
 import ArtifactInput from './ArtifactInput';
 

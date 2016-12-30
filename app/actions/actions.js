@@ -7,10 +7,71 @@ export const loadedCSV = (infoName) => {
   }
 }
 
-export const artifactChanged = (aid, newLevel) => {
+export const swordmasterChanged = (newLevel) => {
   return {
-    type: types.ARTIFACT_CHANGED,
+    type: types.SWORDMASTER_CHANGED,
+    newLevel
+  }
+}
+
+export const heroLevelChanged = (hid, newLevel) => {
+  return {
+    type: types.HERO_LEVEL_CHANGED,
+    hid,
+    newLevel
+  }
+}
+
+export const heroWeaponChanged = (hid, newLevel) => {
+  return {
+    type: types.HERO_WEAPON_CHANGED,
+    hid,
+    newLevel
+  }
+}
+
+export const artifactLevelChanged = (aid, newLevel) => {
+  return {
+    type: types.ARTIFACT_LEVEL_CHANGED,
     aid,
+    newLevel
+  }
+}
+
+export const petLevelChanged = (pid, newLevel) => {
+  return {
+    type: types.PET_LEVEL_CHANGED,
+    pid,
+    newLevel
+  }
+}
+
+export const petActiveChanged = (pid) => {
+  return {
+    type: types.PET_ACTIVE_CHANGED,
+    pid
+  }
+}
+
+export const equipmentChanged = (eid, newLevel) => {
+  return {
+    type: types.EQUIPMENT_CHANGED,
+    eid,
+    newLevel
+  }
+}
+
+export const equipmentActiveChanged = (eid) => {
+  return {
+    type: types.EQUIPMENT_ACTIVE_CHANGED,
+    eid
+  }
+}
+
+export const skillLevelChanged = (sid, newLevel) => {
+  return {
+    type: types.SKILL_LEVEL_CHANGED,
+    sid,
     newLevel
   }
 }

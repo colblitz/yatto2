@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ArtifactInfo } from '../util/Artifact';
-import { artifactChanged } from '../actions/actions';
+import { artifactLevelChanged } from '../actions/actions';
 
 class ArtifactInput extends React.Component {
   render() {
@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch) => {
     onArtifactChange: (id, e) => {
       var level = parseInt(e.target.value);
       if (!isNaN(level)) {
-        dispatch(artifactChanged(id, level))
+        dispatch(artifactLevelChanged(id, level))
       }
     }
   }

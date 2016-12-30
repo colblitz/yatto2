@@ -111,7 +111,7 @@ export class GameState {
     }
 
     for (var pet in this.pets.levels) {
-      if (pet === this.pets.equipped) {
+      if (pet === this.pets.active) {
         PetInfo[pet].getActiveBonuses(this.pets.levels[pet], allBonuses);
       } else {
         PetInfo[pet].getPassiveBonuses(this.pets.levels[pet], allBonuses);
@@ -419,7 +419,7 @@ export function fromSaveFile(saveJSON) {
     // pets
     {
       levels: Object.assign({}, saveJSON.PetModel.allPetLevels),
-      equipped: saveJSON.PetModel.currentPet.$content,
+      active: saveJSON.PetModel.currentPet.$content,
     },
     // skills
     skillLevels,

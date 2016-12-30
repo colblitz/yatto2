@@ -4,7 +4,7 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import { loadedCSV, artifactChanged, test } from './actions/actions';
+import { loadedCSV } from './actions/actions';
 import rootReducer, { defaultState } from './reducers/Reducer';
 import App from './components/App';
 import Home from './components/Home';

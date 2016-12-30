@@ -1,3 +1,18 @@
 export const LOADED_CSV = 'LOADED_CSV';
-export const ARTIFACT_CHANGED = 'ARTIFACT_CHANGED';
+
+// inputs
+export const SWORDMASTER_CHANGED      = 'SWORDMASTER_CHANGED';
+export const HERO_LEVEL_CHANGED       = 'HERO_LEVEL_CHANGED';
+export const HERO_WEAPON_CHANGED      = 'HERO_WEAPON_CHANGED';
+export const ARTIFACT_LEVEL_CHANGED   = 'ARTIFACT_LEVEL_CHANGED';
+export const PET_LEVEL_CHANGED        = 'PET_LEVEL_CHANGED';
+export const PET_ACTIVE_CHANGED       = 'PET_ACTIVE_CHANGED';
+export const EQUIPMENT_CHANGED        = 'EQUIPMENT_CHANGED';
+export const EQUIPMENT_ACTIVE_CHANGED = 'EQUIPMENT_ACTIVE_CHANGED';
+export const SKILL_LEVEL_CHANGED      = "SKILL_LEVEL_CHANGED";
+
+// options
+
+// UI
+
 export const TEST = 'TEST';
