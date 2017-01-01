@@ -20,7 +20,7 @@ class HeroList extends React.Component {
     return (
       <div className='heroList'>
         <h3>
-          Heroes
+          Heroes (Levels - Weapons)
         </h3>
         { heroes }
       </div>

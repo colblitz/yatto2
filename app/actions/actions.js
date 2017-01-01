@@ -53,9 +53,9 @@ export const petActiveChanged = (pid) => {
   }
 }
 
-export const equipmentChanged = (eid, newLevel) => {
+export const equipmentLevelChanged = (eid, newLevel) => {
   return {
-    type: types.EQUIPMENT_CHANGED,
+    type: types.EQUIPMENT_LEVEL_CHANGED,
     eid,
     newLevel
   }

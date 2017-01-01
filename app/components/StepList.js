@@ -6,6 +6,9 @@ class StepList extends React.Component {
   render() {
     return (
       <div className="stepList">
+        <h3>
+          Steps
+        </h3>
         <table>
           <tbody>
             <tr>

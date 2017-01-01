@@ -33,6 +33,14 @@ export class Equipment {
     addBonus(allBonuses, this.bonusType, this.bonusBase + level * this.bonusInc);
     return allBonuses;
   }
+
+  getBonus(level) {
+    return this.bonusBase + level * this.bonusInc;
+  }
+
+  getLevelFromBonus(bonus) {
+    return Math.round((bonus - this.bonusBase) / this.bonusInc);
+  }
 }
 
 export const EquipmentInfo = {};

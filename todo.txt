@@ -1,3 +1,11 @@
+ * Sort equipment into types
+ * Redux-form
+     * Checkboxes for equipment
+ * Button to calculate
+ * Options for calculating
+ * Pets
+ * Skill tree
+
  * Re-check skills<->bonuses
  * How to graphically skill tree
  * Optimal hero/swordmaster - greedy cost to next breakpoint
