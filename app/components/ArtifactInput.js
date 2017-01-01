@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { getArtifactName } from '../util/Localization';
 import { ArtifactInfo } from '../util/Artifact';
 import { artifactLevelChanged } from '../actions/actions';
 
@@ -13,9 +14,9 @@ class ArtifactInput extends React.Component {
                value={this.props.level}
                min="0"
                max={a.maxLevel}
-               onChange={(e) => this.props.onArtifactChange(this.props.aid, e)}/>
+               onChange={(e) => this.props.onArtifactLevelChange(this.props.aid, e)}/>
         <div className="label artifactLabel">
-          {a.name}
+          {getArtifactName(this.props.aid)}
         </div>
       </div>
     );
@@ -31,7 +32,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onArtifactChange: (id, e) => {
+    onArtifactLevelChange: (id, e) => {
       var level = parseInt(e.target.value);
       if (!isNaN(level)) {
         dispatch(artifactLevelChanged(id, level))

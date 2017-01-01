@@ -21,6 +21,7 @@ export const Languages = {
   Portuguese  : 15,
 }
 
+
 export const LocalizationInfo = {};
 
 export function loadLocalizationInfo(callback) {

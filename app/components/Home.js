@@ -1,6 +1,7 @@
 import React from 'react';
 import FilePicker from './FilePicker';
 import OrderedArtifactList from './OrderedArtifactList';
+import OrderedHeroList from './OrderedHeroList';
 import StepList from './StepList';
 import Test from './Test';
 
@@ -12,6 +13,7 @@ class Home extends React.Component {
         <div>~*~*YATTO*~*~</div>
         <FilePicker />
         <OrderedArtifactList />
+        <OrderedHeroList />
         <StepList />
       </div>
     );

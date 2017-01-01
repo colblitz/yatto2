@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ArtifactList from './ArtifactList';
+import HeroList from './HeroList';
 
-const OrderedArtifactList = ({ artifactLoaded, localizationLoaded }) => {
-  console.log(artifactLoaded);
+const OrderedHeroList = ({ heroLoaded, localizationLoaded }) => {
   return (
-    <div className="orderedArtifactList">
-      { artifactLoaded && localizationLoaded &&
-        <ArtifactList />
+    <div className="orderedHeroList">
+      { heroLoaded && localizationLoaded &&
+        <HeroList />
       }
     </div>
   );
@@ -15,7 +14,7 @@ const OrderedArtifactList = ({ artifactLoaded, localizationLoaded }) => {
 
 const mapStateToProps = (state) => {
   return {
-    artifactLoaded: state.getIn(['infoDocs', 'ArtifactInfo']),
+    heroLoaded: state.getIn(['infoDocs', 'HeroInfo']),
     localizationLoaded: state.getIn(['infoDocs', 'LocalizationInfo']),
   }
 }
@@ -27,4 +26,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OrderedArtifactList);
+)(OrderedHeroList);
