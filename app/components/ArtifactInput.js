@@ -24,7 +24,7 @@ class ArtifactInput extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    level: state.getIn(['gamestate', 'artifacts', 'levels', ownProps.aid], 0),
+    level: state.getIn(['gamestate', 'artifacts', ownProps.aid], 0),
     aid: ownProps.aid
   }
 }

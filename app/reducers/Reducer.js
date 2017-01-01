@@ -18,9 +18,7 @@ export const defaultState = Immutable.fromJS({
     info: {},
     swordmaster: {},
     artifacts: {
-      levels: {
-        Artifact4: 234
-      }
+      Artifact4: 234
     },
     heroes: {},
     equipment: {},
@@ -56,7 +54,7 @@ const rootReducer = (state = defaultState, action) => {
     case types.HERO_WEAPON_CHANGED:
       return state.setIn(['gamestate', 'heroes', 'weapons', action.hid], action.newLevel);
     case types.ARTIFACT_LEVEL_CHANGED:
-      return state.setIn(['gamestate', 'artifacts', 'levels', action.aid], action.newLevel);
+      return state.setIn(['gamestate', 'artifacts', action.aid], action.newLevel);
     case types.PET_LEVEL_CHANGED:
       return state.setIn(['gamestate', 'pets', 'levels', action.pid], action.newLevel);
     case types.PET_ACTIVE_CHANGED:
@@ -68,6 +66,21 @@ const rootReducer = (state = defaultState, action) => {
       return state.setIn(['gamestate', 'equipment', action.eid, 'equipped'], true);
     case types.SKILL_LEVEL_CHANGED:
       return state.setIn(['gamestate', 'skills', action.sid], action.newLevel);
+
+    case types.STEPS_CHANGED:
+      return state.set('steps', action.newSteps);
+
+    case types.NEW_GAME_STATE:
+      return state.withMutations(state => {
+        state.setIn(['gamestate', 'info'], Immutable.fromJS(action.newGameState.info))
+          .setIn(['gamestate', 'swordmaster'], Immutable.fromJS(action.newGameState.swordmaster))
+          .setIn(['gamestate', 'artifacts'], Immutable.fromJS(action.newGameState.artifacts))
+          .setIn(['gamestate', 'heroes'], Immutable.fromJS(action.newGameState.heroes))
+          .setIn(['gamestate', 'equipment'], Immutable.fromJS(action.newGameState.equipment))
+          .setIn(['gamestate', 'pets'], Immutable.fromJS(action.newGameState.pets))
+          .setIn(['gamestate', 'skills'], Immutable.fromJS(action.newGameState.skills))
+          .setIn(['gamestate', 'clan'], Immutable.fromJS(action.newGameState.clan));
+      });
 
     case types.TEST:
       return state.set('test', action.value);

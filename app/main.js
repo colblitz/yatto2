@@ -2,10 +2,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+
+import store from './store';
 
 import { loadedCSV } from './actions/actions';
-import rootReducer, { defaultState } from './reducers/Reducer';
+
 import App from './components/App';
 import Home from './components/Home';
 
@@ -20,8 +21,6 @@ import { loadSkillInfo } from './util/Skill';
 
 console.log("in main.js");
 
-let store = createStore(rootReducer, defaultState);
-
 console.log("store created");
 
 console.log("calling loadArtifactInfo");
@@ -34,10 +33,6 @@ loadLocalizationInfo(      function(loaded) { if (loaded) { store.dispatch(loade
 loadPetInfo(               function(loaded) { if (loaded) { store.dispatch(loadedCSV("PetInfo")); }});
 loadPlayerImprovementInfo( function(loaded) { if (loaded) { store.dispatch(loadedCSV("PlayerImprovementInfo")); }});
 loadSkillInfo(             function(loaded) { if (loaded) { store.dispatch(loadedCSV("SkillInfo")); }});
-
-let unsubscribe = store.subscribe(() =>
-  console.log(store.getState().toJS())
-)
 
 // unsubscribe();
 

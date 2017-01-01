@@ -15,9 +15,7 @@ class Step extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log("in Step with step: ");
   var step = state.getIn(['steps', ownProps.stepKey]).toJS();
-  console.log(step);
   return {
     name: step.key,
     value: step.value,

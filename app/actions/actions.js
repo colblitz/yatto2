@@ -76,6 +76,20 @@ export const skillLevelChanged = (sid, newLevel) => {
   }
 }
 
+export const stepsChanged = (newSteps) => {
+  return {
+    type: types.STEPS_CHANGED,
+    newSteps
+  }
+}
+
+export const newGameState = (newGameState) => {
+  return {
+    type: types.NEW_GAME_STATE,
+    newGameState
+  }
+}
+
 export const test = (value) => {
   return {
     type: types.TEST,
