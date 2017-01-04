@@ -1,5 +1,6 @@
 import { createStore } from 'redux';
 import rootReducer, { defaultState } from './reducers/Reducer';
+import { GameState } from './util/GameState';
 
 const store = createStore(rootReducer, defaultState);
 

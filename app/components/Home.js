@@ -7,17 +7,20 @@ import OrderedSkillList from './OrderedSkillList';
 import OrderedPetList from './OrderedPetList';
 import Panel from './Panel';
 import StepList from './StepList';
+import StepButton from './StepButton';
 import Test from './Test';
 
 class Home extends React.Component {
   render() {
     return (
       <div className="mainPage">
-        <Test />
         <div>~*~*YATTO*~*~</div>
-        <FilePicker />
+        <Panel>
+          <FilePicker />
+        </Panel>
 
         <Panel>
+          <StepButton />
           <StepList />
         </Panel>
         <Panel>

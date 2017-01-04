@@ -84,6 +84,12 @@ export const skillLevelChanged = (sid, newLevel) => {
   }
 }
 
+export const stepsRequested = () => {
+  return {
+    type: types.STEPS_REQUESTED
+  }
+}
+
 export const stepsChanged = (newSteps) => {
   return {
     type: types.STEPS_CHANGED,

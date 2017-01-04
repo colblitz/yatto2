@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import * as types from '../actions/types';
+import { GameState } from '../util/GameState';
 var Immutable = require('immutable');
 
 export const defaultState = Immutable.fromJS({
@@ -41,6 +42,41 @@ export const defaultState = Immutable.fromJS({
   test: 0
 });
 
+function getGamestateFromState(state) {
+  var jsState = state.toJS();
+  return new GameState(
+    jsState.gamestate.info,
+    jsState.gamestate.swordmaster,
+    jsState.gamestate.artifacts,
+    jsState.gamestate.heroes,
+    jsState.gamestate.equipment,
+    jsState.gamestate.pets,
+    jsState.gamestate.skills,
+    jsState.gamestate.clan
+  );
+}
+
+ // "info":{
+ //    "playerId":"ebd20042-c0c6-4abd-aafd-22099b9dc3b9",
+ //    "supportCode":"z3wkz",
+ //    "reportedPlayers":[
+ //      "7qwww5",
+ //      "v3qxn"
+ //    ],
+ //    "totalActiveGameTime":116726.512856383,
+ //    "gold":7.70443469899896e+44,
+ //    "relics":101,
+ //    "lastEquipMaxStage":596,
+ //    "lastSkillMaxStage":551,
+ //    "skillPoints":16,
+ //    "maxStage":600
+ //  },
+
+function updateGamestateValues(state) {
+  var gamestate = getGamestateFromState(state);
+
+}
+
 const rootReducer = (state = defaultState, action) => {
   switch (action.type) {
     case types.LOADED_CSV:
@@ -75,8 +111,13 @@ const rootReducer = (state = defaultState, action) => {
     case types.SKILL_LEVEL_CHANGED:
       return state.setIn(['gamestate', 'skills', action.sid], action.newLevel);
 
+    case types.STEPS_REQUESTED:
+      return state.set('calculatingSteps', true);
     case types.STEPS_CHANGED:
-      return state.set('steps', action.newSteps);
+      return state.withMutations(state => {
+        state.set('calculatingSteps', false)
+          .set('steps', action.newSteps);
+      });
 
     case types.NEW_GAME_STATE:
       return state.withMutations(state => {

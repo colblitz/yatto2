@@ -1,25 +1,28 @@
- * Eventually
- 	* Redux-form
-  * User accounts
-  * Drag and drop
-  *
-
- * Collapsible panels?
- * Sort equipment into types
- * Button to calculate
+Immediate
+ * Rework calculator.getRelicSteps and StepButton.getSteps to work together (return actual steps)
+ * Stats fields upon file load / gamestate change
  * Options for calculating
- * Pets
- * Skill tree
 
+Intermediate
+ * Active skill weighting
+ * User accounts
+ * Drag and drop
+ * Skill tree
+ * Different buttons/steps for relic, gold, pet/equip optimization
+
+Eventually
+ * Redux-form
+
+Things to add
+ * Relic from stage
+ * Salvage cost
+
+Random stuff
  * Re-check skills<->bonuses
  * How to graphically skill tree
  * Optimal hero/swordmaster - greedy cost to next breakpoint
  * Damage Equivalence - with ^, then get proportion and current factors?
- * relic steps, gold steps - pet steps? which pet, which equipment
  * Check hero skill bonuses compared with everything else (weight for gold optimizer)
- * relics from stage
- * salvage cost
- * active skills
  * UA
  * option to include steps that go over relic count (always optimal vs use all relics)
  * document where formulas come from
