@@ -3,6 +3,9 @@ import FilePicker from './FilePicker';
 import OrderedArtifactList from './OrderedArtifactList';
 import OrderedEquipmentList from './OrderedEquipmentList';
 import OrderedHeroList from './OrderedHeroList';
+import OrderedSkillList from './OrderedSkillList';
+import OrderedPetList from './OrderedPetList';
+import Panel from './Panel';
 import StepList from './StepList';
 import Test from './Test';
 
@@ -13,10 +16,17 @@ class Home extends React.Component {
         <Test />
         <div>~*~*YATTO*~*~</div>
         <FilePicker />
-        <OrderedArtifactList />
-        <OrderedEquipmentList />
-        <OrderedHeroList />
-        <StepList />
+
+        <Panel>
+          <StepList />
+        </Panel>
+        <Panel>
+          <OrderedArtifactList />
+          <OrderedHeroList />
+          <OrderedPetList />
+          <OrderedSkillList />
+          <OrderedEquipmentList />
+        </Panel>
       </div>
     );
   }

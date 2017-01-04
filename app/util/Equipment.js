@@ -34,11 +34,15 @@ export class Equipment {
     return allBonuses;
   }
 
-  getBonus(level) {
+  getMultiplier(level) {
     return this.bonusBase + level * this.bonusInc;
   }
 
   getLevelFromBonus(bonus) {
+    console.log("getLevelFromBonus");
+    console.log(bonus);
+    console.log(this.bonusBase);
+    console.log(this.bonusInc);
     return Math.round((bonus - this.bonusBase) / this.bonusInc);
   }
 }

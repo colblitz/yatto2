@@ -59,10 +59,18 @@ const rootReducer = (state = defaultState, action) => {
       return state.setIn(['gamestate', 'pets', 'levels', action.pid], action.newLevel);
     case types.PET_ACTIVE_CHANGED:
       return state.setIn(['gamestate', 'pets', 'active'], action.pid);
-    case types.EQUIPMENT_CHANGED:
+    case types.EQUIPMENT_BONUS_CHANGED:
+      return state.setIn(['gamestate', 'equipment', action.eid, 'bonus'], action.newBonus);
+    case types.EQUIPMENT_LEVEL_CHANGED:
       return state.setIn(['gamestate', 'equipment', action.eid, 'level'], action.newLevel);
     case types.EQUIPMENT_ACTIVE_CHANGED:
       // unequip all others in that category
+      return state.withMutations(state => {
+        state.updateIn(['gamestate', 'equipment'], equipmentMap => equipmentMap.map(
+          (eMap, eKey) => eKey.slice(0, 2) == action.eid.slice(0, 2) ? eMap.update('equipped', v => false) : eMap
+        ))
+          .setIn(['gamestate', 'equipment', action.eid, 'equipped'], true);
+      })
       return state.setIn(['gamestate', 'equipment', action.eid, 'equipped'], true);
     case types.SKILL_LEVEL_CHANGED:
       return state.setIn(['gamestate', 'skills', action.sid], action.newLevel);
@@ -72,6 +80,7 @@ const rootReducer = (state = defaultState, action) => {
 
     case types.NEW_GAME_STATE:
       return state.withMutations(state => {
+        action.newGameState.fillWithEquipmentBonuses();
         state.setIn(['gamestate', 'info'], Immutable.fromJS(action.newGameState.info))
           .setIn(['gamestate', 'swordmaster'], Immutable.fromJS(action.newGameState.swordmaster))
           .setIn(['gamestate', 'artifacts'], Immutable.fromJS(action.newGameState.artifacts))

@@ -37,7 +37,7 @@ import { getHeroName } from './Localization';
     ...
   },
   "pets":{
-    "equipped": "Pet13",
+    "active": "Pet13",
     "levels": { Pet1":7, "Pet2":15, ... },
   },
   "skills":{
@@ -63,6 +63,12 @@ export class GameState {
     this.pets = pets;
     this.skills = skills;
     this.clan = clan;
+  }
+
+  fillWithEquipmentBonuses() {
+    for (var equip in this.equipment) {
+      this.equipment[equip]["bonus"] = EquipmentInfo[equip].getMultiplier(this.equipment[equip].level);
+    }
   }
 
   calculateBonuses() {

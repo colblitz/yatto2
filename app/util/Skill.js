@@ -3,6 +3,12 @@ var parse = require('csv-parse');
 
 var skillCSV = require('../data/SkillTreeInfo.csv');
 
+export const SkillType = {
+  Engaged : 0,
+  Lazy    : 1,
+  Active  : 2,
+};
+
 // from SkillTreeModel.cs
 var SkillToBonus = {
   AutoAdvance         : BonusType.InactiveAdvance,
@@ -29,8 +35,9 @@ var SkillToBonus = {
 };
 
 export class Skill {
-  constructor(id, req, stageReq, costs, amounts) {
+  constructor(id, type, req, stageReq, costs, amounts) {
     this.id = id; // PetQTE
+    this.type = type;
     this.req = req;
     this.stageReq = stageReq;
     this.costs = costs;
@@ -53,6 +60,13 @@ export class Skill {
 
 export const SkillInfo = {};
 
+// Roots of skill trees
+const skillTypes = {
+  "PetQTE" : SkillType.Engaged,
+  "OfflineGold" : SkillType.Lazy,
+  "BurstSkillBoost" : SkillType.Active
+}
+
 export function loadSkillInfo(callback) {
   parse(skillCSV, {delimiter: ',', columns: true}, function(err, data) {
     for (var skill of data) {
@@ -63,9 +77,16 @@ export function loadSkillInfo(callback) {
       var amounts = Object.keys(skill).filter(function(k){return /A\d+/.test(k);})
                                       .sort(function(k1, k2){return parseInt(k1.substring(1)) - parseInt(k2.substring(1));})
                                       .map(function(k){return parseFloat(skill[k])});
-
+      var skillType;
+      if (skill.Attributes in skillTypes) {
+        skillType = skillTypes[skill.Attributes];
+      } else {
+        skillType = skillTypes[skill.Req];
+        skillTypes[skill.Attributes] = skillType;
+      }
       SkillInfo[skill.Attributes] = new Skill(
         skill.Attributes,
+        skillType,
         skill.Req,
         skill.StageReq,
         costs,

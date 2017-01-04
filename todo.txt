@@ -1,6 +1,11 @@
+ * Eventually
+ 	* Redux-form
+  * User accounts
+  * Drag and drop
+  *
+
+ * Collapsible panels?
  * Sort equipment into types
- * Redux-form
-     * Checkboxes for equipment
  * Button to calculate
  * Options for calculating
  * Pets

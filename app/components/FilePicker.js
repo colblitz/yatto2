@@ -48,11 +48,13 @@ class FilePicker extends React.Component {
   render() {
     return (
       <form>
-        <FileInput name="saveFilePicker"
-                   accept=".fadat,.adat"
-                   placeholder="Choose File"
-                   className="inputClass"
-                   onChange={this.handleChange} />
+        <div className="fileChooserDiv">
+          <FileInput name="saveFilePicker"
+                     accept=".fadat,.adat"
+                     placeholder="Choose File"
+                     className="inputClass fileChooser"
+                     onChange={this.handleChange} />
+        </div>
       </form>
     );
   }

@@ -61,6 +61,14 @@ export const equipmentLevelChanged = (eid, newLevel) => {
   }
 }
 
+export const equipmentBonusChanged = (eid, newBonus) => {
+  return {
+    type: types.EQUIPMENT_BONUS_CHANGED,
+    eid,
+    newBonus
+  }
+}
+
 export const equipmentActiveChanged = (eid) => {
   return {
     type: types.EQUIPMENT_ACTIVE_CHANGED,
