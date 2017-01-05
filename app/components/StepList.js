@@ -18,8 +18,8 @@ class StepList extends React.Component {
               <th className="step stepHeader-col3">Cost</th>
             </tr>
             {
-              Object.keys(this.props.steps).map(function(stepKey) {
-                return <Step key={stepKey} stepKey={stepKey}/>
+              this.props.steps.map(function(step, i) {
+                return <Step key={i} step={step}/>
               })
             }
           </tbody>

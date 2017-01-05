@@ -23,7 +23,9 @@ const mapDispatchToProps = (dispatch) => {
         var gamestate = getGameState();
         console.log("getting results");
         var results = getRelicSteps(gamestate, 10000);
-        console.log(results);
+        // console.log(results);
+        console.log(results.steps);
+        dispatch(stepsChanged(results.steps));
       }, 0);
 
 

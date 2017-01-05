@@ -140,6 +140,8 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
   var currentState = gamestate.getCopy();
   var relicsLeft = relics;
   var shouldBuy = false;
+  var steps = [];
+  var totalSpent = 0;
   while (relicsLeft > 0) {
     var options = [];
 
@@ -153,11 +155,13 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
         if (cost < relicsLeft) {
           newState.artifacts[artifact] += 1;
           options.push({
+            artifact: artifact,
+            levelTo: newState.artifacts[artifact],
             result: newState,
-            resultCost: cost,
+            cost: cost,
             efficiency: (newState.getDamageEquivalent(tps) - baseValue) / cost,
           });
-        }  
+        }
       }
     }
 
@@ -168,8 +172,8 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
       });
       var bestLevelEfficiency = bestOption.efficiency;
 
-      // if we can buy an artifact, then for each artifact that we don't own, simulate buying and then 
-      // leveling it up until the next level-up efficiency is lower than the best level up efficiency 
+      // if we can buy an artifact, then for each artifact that we don't own, simulate buying and then
+      // leveling it up until the next level-up efficiency is lower than the best level up efficiency
       // of the previously owned artifacts, then get the overall efficiency with the costToBuy factored in.
       // Then take the average of all these overall efficiencies to get a "buy" efficiency
       // console.log("cost to buy: " + costToBuy + ", relicsLeft: " + relicsLeft);
@@ -203,10 +207,27 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
         // best option is to buy an artifact - terminate
         shouldBuy = true;
         relicsLeft = 0;
+
+        totalSpent += costToBuy;
+        steps.push({
+          buy: true,
+          cost: bestOption.cost,
+          total: totalSpent,
+        });
+
         break;
+      } else {
+        totalSpent += bestOption.cost;
+        steps.push({
+          buy: false,
+          artifact: bestOption.artifact,
+          levelTo: bestOption.levelTo,
+          cost: bestOption.cost,
+          total: totalSpent,
+        });
       }
       currentState = bestOption.result;
-      relicsLeft -= bestOption.resultCost;
+      relicsLeft -= bestOption.cost;
     } else {
       relicsLeft = 0;
       break;
@@ -217,6 +238,7 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
   console.log("took: " + (t1-t0) + " milliseconds for " + relics);
   return {
     diff: getDiff(gamestate, currentState),
-    buy: shouldBuy
+    buy: shouldBuy,
+    steps: steps
   };
 }

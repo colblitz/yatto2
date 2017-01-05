@@ -27,18 +27,7 @@ export const defaultState = Immutable.fromJS({
     skills: {},
     clan: {},
   },
-  steps: {
-    "Artifact 5": {
-      key: "Artifact 5",
-      value: 34,
-      cost: 1523
-    },
-    "Artifact 12": {
-      key: "Artifact 12",
-      value: 52,
-      cost: 6543
-    }
-  },
+  steps: [],
   test: 0
 });
 
@@ -116,7 +105,7 @@ const rootReducer = (state = defaultState, action) => {
     case types.STEPS_CHANGED:
       return state.withMutations(state => {
         state.set('calculatingSteps', false)
-          .set('steps', action.newSteps);
+          .set('steps', Immutable.fromJS(action.newSteps));
       });
 
     case types.NEW_GAME_STATE:
