@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import * as types from '../actions/types';
 import { GameState } from '../util/GameState';
+import { BonusType, getBonus } from '../util/BonusType';
 var Immutable = require('immutable');
 
 export const defaultState = Immutable.fromJS({
@@ -26,6 +27,19 @@ export const defaultState = Immutable.fromJS({
     pets: {},
     skills: {},
     clan: {},
+  },
+  gamestateStats: {
+    artifactDamage: { value: 0, label: "Artifact Damage" },
+    baseTapDamage: { value: 0, label: "Tap Damage" },
+    averageCritDamage: { value: 0, label: "Average Tap Damage with Crits" },
+    petDamage: { value: 0, label: "Pet Damage" },
+    heroDamage: { value: 0, label: "Hero Damage" },
+    allDamageMultiplier: { value: 0, label: "All Damage Multiplier" },
+    heroDamageMultiplier: { value: 0, label: "Hero Damage Multiplier" },
+    meleeDamageMultiplier: { value: 0, label: "Melee Damage Multiplier" },
+    rangeDamageMultiplier: { value: 0, label: "Range Damage Multiplier" },
+    magicDamageMultiplier: { value: 0, label: "Spell Damage Multiplier" },
+    goldMultiplier: { value: 0, label: "Gold Multiplier" },
   },
   steps: [],
   test: 0
@@ -63,7 +77,21 @@ function getGamestateFromState(state) {
 
 function updateGamestateValues(state) {
   var gamestate = getGamestateFromState(state);
+  gamestate.calculateBonuses();
 
+  return state.withMutations(state => {
+    state.setIn(['gamestateStats', 'artifactDamage', 'value'], getBonus(gamestate.bonuses, BonusType.ArtifactDamage))
+      .setIn(['gamestateStats', 'baseTapDamage', 'value'], gamestate.getBaseTapDamage())
+      .setIn(['gamestateStats', 'averageCritDamage', 'value'], gamestate.getAverageCritDamage())
+      .setIn(['gamestateStats', 'petDamage', 'value'], gamestate.getPetDamage())
+      .setIn(['gamestateStats', 'heroDamage', 'value'], gamestate.getHeroDamage())
+      .setIn(['gamestateStats', 'allDamageMultiplier', 'value'], 0)
+      .setIn(['gamestateStats', 'heroDamageMultiplier', 'value'], 0)
+      .setIn(['gamestateStats', 'meleeDamageMultiplier', 'value'], 0)
+      .setIn(['gamestateStats', 'rangeDamageMultiplier', 'value'], 0)
+      .setIn(['gamestateStats', 'magicDamageMultiplier', 'value'], 0)
+      .setIn(['gamestateStats', 'goldMultiplier', 'value'], 0);
+  });
 }
 
 const rootReducer = (state = defaultState, action) => {
@@ -73,32 +101,32 @@ const rootReducer = (state = defaultState, action) => {
       return state.setIn(['infoDocs', action.infoName], true);
 
     case types.SWORDMASTER_CHANGED:
-      return state.setIn(['gamestate', 'swordmaster'], action.newLevel);
+      return updateGamestateValues(state.setIn(['gamestate', 'swordmaster'], action.newLevel));
     case types.HERO_LEVEL_CHANGED:
-      return state.setIn(['gamestate', 'heroes', 'levels', action.hid], action.newLevel);
+      return updateGamestateValues(state.setIn(['gamestate', 'heroes', 'levels', action.hid], action.newLevel));
     case types.HERO_WEAPON_CHANGED:
-      return state.setIn(['gamestate', 'heroes', 'weapons', action.hid], action.newLevel);
+      return updateGamestateValues(state.setIn(['gamestate', 'heroes', 'weapons', action.hid], action.newLevel));
     case types.ARTIFACT_LEVEL_CHANGED:
-      return state.setIn(['gamestate', 'artifacts', action.aid], action.newLevel);
+      return updateGamestateValues(state.setIn(['gamestate', 'artifacts', action.aid], action.newLevel));
     case types.PET_LEVEL_CHANGED:
-      return state.setIn(['gamestate', 'pets', 'levels', action.pid], action.newLevel);
+      return updateGamestateValues(state.setIn(['gamestate', 'pets', 'levels', action.pid], action.newLevel));
     case types.PET_ACTIVE_CHANGED:
-      return state.setIn(['gamestate', 'pets', 'active'], action.pid);
+      return updateGamestateValues(state.setIn(['gamestate', 'pets', 'active'], action.pid));
     case types.EQUIPMENT_BONUS_CHANGED:
-      return state.setIn(['gamestate', 'equipment', action.eid, 'bonus'], action.newBonus);
+      return updateGamestateValues(state.setIn(['gamestate', 'equipment', action.eid, 'bonus'], action.newBonus));
     case types.EQUIPMENT_LEVEL_CHANGED:
-      return state.setIn(['gamestate', 'equipment', action.eid, 'level'], action.newLevel);
+      return updateGamestateValues(state.setIn(['gamestate', 'equipment', action.eid, 'level'], action.newLevel));
     case types.EQUIPMENT_ACTIVE_CHANGED:
       // unequip all others in that category
-      return state.withMutations(state => {
+      return updateGamestateValues(state.withMutations(state => {
         state.updateIn(['gamestate', 'equipment'], equipmentMap => equipmentMap.map(
           (eMap, eKey) => eKey.slice(0, 2) == action.eid.slice(0, 2) ? eMap.update('equipped', v => false) : eMap
         ))
           .setIn(['gamestate', 'equipment', action.eid, 'equipped'], true);
-      })
-      return state.setIn(['gamestate', 'equipment', action.eid, 'equipped'], true);
+      }));
+      // return state.setIn(['gamestate', 'equipment', action.eid, 'equipped'], true);
     case types.SKILL_LEVEL_CHANGED:
-      return state.setIn(['gamestate', 'skills', action.sid], action.newLevel);
+      return updateGamestateValues(state.setIn(['gamestate', 'skills', action.sid], action.newLevel));
 
     case types.STEPS_REQUESTED:
       return state.set('calculatingSteps', true);
@@ -109,7 +137,7 @@ const rootReducer = (state = defaultState, action) => {
       });
 
     case types.NEW_GAME_STATE:
-      return state.withMutations(state => {
+      return updateGamestateValues(state.withMutations(state => {
         action.newGameState.fillWithEquipmentBonuses();
         state.setIn(['gamestate', 'info'], Immutable.fromJS(action.newGameState.info))
           .setIn(['gamestate', 'swordmaster'], Immutable.fromJS(action.newGameState.swordmaster))
@@ -119,7 +147,7 @@ const rootReducer = (state = defaultState, action) => {
           .setIn(['gamestate', 'pets'], Immutable.fromJS(action.newGameState.pets))
           .setIn(['gamestate', 'skills'], Immutable.fromJS(action.newGameState.skills))
           .setIn(['gamestate', 'clan'], Immutable.fromJS(action.newGameState.clan));
-      });
+      }));
 
     case types.TEST:
       return state.set('test', action.value);

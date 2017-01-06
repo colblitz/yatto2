@@ -5,6 +5,7 @@ import OrderedEquipmentList from './OrderedEquipmentList';
 import OrderedHeroList from './OrderedHeroList';
 import OrderedSkillList from './OrderedSkillList';
 import OrderedPetList from './OrderedPetList';
+import GamestateStatList from './GamestateStatList';
 import Panel from './Panel';
 import StepList from './StepList';
 import StepButton from './StepButton';
@@ -17,6 +18,10 @@ class Home extends React.Component {
         <div>~*~*YATTO*~*~</div>
         <Panel>
           <FilePicker />
+        </Panel>
+
+        <Panel>
+          <GamestateStatList />
         </Panel>
 
         <Panel>
