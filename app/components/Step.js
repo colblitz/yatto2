@@ -16,14 +16,4 @@ class Step extends React.Component {
   }
 }
 
-// function mapStateToProps(state, ownProps) {
-//   var step = state.getIn(['steps', ownProps.stepKey]).toJS();
-//   return {
-//     name: step.key,
-//     value: step.value,
-//     cost: step.cost
-//   }
-// }
-
-// export default connect(mapStateToProps)(Step);
 export default Step;

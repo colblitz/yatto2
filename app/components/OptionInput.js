@@ -10,7 +10,8 @@ class OptionInput extends React.Component {
                className="input optionInput"
                value={this.props.value}
                min="0"
-               onChange={(e) => this.props.onOptionValueChange(this.props.key, e)}/>
+               disabled={this.props.disabled}
+               onChange={(e) => this.props.onOptionValueChange(this.props.okey, e)}/>
         <div className="label optionLabel">
           {this.props.label}
         </div>
@@ -21,18 +22,19 @@ class OptionInput extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    value: state.getIn(['options', ownProps.key], 0),
-    key: ownProps.key,
+    disabled: state.get('calculatingSteps'),
+    value: state.getIn(['options', ownProps.okey], 0),
+    okey: ownProps.okey,
     label: ownProps.label
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOptionValueChange: (key, e) => {
+    onOptionValueChange: (okey, e) => {
       var value = parseInt(e.target.value);
       if (!isNaN(value)) {
-        dispatch(optionValueChanged(id, level))
+        dispatch(optionValueChanged(okey, value))
       }
     }
   }

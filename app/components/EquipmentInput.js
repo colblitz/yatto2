@@ -26,11 +26,8 @@ class EquipmentInput extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  // const e = EquipmentInfo[ownProps.eid];
-  // var level = state.getIn(['gamestate', 'equipment', ownProps.eid, 'levels'], 0);
   return {
     bonus: state.getIn(['gamestate', 'equipment', ownProps.eid, 'bonus'], 0),
-    // bonus: level == 0 ? 0 : e.getBonus(level),
     equipped: state.getIn(['gamestate', 'equipment', ownProps.eid, 'equipped'], false),
     eid: ownProps.eid
   }
@@ -53,15 +50,6 @@ const mapDispatchToProps = (dispatch) => {
       }
       dispatch(equipmentBonusChanged(id, e.target.value));
     },
-    // onEquipmentLevelChange: (id, e) => {
-    //   const eq = EquipmentInfo[id];
-    //   var level = eq.getLevelFromBonus(parseFloat(e.target.value));
-    //   console.log(parseFloat(e.target.value));
-    //   console.log(level);
-    //   if (!isNaN(level)) {
-    //     dispatch(equipmentLevelChanged(id, level))
-    //   }
-    // }
   }
 }
 
