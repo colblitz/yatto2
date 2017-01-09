@@ -104,6 +104,8 @@ export class GameState {
       ArtifactInfo[artifact].getAllBonuses(this.artifacts[artifact], allBonuses);
     }
     // dafuq... ArtifactModel.ApplyAllArtifactBonuses
+    // TODO: when Heavenly Sword is fixed
+    // addBonus(allBonuses, BonusType.AllDamage, getBonus(allBonuses, BonusType.ArtifactDamage) * getBonus(allBonuses, BonusType.HSArtifactDamage));
     addBonus(allBonuses, BonusType.AllDamage, getBonus(allBonuses, BonusType.ArtifactDamage));
 
     for (var hero in this.heroes.levels) {
@@ -222,18 +224,12 @@ export class GameState {
 
   getHeroDamage() {
     var allHeroDamage = 0;
-    var maxHeroDamage = 0;
-    var maxHeroLevel = 0;
     for (var hero in this.heroes.levels) {
       var heroDamage = HeroInfo[hero].getBaseDamage(this.heroes.levels[hero]) *
                        this.getBonus(HeroInfo[hero].type) *
                        this.getBonus(BonusType.AllDamage) *
                        this.getBonus(BonusType.AllHelperDamage) *
                        (1 + this.getWeaponMultiplier(hero));
-      if (heroDamage > maxHeroDamage) {
-        maxHeroDamage = heroDamage;
-        maxHeroLevel = this.heroes.levels[hero];
-      }
       allHeroDamage += heroDamage;
     }
     return allHeroDamage;

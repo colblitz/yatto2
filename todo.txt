@@ -9,6 +9,7 @@ Intermediate
  * Drag and drop
  * Skill tree
  * Different buttons/steps for relic, gold, pet/equip optimization
+ * Automated ServerVarsModel.cs -> ServerVarsModel.js
 
 Eventually
  * Redux-form

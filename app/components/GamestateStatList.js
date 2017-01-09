@@ -21,7 +21,9 @@ class GamestateStatList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    stats: Object.keys(state.get('gamestateStats').toJS())
+    stats: Object.keys(state.get('gamestateStats').toJS()).sort(function(k1, k2) {
+      return state.getIn(['gamestateStats', k1, 'order'], 0) - state.getIn(['gamestateStats', k2, 'order'], 0);
+    })
   }
 }
 

@@ -29,17 +29,17 @@ export const defaultState = Immutable.fromJS({
     clan: {},
   },
   gamestateStats: {
-    artifactDamage: { value: 0, label: "Artifact Damage" },
-    baseTapDamage: { value: 0, label: "Tap Damage" },
-    averageCritDamage: { value: 0, label: "Average Tap Damage with Crits" },
-    petDamage: { value: 0, label: "Pet Damage" },
-    heroDamage: { value: 0, label: "Hero Damage" },
-    allDamageMultiplier: { value: 0, label: "All Damage Multiplier" },
-    heroDamageMultiplier: { value: 0, label: "Hero Damage Multiplier" },
-    meleeDamageMultiplier: { value: 0, label: "Melee Damage Multiplier" },
-    rangeDamageMultiplier: { value: 0, label: "Range Damage Multiplier" },
-    magicDamageMultiplier: { value: 0, label: "Spell Damage Multiplier" },
-    goldMultiplier: { value: 0, label: "Gold Multiplier" },
+    artifactDamage:        { order: 0, value: 0, label: "Artifact Damage" },
+    baseTapDamage:         { order: 1, value: 0, label: "Tap Damage" },
+    averageCritDamage:     { order: 2, value: 0, label: "Average Tap Damage with Crits" },
+    petDamage:             { order: 3, value: 0, label: "Pet Damage" },
+    heroDamage:            { order: 4, value: 0, label: "Hero Damage" },
+    allDamageMultiplier:   { order: 5, value: 0, label: "All Damage Multiplier" },
+    heroDamageMultiplier:  { order: 6, value: 0, label: "Hero Damage Multiplier" },
+    meleeDamageMultiplier: { order: 7, value: 0, label: "Melee Damage Multiplier" },
+    rangeDamageMultiplier: { order: 8, value: 0, label: "Range Damage Multiplier" },
+    magicDamageMultiplier: { order: 9, value: 0, label: "Spell Damage Multiplier" },
+    goldMultiplier:        { order: 10, value: 0, label: "Gold Multiplier" },
   },
   steps: [],
   test: 0
@@ -85,12 +85,12 @@ function updateGamestateValues(state) {
       .setIn(['gamestateStats', 'averageCritDamage', 'value'], gamestate.getAverageCritDamage())
       .setIn(['gamestateStats', 'petDamage', 'value'], gamestate.getPetDamage())
       .setIn(['gamestateStats', 'heroDamage', 'value'], gamestate.getHeroDamage())
-      .setIn(['gamestateStats', 'allDamageMultiplier', 'value'], 0)
-      .setIn(['gamestateStats', 'heroDamageMultiplier', 'value'], 0)
-      .setIn(['gamestateStats', 'meleeDamageMultiplier', 'value'], 0)
-      .setIn(['gamestateStats', 'rangeDamageMultiplier', 'value'], 0)
-      .setIn(['gamestateStats', 'magicDamageMultiplier', 'value'], 0)
-      .setIn(['gamestateStats', 'goldMultiplier', 'value'], 0);
+      .setIn(['gamestateStats', 'allDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.AllDamage) - 1) * 100)
+      .setIn(['gamestateStats', 'heroDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.AllHelperDamage) - 1) * 100)
+      .setIn(['gamestateStats', 'meleeDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.MeleeHelperDamage) - 1) * 100)
+      .setIn(['gamestateStats', 'rangeDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.RangedHelperDamage) - 1) * 100)
+      .setIn(['gamestateStats', 'magicDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.SpellHelperDamage) - 1) * 100)
+      .setIn(['gamestateStats', 'goldMultiplier', 'value'], getBonus(gamestate.bonuses, BonusType.GoldAll));
   });
 }
 

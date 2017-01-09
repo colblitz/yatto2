@@ -18,7 +18,9 @@ for FILE in ArtifactInfo.csv \
 			PlayerImprovementsInfo.csv \
 			SkillTreeInfo.csv
 do
-	wget -q https://s3.amazonaws.com/tt2-static/info_files/$1/$FILE -O testFiles/static/$2/$FILE
+	curl -s -f https://s3.amazonaws.com/tt2-static/info_files/$1/$FILE -o testFiles/static/$2/$FILE
 done
+
+find testFiles/static/$2 -size 0 -delete
 
 echo "Done"

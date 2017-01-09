@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 class GamestateStatDisplay extends React.Component {
   render() {
     return (
-      <div className='GamestateStatDisplayBox'>
+      <div className='gamestateStatDisplayBox'>
         <label>{this.props.label}</label>
         <input type="text"
                className="input statDisplayInput"
                value={this.props.value}
-               disable/>
+               disabled={true}/>
       </div>
     );
   }
