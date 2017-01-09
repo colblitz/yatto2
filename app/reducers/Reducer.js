@@ -28,6 +28,9 @@ export const defaultState = Immutable.fromJS({
     skills: {},
     clan: {},
   },
+  options: {
+
+  },
   gamestateStats: {
     artifactDamage:        { order: 0, value: 0, label: "Artifact Damage" },
     baseTapDamage:         { order: 1, value: 0, label: "Tap Damage" },
@@ -135,6 +138,9 @@ const rootReducer = (state = defaultState, action) => {
         state.set('calculatingSteps', false)
           .set('steps', Immutable.fromJS(action.newSteps));
       });
+
+    case types.OPTION_VALUE_CHANGED:
+      return state.setIn(['options', action.key], action.newValue);
 
     case types.NEW_GAME_STATE:
       return updateGamestateValues(state.withMutations(state => {

@@ -97,6 +97,14 @@ export const stepsChanged = (newSteps) => {
   }
 }
 
+export const optionValueChanged = (key, newValue) => {
+  return {
+    type: types.OPTION_VALUE_CHANGED,
+    key,
+    newValue
+  }
+}
+
 export const newGameState = (newGameState) => {
   return {
     type: types.NEW_GAME_STATE,

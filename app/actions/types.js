@@ -15,6 +15,8 @@ export const SKILL_LEVEL_CHANGED      = "SKILL_LEVEL_CHANGED";
 export const STEPS_REQUESTED = "STEPS_REQUESTED";
 export const STEPS_CHANGED = "STEPS_CHANGED";
 
+export const OPTION_VALUE_CHANGED = "OPTION_VALUE_CHANGED";
+
 export const NEW_GAME_STATE = "NEW_GAME_STATE";
 // options
 
