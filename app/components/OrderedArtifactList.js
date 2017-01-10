@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import ArtifactList from './ArtifactList';
 
 const OrderedArtifactList = ({ artifactLoaded, localizationLoaded }) => {
-  console.log(artifactLoaded);
   return (
     <div className="orderedArtifactList">
       { artifactLoaded && localizationLoaded &&

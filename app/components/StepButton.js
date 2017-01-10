@@ -26,20 +26,12 @@ const mapDispatchToProps = (dispatch) => {
     getSteps: () => {
       dispatch(stepsRequested());
       setTimeout(function() {
-        console.log("getting gamestate");
         var gamestate = getGameState();
-        console.log("getting results");
         var relics = getInStore(['options', 'relics'], 0);
-        console.log("using relics: " + relics);
         var results = getRelicSteps(gamestate, relics);
 
-        console.log("got results");
-        //console.log(results);
-        console.log(results.steps);
         dispatch(stepsChanged(results.steps));
       }, 0);
-
-
     }
   }
 }
