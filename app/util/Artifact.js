@@ -17,7 +17,7 @@ export class Artifact {
   }
 
   canLevel(cLevel) {
-    return this.maxLevel == null || cLevel < this.maxLevel;
+    return cLevel != 0 && (this.maxLevel == null || cLevel < this.maxLevel);
   }
 
   // TODO: precompute

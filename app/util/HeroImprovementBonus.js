@@ -5,7 +5,7 @@ var heroImprovementCSV = require('../data/HelperImprovementsInfo.csv');
 const HeroImprovementsInfo = {}
 const HeroImprovementsTotals = {};
 
-var MIN_LEVEL = 0;
+var MIN_LEVEL = 10;
 var MAX_LEVEL = 10000;
 
 var multiplier = 1.0;

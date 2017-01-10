@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { stepsRequested, stepsChanged } from '../actions/actions';
 import { getRelicSteps } from '../util/Calculator';
-import { getGameState } from '../store';
+import { getInStore, getGameState } from '../store';
 
 class StepButton extends React.Component {
   render() {
     return (
       <div className="stepButton">
-        <button onClick={this.props.getSteps(this.props.relics)}>Get Steps</button>
+        <button onClick={this.props.getSteps} disabled={this.props.calculatingSteps}>Get Steps</button>
       </div>
     )
   }
@@ -16,22 +16,25 @@ class StepButton extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    relics: state.getIn(['options', 'relics'], 0)
+    relics: state.getIn(['options', 'relics'], 0),
+    calculatingSteps: state.get('calculatingSteps')
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getSteps: (relics) => {
+    getSteps: () => {
       dispatch(stepsRequested());
       setTimeout(function() {
         console.log("getting gamestate");
         var gamestate = getGameState();
         console.log("getting results");
+        var relics = getInStore(['options', 'relics'], 0);
         console.log("using relics: " + relics);
         var results = getRelicSteps(gamestate, relics);
 
-        // console.log(results);
+        console.log("got results");
+        //console.log(results);
         console.log(results.steps);
         dispatch(stepsChanged(results.steps));
       }, 0);
@@ -42,4 +45,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 // what
-export default connect(null, mapDispatchToProps)(StepButton);
+export default connect(mapStateToProps, mapDispatchToProps)(StepButton);

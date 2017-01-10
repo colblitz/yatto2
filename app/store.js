@@ -22,4 +22,8 @@ export function getGameState() {
   );
 }
 
+export function getInStore(path, defaultV) {
+  return store.getState().getIn(path, defaultV);
+}
+
 export default store;

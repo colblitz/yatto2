@@ -5,7 +5,7 @@ var playerImprovementCSV = require('../data/PlayerImprovementsInfo.csv');
 const PlayerImprovementsInfo = {}
 const PlayerImprovementsTotals = {};
 
-var MIN_LEVEL = 0;
+var MIN_LEVEL = 10;
 var MAX_LEVEL = 10000;
 
 var multiplier = 1.0;

@@ -197,6 +197,8 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
       });
     } else {
       // no options - go prestige more
+      relicsLeft = 0;
+      break;
     }
 
     if (options.length > 0) {

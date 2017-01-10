@@ -134,7 +134,6 @@ export class GameState {
 
     addBonus(allBonuses, BonusType.AllDamage, Math.pow(ServerVarsModel.clanBonusBase, this.clan.score));
     addBonus(allBonuses, BonusType.Memory, Math.min(ServerVarsModel.maxMemoryAmount, ServerVarsModel.clanMemoryBase * this.clan.score));
-
     return allBonuses;
   }
 
@@ -208,7 +207,7 @@ export class GameState {
   }
 
   getPetTotalLevels() {
-    return Object.values(this.pets.levels).reduce((a, b) => a + b);
+    return Object.values(this.pets.levels).reduce((a, b) => a + b, 0);
   }
 
   getPetDamage() {

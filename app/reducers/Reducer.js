@@ -18,15 +18,25 @@ export const defaultState = Immutable.fromJS({
   },
   gamestate: {
     info: {},
-    swordmaster: {},
-    artifacts: {
-      Artifact4: 234
+    swordmaster: {
+      level: 1,
     },
-    heroes: {},
+    artifacts: {
+      Artifact4: 2
+    },
+    heroes: {
+      levels: {},
+      weapons: {},
+    },
     equipment: {},
-    pets: {},
+    pets: {
+      active: "",
+      levels: {},
+    },
     skills: {},
-    clan: {},
+    clan: {
+      score: 1,
+    },
   },
   options: {
 
@@ -100,11 +110,19 @@ function updateGamestateValues(state) {
 const rootReducer = (state = defaultState, action) => {
   switch (action.type) {
     case types.LOADED_CSV:
-      console.log("setting: " + action.infoName);
+      var left = [];
+      for (var doc in state.get('infoDocs').toJS()) {
+        if (!state.getIn(['infoDocs', doc])) {
+          left.push(doc);
+        }
+      }
+      if (left.length == 1 && action.infoName == left[0]) {
+        return updateGamestateValues(state.setIn(['infoDocs', action.infoName], true));
+      }
       return state.setIn(['infoDocs', action.infoName], true);
 
     case types.SWORDMASTER_CHANGED:
-      return updateGamestateValues(state.setIn(['gamestate', 'swordmaster'], action.newLevel));
+      return updateGamestateValues(state.setIn(['gamestate', 'swordmaster', 'level'], action.newLevel));
     case types.HERO_LEVEL_CHANGED:
       return updateGamestateValues(state.setIn(['gamestate', 'heroes', 'levels', action.hid], action.newLevel));
     case types.HERO_WEAPON_CHANGED:
@@ -140,7 +158,11 @@ const rootReducer = (state = defaultState, action) => {
       });
 
     case types.OPTION_VALUE_CHANGED:
-      return state.setIn(['options', action.key], action.newValue);
+      if (JSON.stringify(action.key).includes('gamestate')) {
+        return updateGamestateValues(state.setIn(action.key, action.newValue));
+      } else {
+        return state.setIn(action.key, action.newValue);
+      }
 
     case types.NEW_GAME_STATE:
       return updateGamestateValues(state.withMutations(state => {
