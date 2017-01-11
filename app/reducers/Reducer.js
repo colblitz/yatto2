@@ -28,7 +28,10 @@ export const defaultState = Immutable.fromJS({
       levels: {},
       weapons: {},
     },
-    equipment: {},
+    equipment: {
+      "Hat_Robot": { "level": 30, "equipped": false },
+      "Slash_EmbersBlue": { "level": 26, "equipped": true },
+    },
     pets: {
       active: "",
       levels: {},
@@ -163,6 +166,12 @@ const rootReducer = (state = defaultState, action) => {
       } else {
         return state.setIn(action.key, action.newValue);
       }
+    case types.EQUIPMENT_ADDED:
+      return state.setIn(['gamestate', 'equipment', action.eid], Immutable.fromJS({}));
+    case types.EQUIPMENT_REMOVED:
+      return state.deleteIn(['gamestate', 'equipment', action.eid]);
+    case types.EQUIPMENT_SELECTED:
+      return state.setIn(['equipmentSelected', action.category], action.eid);
 
     case types.NEW_GAME_STATE:
       return updateGamestateValues(state.withMutations(state => {

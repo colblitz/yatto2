@@ -2,11 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getEquipmentName } from '../util/Localization';
 import { EquipmentInfo } from '../util/Equipment';
-import { equipmentLevelChanged, equipmentBonusChanged, equipmentActiveChanged } from '../actions/actions';
+import { equipmentRemoved, equipmentLevelChanged, equipmentBonusChanged, equipmentActiveChanged } from '../actions/actions';
 
 class EquipmentInput extends React.Component {
   render() {
-    const e = EquipmentInfo[this.props.eid];
     return (
       <div className='equipment-input-box'>
         <input type="checkbox"
@@ -20,6 +19,7 @@ class EquipmentInput extends React.Component {
         <div className="label equipment-label">
           {getEquipmentName(this.props.eid)}
         </div>
+        <i className="fa fa-remove" onClick={(e) => this.props.removeEquipment(this.props.eid)}></i>
       </div>
     );
   }
@@ -49,6 +49,9 @@ const mapDispatchToProps = (dispatch) => {
         }
       }
       dispatch(equipmentBonusChanged(id, e.target.value));
+    },
+    removeEquipment: (id) => {
+      dispatch(equipmentRemoved(id));
     },
   }
 }

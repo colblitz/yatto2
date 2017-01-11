@@ -105,6 +105,28 @@ export const optionValueChanged = (key, newValue) => {
   }
 }
 
+export const equipmentAdded = (eid) => {
+  return {
+    type: types.EQUIPMENT_ADDED,
+    eid
+  }
+}
+
+export const equipmentRemoved = (eid) => {
+  return {
+    type: types.EQUIPMENT_REMOVED,
+    eid
+  }
+}
+
+export const equipmentSelected = (category, eid) => {
+  return {
+    type: types.EQUIPMENT_SELECTED,
+    category,
+    eid
+  }
+}
+
 export const newGameState = (newGameState) => {
   return {
     type: types.NEW_GAME_STATE,
