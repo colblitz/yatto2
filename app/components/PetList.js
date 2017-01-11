@@ -19,7 +19,7 @@ class PetList extends React.Component {
   render() {
     const pets = this.getPets();
     return (
-      <div className='petList'>
+      <div className='pet-list'>
         <h3>
           Pets
         </h3>

@@ -8,13 +8,13 @@ class SkillInput extends React.Component {
   render() {
     const s = SkillInfo[this.props.sid];
     return (
-      <div className='skillInputBox'>
+      <div className='skill-input-box'>
         <input type="number"
-               className="input skillLevelInput"
+               className="input skill-level-input"
                value={this.props.level}
                min="0"
                onChange={(e) => this.props.onSkillLevelChange(this.props.sid, e)}/>
-        <div className="label skillLabel">
+        <div className="label skill-label">
           {getSkillName(this.props.sid)}
         </div>
       </div>

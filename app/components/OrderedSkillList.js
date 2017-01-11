@@ -4,7 +4,7 @@ import SkillList from './SkillList';
 
 const OrderedSkillList = ({ skillLoaded, localizationLoaded }) => {
   return (
-    <div className="orderedSkillList">
+    <div className="ordered-skill-list ordered-list">
       { skillLoaded && localizationLoaded &&
         <SkillList />
       }

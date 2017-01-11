@@ -4,7 +4,7 @@ import ArtifactList from './ArtifactList';
 
 const OrderedArtifactList = ({ artifactLoaded, localizationLoaded }) => {
   return (
-    <div className="orderedArtifactList">
+    <div className="ordered-artifact-list ordered-list">
       { artifactLoaded && localizationLoaded &&
         <ArtifactList />
       }

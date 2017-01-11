@@ -18,7 +18,7 @@ class ArtifactList extends React.Component {
   render() {
     const artifacts = this.getArtifacts();
     return (
-      <div className='artifactList'>
+      <div className='artifact-list'>
         <h3>
           Artifacts
         </h3>

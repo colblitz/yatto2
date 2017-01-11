@@ -8,18 +8,18 @@ class HeroInput extends React.Component {
   render() {
     const h = HeroInfo[this.props.hid];
     return (
-      <div className='heroInputBox'>
+      <div className='hero-input-box'>
         <input type="number"
-               className="input heroLevelInput"
+               className="input hero-level-input"
                value={this.props.level}
                min="0"
                onChange={(e) => this.props.onHeroLevelChange(this.props.hid, e)}/>
         <input type="number"
-               className="input heroWeaponInput"
+               className="input hero-weapon-input"
                value={this.props.weapon}
                min="0"
                onChange={(e) => this.props.onHeroWeaponChange(this.props.hid, e)}/>
-        <div className="label heroLabel">
+        <div className="label hero-label">
           {getHeroName(this.props.hid)}
         </div>
       </div>

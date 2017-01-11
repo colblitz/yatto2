@@ -4,7 +4,7 @@ import PetList from './PetList';
 
 const OrderedPetList = ({ petLoaded, localizationLoaded }) => {
   return (
-    <div className="orderedPetList">
+    <div className="ordered-pet-list ordered-list">
       { petLoaded && localizationLoaded &&
         <PetList />
       }

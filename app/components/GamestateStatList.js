@@ -5,7 +5,7 @@ import GamestateStatDisplay from './GamestateStatDisplay';
 class GamestateStatList extends React.Component {
   render() {
     return (
-      <div className='gamestateStatList'>
+      <div className='gamestate-stat-list'>
         <h3>
           Statistics
         </h3>

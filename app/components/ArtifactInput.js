@@ -8,14 +8,14 @@ class ArtifactInput extends React.Component {
   render() {
     const a = ArtifactInfo[this.props.aid];
     return (
-      <div className='artifactInputBox'>
+      <div className='artifact-input-box'>
         <input type="number"
-               className="input artifactInput"
+               className="input artifact-input"
                value={this.props.level}
                min="0"
                max={a.maxLevel}
                onChange={(e) => this.props.onArtifactLevelChange(this.props.aid, e)}/>
-        <div className="label artifactLabel">
+        <div className="label artifact-label">
           {getArtifactName(this.props.aid)}
         </div>
       </div>

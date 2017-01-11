@@ -8,16 +8,16 @@ class EquipmentInput extends React.Component {
   render() {
     const e = EquipmentInfo[this.props.eid];
     return (
-      <div className='equipmentInputBox'>
+      <div className='equipment-input-box'>
         <input type="checkbox"
-               className="input equipmentInput"
+               className="input equipment-input"
                checked={this.props.equipped}
                onChange={(e) => this.props.onEquipmentActiveChange(this.props.eid, e)}/>
         <input type="text"
-               className="input equipmentBonusInput"
+               className="input equipment-bonus-input"
                value={this.props.bonus}
                onChange={(e) => this.props.onEquipmentBonusChange(this.props.eid, e)}/>
-        <div className="label equipmentLabel">
+        <div className="label equipment-label">
           {getEquipmentName(this.props.eid)}
         </div>
       </div>

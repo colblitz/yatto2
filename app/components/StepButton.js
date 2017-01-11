@@ -7,7 +7,7 @@ import { getInStore, getGameState } from '../store';
 class StepButton extends React.Component {
   render() {
     return (
-      <div className="stepButton">
+      <div className="step-button">
         <button onClick={this.props.getSteps} disabled={this.props.calculatingSteps}>Get Steps</button>
       </div>
     )
@@ -28,6 +28,7 @@ const mapDispatchToProps = (dispatch) => {
       setTimeout(function() {
         var gamestate = getGameState();
         var relics = getInStore(['options', 'relics'], 0);
+        var maxstage = getInStore(['options', 'maxstage'], 0);
         var results = getRelicSteps(gamestate, relics);
 
         dispatch(stepsChanged(results.steps));

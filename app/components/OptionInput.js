@@ -5,14 +5,14 @@ import { optionValueChanged } from '../actions/actions';
 class OptionInput extends React.Component {
   render() {
     return (
-      <div className='optionInputBox'>
+      <div className='option-input-box'>
         <input type="number"
-               className="input optionInput"
+               className="input option-input"
                value={this.props.value}
                min="0"
                disabled={this.props.disabled}
                onChange={(e) => this.props.onOptionValueChange(this.props.okey, e)}/>
-        <div className="label optionLabel">
+        <div className="label option-label">
           {this.props.label}
         </div>
       </div>

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 class GamestateStatDisplay extends React.Component {
   render() {
     return (
-      <div className='gamestateStatDisplayBox'>
+      <div className='gamestate-stat-display-box'>
         <label>{this.props.label}</label>
         <input type="text"
-               className="input statDisplayInput"
+               className="input stat-display-input"
                value={this.props.value}
                disabled={true}/>
       </div>

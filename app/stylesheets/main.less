@@ -1,3 +1,25 @@
+
+html {
+  background-color: #333333;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.panel {
+  background-color: #EEEEEE;
+  color: black;
+  padding: 15px;
+  margin: 5px;
+  border: 1px solid #222222;
+  display: inline-block;
+  border-radius: 5px;
+  display: flex;
+}
+
+.panel-row {
+  display: flex;
+}
+
 footer {
   position: fixed;
   bottom: 0;
@@ -8,47 +30,46 @@ footer {
   display: inline-block;
 }
 
-.equipmentBonusInput {
+.equipment-bonus-input {
   width: 60px;
 }
 
-.artifactInput,
-.heroLevelInput {
+.artifact-input,
+.hero-level-input {
   width: 50px;
 }
 
-.heroWeaponInput,
-.petLevelInput,
-.skillLevelInput {
+.hero-weapon-input,
+.pet-level-input,
+.skill-level-input {
   width: 40px;
 }
 
-.statDisplayInput {
-  width: 90px;
+.stat-display-input {
+  width: 85px;
   float: right;
 }
 
-.gamestateStatDisplayBox {
-  width: 325px;
+.gamestate-stat-display-box {
+  width: 360px;
   height: 22px;
 }
 
-.orderedArtifactList,
-.orderedHeroList,
-.orderedPetList,
-.orderedEquipmentList,
-.orderedSkillList {
-  float: left;
-}
-
-.panel {
+.ordered-list {
+  margin: 5px;
+  padding: 5px;
   display: inline-block;
+  border: 1px solid black;
+  align-self: flex-start;
 }
 
-.fileChooserDiv {
+.file-chooser-div {
   width: 250px;
+  input {
+    z-index: 1;
+  }
 }
 
-.mainPage {
+.main-page {
   display: block;
 }

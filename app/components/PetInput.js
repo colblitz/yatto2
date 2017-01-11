@@ -8,18 +8,18 @@ class PetInput extends React.Component {
   render() {
     const p = PetInfo[this.props.pid];
     return (
-      <div className='artifactInputBox'>
+      <div className='pet-input-box'>
         <input type="checkbox"
-               className="input petActiveInput"
+               className="input pet-active-input"
                checked={this.props.isActive}
                onChange={(e) => this.props.onPetActiveChange(this.props.pid, e)}/>
         <input type="number"
-               className="input petLevelInput"
+               className="input pet-level-input"
                value={this.props.level}
                min="0"
                step="1"
                onChange={(e) => this.props.onPetLevelChange(this.props.pid, e)}/>
-        <div className="label petLabel">
+        <div className="label pet-label">
           {getPetName(this.props.pid)}
         </div>
       </div>

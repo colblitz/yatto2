@@ -22,7 +22,7 @@ class SkillList extends React.Component {
   render() {
     const skills = this.getSkills();
     return (
-      <div className='skillList'>
+      <div className='skill-list'>
         <h3>
           Skills
         </h3>

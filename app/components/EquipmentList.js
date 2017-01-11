@@ -24,7 +24,7 @@ class EquipmentList extends React.Component {
   }
   render() {
     return (
-      <div className='equipmentList'>
+      <div className='equipment-list'>
         <h3>
           Equipment (multiplier)
         </h3>

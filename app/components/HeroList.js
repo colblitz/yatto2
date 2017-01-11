@@ -18,7 +18,7 @@ class HeroList extends React.Component {
   render() {
     const heroes = this.getHeroes();
     return (
-      <div className='heroList'>
+      <div className='hero-list'>
         <h3>
           Heroes (Levels - Weapons)
         </h3>

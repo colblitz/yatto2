@@ -4,7 +4,7 @@ import HeroList from './HeroList';
 
 const OrderedHeroList = ({ heroLoaded, localizationLoaded }) => {
   return (
-    <div className="orderedHeroList">
+    <div className="ordered-hero-list ordered-list">
       { heroLoaded && localizationLoaded &&
         <HeroList />
       }

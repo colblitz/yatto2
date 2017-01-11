@@ -4,7 +4,7 @@ import EquipmentList from './EquipmentList';
 
 const OrderedEquipmentList = ({ equipmentLoaded, localizationLoaded }) => {
   return (
-    <div className="orderedEquipmentList">
+    <div className="ordered-equipment-list ordered-list">
       { equipmentLoaded && localizationLoaded &&
         <EquipmentList />
       }
