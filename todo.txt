@@ -1,30 +1,43 @@
-Immediate
- * Rework calculator.getRelicSteps and StepButton.getSteps to work together (return actual steps)
- * Stats fields upon file load / gamestate change
- * Options for calculating
-
-Intermediate
+ * Order skills intelligently
+ 	* Graphically display skills in a tree
+ * More styling
+ * Even more styling
+ * Expand pet options to display effects
+ * Pair the pets by bonus type
+ * Don't necessarily need full hero name
+ * Localization selector
+ * Drag and drop artifacts
+ * Drag and drop equipment
+ * Gold steps
+ * Steps - click to apply
+ * Summary steps
  * Active skill weighting
+ * Variable gold conversion factors
+ * Different buttons/steps for relics/gold/pet/hero/equip optimization
+ * Options for calculating
+	* Include steps that go over relic limit (always optimal vs use all relics)
+	* Optimize other things first before artifacts
+	* Relics vs steps
+	* Consider actives
+ * Other optimization weights (AD, gold, tapping)
+	* Figure out offline gold
  * User accounts
- * Drag and drop
- * Skill tree
- * Different buttons/steps for relic, gold, pet/equip optimization
- * Automated ServerVarsModel.cs -> ServerVarsModel.js
 
-Eventually
+Other forms
+ * Relics from stage
+ * Equipment comparer
+ * UA forms
+ * Salvage costs
+
+Other pages
+ * Artifact costs/stats explorer
+ * Formulas
+ * FAQ/Thanks/Help
+ * Re-check skills<->bonuses, not all are bound
+ * Check relative hero skill bonuses compared to everything else (extra weight for skills in gold/hero level optimizer?)
+ * Changelog
+
+ Eventually
  * Redux-form
-
-Things to add
- * Relic from stage
- * Salvage cost
-
-Random stuff
- * Re-check skills<->bonuses
- * How to graphically skill tree
- * Optimal hero/swordmaster - greedy cost to next breakpoint
- * Damage Equivalence - with ^, then get proportion and current factors?
- * Check hero skill bonuses compared with everything else (weight for gold optimizer)
- * UA
- * option to include steps that go over relic count (always optimal vs use all relics)
- * document where formulas come from
- * Everything else
+ * Automated ServerVarsModel.cs -> ServerVarsModel.js
+ * Document where formulas come from
