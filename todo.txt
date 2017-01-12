@@ -1,27 +1,33 @@
- * Order skills intelligently
- 	* Graphically display skills in a tree
- * More styling
- * Even more styling
- * Expand pet options to display effects
- * Pair the pets by bonus type
- * Don't necessarily need full hero name
- * Localization selector
- * Drag and drop artifacts
- * Drag and drop equipment
+Immediate
+ * Get relics/approx MS from file
  * Gold steps
  * Steps - click to apply
  * Summary steps
- * Active skill weighting
- * Variable gold conversion factors
- * Different buttons/steps for relics/gold/pet/hero/equip optimization
+ * More styling
+ * Even more styling
  * Options for calculating
 	* Include steps that go over relic limit (always optimal vs use all relics)
 	* Optimize other things first before artifacts
 	* Relics vs steps
 	* Consider actives
+ * Different buttons/steps for relics/gold/pet/hero/equip optimization
+ * User accounts
+
+Stuff
+ * Active skill weighting
+ * Variable gold conversion factors
+ * Localization selector
+ * Drag and drop artifacts
+ * Drag and drop equipment
  * Other optimization weights (AD, gold, tapping)
 	* Figure out offline gold
- * User accounts
+
+More Stuff
+ * Order skills intelligently
+ 	* Graphically display skills in a tree
+ * Expand pet options to display effects
+ * Pair the pets by bonus type
+ * Don't necessarily need full hero name
 
 Other forms
  * Relics from stage
@@ -41,3 +47,4 @@ Other pages
  * Redux-form
  * Automated ServerVarsModel.cs -> ServerVarsModel.js
  * Document where formulas come from
+ * Google analytics
