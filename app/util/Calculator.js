@@ -238,9 +238,43 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
 
   var t1 = performance.now();
   console.log("took: " + (t1-t0) + " milliseconds for " + relics);
+
+  var summary = {};
+  var summarySteps = [];
+
+  for (var step of steps) {
+    if (!step.buy) {
+      if (!(step.artifact in summary)) {
+        summary[step.artifact] = {
+          cost: 0
+        }
+      }
+      var ss = summary[step.artifact];
+      ss["levelTo"] = step.levelTo;
+      ss["cost"] += step.cost;
+    } else {
+      summarySteps.push({
+        buy: true,
+        cost: step.cost
+      });
+    }
+  }
+
+  console.log(summary);
+
+  for (var artifact in summary) {
+    summarySteps.push({
+      artifact: artifact,
+      levelTo: summary[artifact].levelTo,
+      cost: summary[artifact].cost
+    });
+  }
+
+  console.log(summarySteps);
+
+  // var diff = getDiff(gamestate, currentState);
   return {
-    diff: getDiff(gamestate, currentState),
-    buy: shouldBuy,
-    steps: steps
+    steps,
+    summarySteps
   };
 }

@@ -90,12 +90,14 @@ export const stepsRequested = () => {
   }
 }
 
-export const stepsChanged = (newSteps) => {
+export const stepsChanged = (newSteps, newSummarySteps) => {
   return {
     type: types.STEPS_CHANGED,
-    newSteps
+    newSteps,
+    newSummarySteps
   }
 }
+
 
 export const optionValueChanged = (key, newValue) => {
   return {

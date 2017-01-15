@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch) => {
         var maxstage = getInStore(['options', 'maxstage'], 0);
         var results = getRelicSteps(gamestate, relics);
 
-        dispatch(stepsChanged(results.steps));
+        dispatch(stepsChanged(results.steps, results.summarySteps));
       }, 0);
     }
   }

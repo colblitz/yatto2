@@ -6,9 +6,7 @@ class StepList extends React.Component {
   render() {
     return (
       <div className="step-list">
-        <h3>
-          Steps
-        </h3>
+        <h3>Summary Steps</h3>
         <table>
           <tbody>
             <tr>
@@ -16,6 +14,24 @@ class StepList extends React.Component {
               <th className="step step-header-col1">Artifact</th>
               <th className="step step-header-col2">Level To</th>
               <th className="step step-header-col3">Cost</th>
+            </tr>
+            {
+              this.props.summarysteps.map(function(step, i) {
+                return <Step key={i} step={step}/>
+              })
+            }
+          </tbody>
+        </table>
+
+        <h3>Steps</h3>
+        <table>
+          <tbody>
+            <tr>
+              <th className="step step-header-col0"></th>
+              <th className="step step-header-col1">Artifact</th>
+              <th className="step step-header-col2">Level To</th>
+              <th className="step step-header-col3">Cost</th>
+              <th className="step step-header-col4">Total</th>
             </tr>
             {
               this.props.steps.map(function(step, i) {
@@ -32,7 +48,8 @@ class StepList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    steps: state.get("steps").toJS()
+    steps: state.get("steps").toJS(),
+    summarysteps: state.get("summarysteps").toJS(),
   }
 }
 

@@ -7,10 +7,13 @@ class Step extends React.Component {
     const s = this.props.step;
     return (
       <tr>
-        <td className="step step-col1"></td>
-        <td className="step step-col2">{s.buy ? "Buy an artifact" : getArtifactName(s.artifact)}</td>
-        <td className="step step-col3">{s.levelTo}</td>
-        <td className="step step-col4">{s.cost}</td>
+        <td className="step step-col0"></td>
+        <td className="step step-col1">{s.buy ? "Buy an artifact" : getArtifactName(s.artifact)}</td>
+        <td className="step step-col2">{s.levelTo}</td>
+        <td className="step step-col3">{s.cost}</td>
+        { s.total &&
+          <td className="step step-col4">{s.total}</td>
+        }
       </tr>
     )
   }

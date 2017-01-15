@@ -2,10 +2,14 @@ Immediate
  * check in code where equipment boosts are applied
  * check in code for a "formatBonus"
  * Editing equipment values is pretty fucked up
- * notPercentageBonuses - really need not?
- * Gold steps
- * Steps - click to apply
+ * notPercentageBonuses - really need "not"?
+
  * Summary steps
+ * Steps - click to apply
+ * Different buttons/steps for relics/gold/pet/hero/equip optimization
+
+ * User accounts
+
  * More styling
  * Even more styling
  * Options for calculating
@@ -13,8 +17,6 @@ Immediate
 	* Optimize other things first before artifacts
 	* Relics vs steps
 	* Consider actives
- * Different buttons/steps for relics/gold/pet/hero/equip optimization
- * User accounts
 
 Stuff
  * Active skill weighting

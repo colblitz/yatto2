@@ -58,6 +58,7 @@ export const defaultState = Immutable.fromJS({
     goldMultiplier:        { order: 10, value: 0, label: "Gold Multiplier" },
   },
   steps: [],
+  summarysteps: [],
   test: 0
 });
 
@@ -157,7 +158,8 @@ const rootReducer = (state = defaultState, action) => {
     case types.STEPS_CHANGED:
       return state.withMutations(state => {
         state.set('calculatingSteps', false)
-          .set('steps', Immutable.fromJS(action.newSteps));
+          .set('steps', Immutable.fromJS(action.newSteps))
+          .set('summarysteps', Immutable.fromJS(action.newSummarySteps));
       });
 
     case types.OPTION_VALUE_CHANGED:

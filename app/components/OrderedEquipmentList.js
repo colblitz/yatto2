@@ -16,8 +16,6 @@ const mapStateToProps = (state) => {
   var allLoaded = state.getIn(['infoDocs', 'EquipmentInfo']) &&
                   state.getIn(['infoDocs', 'ArtifactInfo']) &&
                   state.getIn(['infoDocs', 'LocalizationInfo']);
-  console.log("all loaded: ");
-  console.log(allLoaded);
   return {
     allLoaded
   }
