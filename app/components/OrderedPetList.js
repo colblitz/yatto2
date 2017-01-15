@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PetList from './PetList';
 
-const OrderedPetList = ({ petLoaded, localizationLoaded }) => {
+const OrderedPetList = ({ allLoaded }) => {
   return (
     <div className="ordered-pet-list ordered-list">
-      { petLoaded && localizationLoaded &&
+      { allLoaded &&
         <PetList />
       }
     </div>
@@ -13,9 +13,10 @@ const OrderedPetList = ({ petLoaded, localizationLoaded }) => {
 };
 
 const mapStateToProps = (state) => {
+  var allLoaded = state.getIn(['infoDocs', 'PetInfo']) &&
+                  state.getIn(['infoDocs', 'LocalizationInfo']);
   return {
-    petLoaded: state.getIn(['infoDocs', 'PetInfo']),
-    localizationLoaded: state.getIn(['infoDocs', 'LocalizationInfo']),
+    allLoaded
   }
 }
 

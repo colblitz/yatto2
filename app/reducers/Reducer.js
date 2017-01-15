@@ -183,7 +183,9 @@ const rootReducer = (state = defaultState, action) => {
           .setIn(['gamestate', 'equipment'], Immutable.fromJS(action.newGameState.equipment))
           .setIn(['gamestate', 'pets'], Immutable.fromJS(action.newGameState.pets))
           .setIn(['gamestate', 'skills'], Immutable.fromJS(action.newGameState.skills))
-          .setIn(['gamestate', 'clan'], Immutable.fromJS(action.newGameState.clan));
+          .setIn(['gamestate', 'clan'], Immutable.fromJS(action.newGameState.clan))
+          .setIn(['options', 'relics'], action.newGameState.info.relics)
+          .setIn(['options', 'maxstage'], action.newGameState.info.maxStage);
       }));
 
     case types.TEST:

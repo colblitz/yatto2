@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import HeroList from './HeroList';
 
-const OrderedHeroList = ({ heroLoaded, localizationLoaded }) => {
+const OrderedHeroList = ({ allLoaded }) => {
   return (
     <div className="ordered-hero-list ordered-list">
-      { heroLoaded && localizationLoaded &&
+      { allLoaded &&
         <HeroList />
       }
     </div>
@@ -13,9 +13,10 @@ const OrderedHeroList = ({ heroLoaded, localizationLoaded }) => {
 };
 
 const mapStateToProps = (state) => {
+  var allLoaded = state.getIn(['infoDocs', 'HeroInfo']) &&
+                  state.getIn(['infoDocs', 'LocalizationInfo']);
   return {
-    heroLoaded: state.getIn(['infoDocs', 'HeroInfo']),
-    localizationLoaded: state.getIn(['infoDocs', 'LocalizationInfo']),
+    allLoaded
   }
 }
 

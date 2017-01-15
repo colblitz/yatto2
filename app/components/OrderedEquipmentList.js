@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import EquipmentList from './EquipmentList';
 
-const OrderedEquipmentList = ({ equipmentLoaded, localizationLoaded }) => {
+const OrderedEquipmentList = ({ allLoaded }) => {
   return (
     <div className="ordered-equipment-list ordered-list">
-      { equipmentLoaded && localizationLoaded &&
+      { allLoaded &&
         <EquipmentList />
       }
     </div>
@@ -13,9 +13,13 @@ const OrderedEquipmentList = ({ equipmentLoaded, localizationLoaded }) => {
 };
 
 const mapStateToProps = (state) => {
+  var allLoaded = state.getIn(['infoDocs', 'EquipmentInfo']) &&
+                  state.getIn(['infoDocs', 'ArtifactInfo']) &&
+                  state.getIn(['infoDocs', 'LocalizationInfo']);
+  console.log("all loaded: ");
+  console.log(allLoaded);
   return {
-    equipmentLoaded: state.getIn(['infoDocs', 'EquipmentInfo']),
-    localizationLoaded: state.getIn(['infoDocs', 'LocalizationInfo']),
+    allLoaded
   }
 }
 

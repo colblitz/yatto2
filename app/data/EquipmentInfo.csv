@@ -11,7 +11,7 @@ Aura_Star,Aura,CritChance,1,0.01,0.00012
 Aura_Bird,Aura,CritChance,2,0.01,0.00015
 Aura_BlackEnergy,Aura,CritChance,2,0.01,0.00016
 Aura_Bones,Aura,CritChance,3,0.01,0.00021
-Aura_Wind,Aura,CritChance,3,0.01,0.005
+Aura_Wind,Aura,CritChance,3,0.01,0.0005
 Aura_Bugs,Aura,MonsterHP,1,0.99,-0.00014
 Aura_Embers,Aura,MonsterHP,1,0.99,-0.0003
 Aura_Sparks,Aura,MonsterHP,1,0.99,-0.00035

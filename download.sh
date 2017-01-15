@@ -18,7 +18,7 @@ for FILE in ArtifactInfo.csv \
 			PlayerImprovementsInfo.csv \
 			SkillTreeInfo.csv
 do
-	curl -s -f https://s3.amazonaws.com/tt2-static/info_files/$1/$FILE -o testFiles/static/$2/$FILE
+	curl --write-out "%{http_code} $FILE\n" -s -f https://s3.amazonaws.com/tt2-static/info_files/$1/$FILE -o testFiles/static/$2/$FILE
 done
 
 find testFiles/static/$2 -size 0 -delete

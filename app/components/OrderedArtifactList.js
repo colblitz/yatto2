@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ArtifactList from './ArtifactList';
 
-const OrderedArtifactList = ({ artifactLoaded, localizationLoaded }) => {
+const OrderedArtifactList = ({ allLoaded }) => {
   return (
     <div className="ordered-artifact-list ordered-list">
-      { artifactLoaded && localizationLoaded &&
+      { allLoaded &&
         <ArtifactList />
       }
     </div>
@@ -13,9 +13,10 @@ const OrderedArtifactList = ({ artifactLoaded, localizationLoaded }) => {
 };
 
 const mapStateToProps = (state) => {
+  var allLoaded = state.getIn(['infoDocs', 'ArtifactInfo']) &&
+                  state.getIn(['infoDocs', 'LocalizationInfo']);
   return {
-    artifactLoaded: state.getIn(['infoDocs', 'ArtifactInfo']),
-    localizationLoaded: state.getIn(['infoDocs', 'LocalizationInfo']),
+    allLoaded
   }
 }
 

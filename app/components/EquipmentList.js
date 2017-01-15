@@ -6,8 +6,8 @@ import EquipmentInput from './EquipmentInput';
 import EquipmentAdd from './EquipmentAdd';
 
 class EquipmentList extends React.Component {
-  renderEquipmentInput(eid) {
-    return <EquipmentInput key={eid} eid={eid} />;
+  renderEquipmentInput(eid, category) {
+    return <EquipmentInput key={eid} eid={eid} category={category}/>;
   }
   getEquipment(category, equipment) {
     return Object.keys(EquipmentInfo)
@@ -23,7 +23,7 @@ class EquipmentList extends React.Component {
                 .sort(function(a, b) { return getEquipmentName(a).localeCompare(getEquipmentName(b)); })
                 .map(function(eid) {
                   return (
-                    this.renderEquipmentInput(eid)
+                    this.renderEquipmentInput(eid, category)
                   );
                 }.bind(this));
   }

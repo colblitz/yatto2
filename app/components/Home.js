@@ -19,6 +19,10 @@ class Home extends React.Component {
         <div>
           <h1>~*~*YATTWO*~*~</h1>
           <h3>As should be glaringly obvious, this is still a work in progress. No guarantees of anything being right, use at your own risk, etc. etc.</h3>
+          <h3>Current/known issues:</h3>
+          <ul>
+            <li>Editing equipment values is kind of fucked up right now, you have to move the cursor to where you want to edit and then edit instead of normal "typing/backspacing"</li>
+          </ul>
         </div>
         <div className="panel-row">
           <Panel>

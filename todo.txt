@@ -1,5 +1,8 @@
 Immediate
- * Get relics/approx MS from file
+ * check in code where equipment boosts are applied
+ * check in code for a "formatBonus"
+ * Editing equipment values is pretty fucked up
+ * notPercentageBonuses - really need not?
  * Gold steps
  * Steps - click to apply
  * Summary steps

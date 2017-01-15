@@ -19,6 +19,14 @@ const stringToEquipmentType = {
   "Weapon": EquipmentType.Weapon,
 };
 
+export const eCategoryToBoostBonus = {
+  0: BonusType.AuraBoost,
+  1: BonusType.HelmetBoost,
+  2: BonusType.SlashBoost,
+  3: BonusType.ArmorBoost,
+  4: BonusType.SwordBoost,
+};
+
 export class Equipment {
   constructor(id, category, rarity, bonusType, bonusBase, bonusInc) {
     this.id = id; // Aura_Dizzy
@@ -29,7 +37,7 @@ export class Equipment {
     this.bonusInc = bonusInc;
   }
 
-  getBonus(level, allBonuses = {}) {
+  getBonus(level, allBonuses = {}, boostFromArtifact = 1) {
     addBonus(allBonuses, this.bonusType, this.bonusBase + level * this.bonusInc);
     return allBonuses;
   }

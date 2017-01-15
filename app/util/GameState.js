@@ -1,7 +1,7 @@
 import { Artifact, ArtifactInfo } from './Artifact';
 import { Hero, HeroInfo } from './Hero';
 import { Pet, PetInfo } from './Pet';
-import { Equipment, EquipmentInfo } from './Equipment';
+import { Equipment, EquipmentInfo, eCategoryToBoostBonus } from './Equipment';
 import { Skill, SkillInfo } from './Skill';
 import { getHeroImprovementBonus } from './HeroImprovementBonus';
 import { getPlayerImprovementBonus } from './PlayerImprovementBonus';
@@ -114,7 +114,9 @@ export class GameState {
 
     for (var equip in this.equipment) {
       if (this.equipment[equip].equipped) {
-        EquipmentInfo[equip].getBonus(this.equipment[equip].level, allBonuses);
+        // get artifact equipment bonus
+        var boost = getBonus(allBonuses, eCategoryToBoostBonus[EquipmentInfo[equip].category]);
+        EquipmentInfo[equip].getBonus(this.equipment[equip].level, allBonuses, boost);
       }
     }
 

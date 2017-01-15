@@ -248,3 +248,8 @@ export function getBonus(allBonuses, bonusType) {
     }
   }
 }
+
+// TODO: check code
+export function formatBonus(bonusType, bonus) {
+
+}
