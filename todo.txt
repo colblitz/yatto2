@@ -1,16 +1,14 @@
 Immediate
- * check in code where equipment boosts are applied
- * check in code for a "formatBonus"
- * Editing equipment values is pretty fucked up
- * notPercentageBonuses - really need "not"?
-
- * Summary steps
- * Steps - click to apply
  * Different buttons/steps for relics/gold/pet/hero/equip optimization
-
  * User accounts
-
  * More styling
+ * async actions with redux-think
+ 
+ * Active skill weighting
+ * Variable gold conversion factors
+ * Other optimization weights (AD, gold, tapping)
+    * Figure out offline gold
+
  * Even more styling
  * Options for calculating
 	* Include steps that go over relic limit (always optimal vs use all relics)
@@ -19,13 +17,13 @@ Immediate
 	* Consider actives
 
 Stuff
- * Active skill weighting
- * Variable gold conversion factors
+ * check in code where equipment boosts are applied
+ * check in code for a "formatBonus"
+ * Editing equipment values is pretty fucked up
+ * notPercentageBonuses - really need "not"?
  * Localization selector
  * Drag and drop artifacts
  * Drag and drop equipment
- * Other optimization weights (AD, gold, tapping)
-	* Figure out offline gold
 
 More Stuff
  * Order skills intelligently
