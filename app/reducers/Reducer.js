@@ -161,6 +161,50 @@ const rootReducer = (state = defaultState, action) => {
           .set('steps', Immutable.fromJS(action.newSteps))
           .set('summarysteps', Immutable.fromJS(action.newSummarySteps));
       });
+    case types.STEP_APPLIED:
+      var step = state.get('steps').get(action.index).toJS();
+      if (step.buy) {
+        return state.update('steps', steps => steps.delete(action.index));
+      }
+
+      var artifact = step.artifact;
+      var levelTo = step.levelTo;
+
+      var totalCost = state.get('steps')
+        .filter(s => s.get('artifact') == artifact && s.get('levelTo') <= levelTo)
+        .reduce((total, s) => total + s.get('cost'), 0);
+
+      var summaryIndex = state.get('summarysteps').findIndex(ss => ss.get('artifact') == artifact)
+
+      var newSteps = state.get('steps')
+        .filterNot(s => s.get('artifact') == artifact && s.get('levelTo') <= levelTo);
+
+      return updateGamestateValues(state.withMutations(state => {
+        state.updateIn(['options', 'relics'], val => Math.max(val - totalCost, 0))
+          .updateIn(['summarysteps', summaryIndex, 'cost'], val => Math.max(val - totalCost, 0))
+          .setIn(['gamestate', 'artifacts', artifact], levelTo)
+          .set('steps', newSteps);
+      }));
+
+    case types.SUMMARY_STEP_APPLIED:
+      var summarystep = state.get('summarysteps').get(action.index).toJS();
+      if (summarystep.buy) {
+        return state.update('summarysteps', summarysteps => summarysteps.delete(action.index));
+      }
+
+      var artifact = summarystep.artifact;
+      var levelTo = summarystep.levelTo;
+      var totalCost = summarystep.cost;
+
+      var newSteps = state.get('steps')
+        .filterNot(s => s.get('artifact') == artifact);
+
+      return updateGamestateValues(state.withMutations(state => {
+        state.update('summarysteps', summarysteps => summarysteps.delete(action.index))
+          .updateIn(['options', 'relics'], val => Math.max(val - totalCost, 0))
+          .setIn(['gamestate', 'artifacts', artifact], levelTo)
+          .set('steps', newSteps);
+      }));
 
     case types.OPTION_VALUE_CHANGED:
       if (JSON.stringify(action.key).includes('gamestate')) {

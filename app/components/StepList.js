@@ -17,7 +17,7 @@ class StepList extends React.Component {
             </tr>
             {
               this.props.summarysteps.map(function(step, i) {
-                return <Step key={i} step={step}/>
+                return <Step key={i} skey={i} step={step} summary={true}/>
               })
             }
           </tbody>
@@ -35,7 +35,7 @@ class StepList extends React.Component {
             </tr>
             {
               this.props.steps.map(function(step, i) {
-                return <Step key={i} step={step}/>
+                return <Step key={i} skey={i} step={step} summary={false}/>
               })
             }
           </tbody>

@@ -98,6 +98,19 @@ export const stepsChanged = (newSteps, newSummarySteps) => {
   }
 }
 
+export const stepApplied = (index) => {
+  return {
+    type: types.STEP_APPLIED,
+    index
+  }
+}
+
+export const summaryStepApplied = (index) => {
+  return {
+    type: types.SUMMARY_STEP_APPLIED,
+    index
+  }
+}
 
 export const optionValueChanged = (key, newValue) => {
   return {
