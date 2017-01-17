@@ -41,7 +41,7 @@ export function getPlayerImprovementBonus(cLevel) {
   if (cLevel < MIN_LEVEL) {
     answer = 1.0;
   } else if (cLevel > MAX_LEVEL) {
-    answer = getImprovementBonus(MAX_LEVEL);
+    answer = getPlayerImprovementBonus(MAX_LEVEL);
   } else {
     var tLevel = Math.floor(cLevel / 10) * 10;
     while (!(tLevel in PlayerImprovementsTotals)) {
