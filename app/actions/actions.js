@@ -1,4 +1,7 @@
 import * as types from './types';
+import { GameState } from '../util/GameState';
+import { getRelicSteps } from '../util/Calculator';
+import { getGamestateFromState } from '../reducers/Reducer';
 
 export const loadedCSV = (infoName) => {
   return {
@@ -81,6 +84,20 @@ export const skillLevelChanged = (sid, newLevel) => {
     type: types.SKILL_LEVEL_CHANGED,
     sid,
     newLevel
+  }
+}
+
+export function getStepsAction() {
+  return (dispatch, getState) => {
+    dispatch(stepsRequested());
+    setTimeout(function() {
+      var state = getState();
+      var gamestate = getGamestateFromState(state);
+      var relics = state.getIn(['options', 'relics'], 0);
+      var maxstage = state.getIn(['options', 'maxstage'], 0);
+      var results = getRelicSteps(gamestate, relics);
+      dispatch(stepsChanged(results.steps, results.summarySteps));
+    }, 0);
   }
 }
 

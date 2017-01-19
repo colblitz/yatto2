@@ -62,7 +62,7 @@ export const defaultState = Immutable.fromJS({
   test: 0
 });
 
-function getGamestateFromState(state) {
+export function getGamestateFromState(state) {
   var jsState = state.toJS();
   return new GameState(
     jsState.gamestate.info,

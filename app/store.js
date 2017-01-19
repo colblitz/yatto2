@@ -1,29 +1,18 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer, { defaultState } from './reducers/Reducer';
 import { GameState } from './util/GameState';
 
-const store = createStore(rootReducer, defaultState);
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
 
-let unsubscribe = store.subscribe(() =>
-  console.log(store.getState().toJS())
-)
+const stateTransformer = (state) => { return state.toJS(); };
 
-export function getGameState() {
-  var jsStore = store.getState().toJS();
-  return new GameState(
-    jsStore.gamestate.info,
-    jsStore.gamestate.swordmaster,
-    jsStore.gamestate.artifacts,
-    jsStore.gamestate.heroes,
-    jsStore.gamestate.equipment,
-    jsStore.gamestate.pets,
-    jsStore.gamestate.skills,
-    jsStore.gamestate.clan
-  );
-}
+const loggerMiddleware = createLogger({
+  stateTransformer,
+  diff: true
+});
 
-export function getInStore(path, defaultV) {
-  return store.getState().getIn(path, defaultV);
-}
+// const store = createStore(rootReducer, defaultState);
+const store = createStore(rootReducer, defaultState, applyMiddleware(thunkMiddleware, loggerMiddleware));
 
 export default store;

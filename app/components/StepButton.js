@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { stepsRequested, stepsChanged } from '../actions/actions';
+import { stepsRequested, stepsChanged, getStepsAction } from '../actions/actions';
 import { getRelicSteps } from '../util/Calculator';
 import { getInStore, getGameState } from '../store';
 
@@ -24,15 +24,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getSteps: () => {
-      dispatch(stepsRequested());
-      setTimeout(function() {
-        var gamestate = getGameState();
-        var relics = getInStore(['options', 'relics'], 0);
-        var maxstage = getInStore(['options', 'maxstage'], 0);
-        var results = getRelicSteps(gamestate, relics);
-
-        dispatch(stepsChanged(results.steps, results.summarySteps));
-      }, 0);
+      dispatch(getStepsAction());
     }
   }
 }
