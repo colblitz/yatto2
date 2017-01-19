@@ -6,7 +6,7 @@ import Footer from './Footer';
 class App extends React.Component {
   render() {
     return (
-      <div>
+      <div className='entire-page'>
         <Header />
         <Navbar />
         {this.props.children}

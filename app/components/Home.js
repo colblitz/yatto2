@@ -15,7 +15,7 @@ import Test from './Test';
 class Home extends React.Component {
   render() {
     return (
-      <div className="main-page">
+      <div className="main-page home-page">
         <div>
           <h1>~*~*YATTWO*~*~</h1>
           <h3>As should be glaringly obvious, this is still a work in progress. No guarantees of anything being right, use at your own risk, etc. etc.</h3>

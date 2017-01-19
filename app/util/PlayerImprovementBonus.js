@@ -2,7 +2,8 @@ var parse = require('csv-parse');
 
 var playerImprovementCSV = require('../data/PlayerImprovementsInfo.csv');
 
-const PlayerImprovementsInfo = {}
+const PlayerImprovementsInfo = {};
+const PlayerImprovementsGap = {};
 const PlayerImprovementsTotals = {};
 
 var MIN_LEVEL = 10;
@@ -20,12 +21,16 @@ export function loadPlayerImprovementInfo(callback) {
     MAX_LEVEL = Math.max.apply(null, Object.keys(PlayerImprovementsInfo));
 
     var multiplier = 1.0;
-    for (var level = 0; level <= MAX_LEVEL; level += 10) {
+    var lastLevel = 0;
+    for (var level = 0; level <= MAX_LEVEL; level += 1) {
       if (level in PlayerImprovementsInfo) {
         multiplier *= PlayerImprovementsInfo[level];
+        PlayerImprovementsGap[level] = level - lastLevel;
+        lastLevel = level;
         PlayerImprovementsTotals[level] = multiplier;
       }
     }
+
     callback(true);
     console.log("done loading PlayerImprovementsTotals");
   });
@@ -72,5 +77,27 @@ export function getNextPlayerImprovement(cLevel) {
     answer = tLevel;
   }
   memoizedNext[cLevel] = answer;
+  return answer;
+}
+
+const memoizedA = {};
+export function getPlayerCurrentA(cLevel) {
+  if (cLevel in memoizedA) {
+    return memoizedA[cLevel];
+  }
+
+  var answer;
+  if (cLevel >= MAX_LEVEL) {
+    answer = (cLevel + 1) / cLevel;
+  } else {
+    var nextLevel = getNextPlayerImprovement(cLevel);
+    var gap = PlayerImprovementsGap[nextLevel];
+    var multiplier = PlayerImprovementsInfo[nextLevel];
+    answer = Math.pow(multiplier, 1 / gap);
+
+    for (var l = nextLevel - gap; l < nextLevel; l += 1) {
+      memoizedA[l] = answer;
+    }
+  }
   return answer;
 }

@@ -3,8 +3,8 @@ import { Hero, HeroInfo } from './Hero';
 import { Pet, PetInfo } from './Pet';
 import { Equipment, EquipmentInfo, eCategoryToBoostBonus } from './Equipment';
 import { Skill, SkillInfo } from './Skill';
-import { getHeroImprovementBonus } from './HeroImprovementBonus';
-import { getPlayerImprovementBonus } from './PlayerImprovementBonus';
+import { getHeroImprovementBonus, getHeroCurrentA } from './HeroImprovementBonus';
+import { getPlayerImprovementBonus, getPlayerCurrentA } from './PlayerImprovementBonus';
 import { ServerVarsModel } from './ServerVarsModel';
 import { BonusType, addBonus, getBonus, printBonuses } from './BonusType';
 import { getHeroName } from './Localization';
@@ -103,10 +103,8 @@ export class GameState {
     for (var artifact in this.artifacts) {
       ArtifactInfo[artifact].getAllBonuses(this.artifacts[artifact], allBonuses);
     }
-    // dafuq... ArtifactModel.ApplyAllArtifactBonuses
-    // TODO: when Heavenly Sword is fixed
-    // addBonus(allBonuses, BonusType.AllDamage, getBonus(allBonuses, BonusType.ArtifactDamage) * getBonus(allBonuses, BonusType.HSArtifactDamage));
-    addBonus(allBonuses, BonusType.AllDamage, getBonus(allBonuses, BonusType.ArtifactDamage));
+    // ArtifactModel.ApplyAllArtifactBonuses
+    addBonus(allBonuses, BonusType.AllDamage, getBonus(allBonuses, BonusType.ArtifactDamage) * getBonus(allBonuses, BonusType.HSArtifactDamage));
 
     for (var hero in this.heroes.levels) {
       HeroInfo[hero].getAllBonuses(this.heroes.levels[hero], allBonuses);
@@ -114,7 +112,7 @@ export class GameState {
 
     for (var equip in this.equipment) {
       if (this.equipment[equip].equipped) {
-        // get artifact equipment bonus
+        // EquipmentInfo.GetBonusAmount
         var boost = getBonus(allBonuses, eCategoryToBoostBonus[EquipmentInfo[equip].category]);
         EquipmentInfo[equip].getBonus(this.equipment[equip].level, allBonuses, boost);
       }
@@ -134,6 +132,7 @@ export class GameState {
       }
     }
 
+    // ClanModel.ApplyClanBonus
     addBonus(allBonuses, BonusType.AllDamage, Math.pow(ServerVarsModel.clanBonusBase, this.clan.score));
     addBonus(allBonuses, BonusType.Memory, Math.min(ServerVarsModel.maxMemoryAmount, ServerVarsModel.clanMemoryBase * this.clan.score));
     return allBonuses;
@@ -143,16 +142,19 @@ export class GameState {
     return getBonus(this.bonuses, bonusType);
   }
 
+  // PlayerModel.GetMaxNumUpgrades()
   getMaxPlayerUpgrades(cLevel, gold) {
     var d = gold * (ServerVarsModel.playerUpgradeCostGrowth - 1) / ServerVarsModel.playerUpgradeCostBase + Math.pow(ServerVarsModel.playerUpgradeCostGrowth, cLevel);
     return Math.floor(Math.log(d) / Math.log(ServerVarsModel.playerUpgradeCostGrowth) - cLevel);
   }
 
+  // HelperInfo.GetMaxNumUpgrades()
   getMaxHeroUpgrades(hero, cLevel, gold) {
     var num = 1 - this.getBonus(BonusType.HelperUpgradeCost);
     return Math.floor(Math.log(gold * (ServerVarsModel.helperUpgradeBase - 1) / (num * hero.cost * Math.pow(ServerVarsModel.helperUpgradeBase, cLevel)) + 1) / Math.log(ServerVarsModel.helperUpgradeBase));
   }
 
+  // PlayerModel.GetUpgradeCost()
   getPlayerUpgradeCost(sLevel, eLevel) {
     return ServerVarsModel.playerUpgradeCostBase *
            (Math.pow(ServerVarsModel.playerUpgradeCostGrowth, eLevel) -
@@ -201,6 +203,17 @@ export class GameState {
     return swordmaster + heroDamage;
   }
 
+  getTapPercentageFromHeroes() {
+    var swordmaster = this.swordmaster.level *
+                      getPlayerImprovementBonus(this.swordmaster.level) *
+                      ServerVarsModel.playerDamageMult *
+                      this.getBonus(BonusType.TapDamage) *
+                      this.getBonus(BonusType.AllDamage);
+    var heroDamage = this.getHeroDamage() * this.getBonus(BonusType.TapDamageFromHelpers);
+    return heroDamage / (swordmaster + heroDamage);
+  }
+
+  // PlayerModel.GetCriticalDamage()
   getAverageCritDamage() {
     var critChance = Math.min(ServerVarsModel.maxCritChance, ServerVarsModel.playerCritChance + this.getBonus(BonusType.CritChance));
     var critMinMult = ServerVarsModel.playerCritMinMult * this.getBonus(BonusType.CritDamage);
@@ -212,6 +225,9 @@ export class GameState {
     return Object.values(this.pets.levels).reduce((a, b) => a + b, 0);
   }
 
+  // PetModel.GetPetOfflineDPS()
+
+  // PetModel.RefreshCurrentDamage()
   getPetDamage() {
     return this.getAverageCritDamage() * this.getBonus(BonusType.PetDamage) * this.getBonus(BonusType.PetDamageMult);
   }
@@ -223,6 +239,7 @@ export class GameState {
     return 0;
   }
 
+  // HelperInfo.GetDPS
   getHeroDamage() {
     var allHeroDamage = 0;
     for (var hero in this.heroes.levels) {
@@ -234,6 +251,23 @@ export class GameState {
       allHeroDamage += heroDamage;
     }
     return allHeroDamage;
+  }
+
+  getTopDamageHeroLevel() {
+    var maxDamage = 0;
+    var maxLevel = 0;
+    for (var hero in this.heroes.levels) {
+      var heroDamage = HeroInfo[hero].getBaseDamage(this.heroes.levels[hero]) *
+                       this.getBonus(HeroInfo[hero].type) *
+                       this.getBonus(BonusType.AllDamage) *
+                       this.getBonus(BonusType.AllHelperDamage) *
+                       (1 + this.getWeaponMultiplier(hero));
+      if (heroDamage > maxDamage) {
+        maxDamage = heroDamage;
+        maxLevel = this.heroes.levels[hero];
+      }
+    }
+    return maxLevel;
   }
 
   getDPS(tps) {
@@ -255,10 +289,23 @@ export class GameState {
     if (!this.bonuses || reload) {
       this.calculateBonuses();
     }
-    // TODO: lol
-    return Math.pow(1.05, (Math.log(this.getGoldMultiplier()) / Math.log(1.072))) * this.getDPS(tps);
+
+    var goldM = this.getGoldMultiplier();
+    // assume hero/SM levels are optimal
+    var skew = this.getTapPercentageFromHeroes();
+    var r = ServerVarsModel.helperUpgradeBase * skew + ServerVarsModel.playerUpgradeCostGrowth * (1 - skew);
+
+    var extraLevels = Math.log(1 + goldM - goldM/r) / Math.log(r);
+    var a = getHeroCurrentA(this.getTopDamageHeroLevel()) * skew + getPlayerCurrentA(this.swordmaster.level)  * (1 - skew);
+
+    // TODO: alternative option:
+    // calculate hero and SM equivalents separately, then skew
+    return Math.pow(a, extraLevels) * this.getDPS(tps);
+
+    // return Math.pow(1.05, (Math.log(this.getGoldMultiplier()) / Math.log(1.072))) * this.getDPS(tps);
   }
 
+  // StageLogic.GetEnemyCount()
   getMonsterCount(stage) {
     return Math.max(
       1,
@@ -277,7 +324,7 @@ export class GameState {
     // base^3 + base^3 + base^3 + base^3 + base^3 ... + 5*base^3
     // base^4 + base^4 + base^4 + base^4 + base^4 ... + 8*base^4
     var monsterCount = this.getMonsterCount(this.info.maxStage);
-    var hpBase = this.info.maxStage > ServerVarsModel.monsterHPLevelOff ? ServerVarsModel.monsterHPBase1 : ServerVarsModel.monsterHPBase2;
+    var hpBase = this.info.maxStage > ServerVarsModel.monsterHPLevelOff ? ServerVarsModel.monsterHPBase2 : ServerVarsModel.monsterHPBase1;
     var totalHPUnits = 0;
     for (var i of [0, 1, 2, 3, 4]) {
       totalHPUnits += Math.pow(hpBase, i) * (monsterCount + ServerVarsModel.themeMultiplierSequence[i]);
@@ -289,7 +336,7 @@ export class GameState {
   getAverageMonsterGold() {
     var monsterCount = this.getMonsterCount(this.info.maxStage);
 
-    // TODO: check that this got fixed in-game
+    // MonterModel.GetMonsterGoldDrop
     var base = (this.getAverageMonsterHPUnits() * this.getBonus(BonusType.MonsterHP) * ServerVarsModel.monsterGoldMultiplier +
                (ServerVarsModel.monsterGoldSlope * Math.min(this.info.maxStage, ServerVarsModel.noMoreMonsterGoldSlope))) *
               this.getBonus(BonusType.GoldAll);

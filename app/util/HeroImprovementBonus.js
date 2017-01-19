@@ -2,7 +2,8 @@ var parse = require('csv-parse');
 
 var heroImprovementCSV = require('../data/HelperImprovementsInfo.csv');
 
-const HeroImprovementsInfo = {}
+const HeroImprovementsInfo = {};
+const HeroImprovementsGap = {};
 const HeroImprovementsTotals = {};
 
 var MIN_LEVEL = 10;
@@ -10,6 +11,7 @@ var MAX_LEVEL = 10000;
 
 var multiplier = 1.0;
 
+// TODO: combine with PlayerImprovementBonus
 export function loadHeroImprovementInfo(callback) {
   parse(heroImprovementCSV, {delimiter: ',', columns: true}, function(err, data) {
     for (var row of data) {
@@ -20,9 +22,12 @@ export function loadHeroImprovementInfo(callback) {
     MAX_LEVEL = Math.max.apply(null, Object.keys(HeroImprovementsInfo));
 
     var multiplier = 1.0;
-    for (var level = 0; level <= MAX_LEVEL; level += 10) {
+    var lastLevel = 0;
+    for (var level = 0; level <= MAX_LEVEL; level += 1) {
       if (level in HeroImprovementsInfo) {
         multiplier *= HeroImprovementsInfo[level];
+        HeroImprovementsGap[level] = level - lastLevel;
+        lastLevel = level;
         HeroImprovementsTotals[level] = multiplier;
       }
     }
@@ -72,5 +77,27 @@ export function getNextHeroImprovement(cLevel) {
     answer = tLevel;
   }
   memoizedNext[cLevel] = answer;
+  return answer;
+}
+
+const memoizedA = {};
+export function getHeroCurrentA(cLevel) {
+  if (cLevel in memoizedA) {
+    return memoizedA[cLevel];
+  }
+
+  var answer;
+  if (cLevel >= MAX_LEVEL) {
+    answer = (cLevel + 1) / cLevel;
+  } else {
+    var nextLevel = getNextHeroImprovement(cLevel);
+    var gap = HeroImprovementsGap[nextLevel];
+    var multiplier = HeroImprovementsInfo[nextLevel];
+    answer = Math.pow(multiplier, 1 / gap);
+
+    for (var l = nextLevel - gap; l < nextLevel; l += 1) {
+      memoizedA[l] = answer;
+    }
+  }
   return answer;
 }

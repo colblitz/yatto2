@@ -3,7 +3,7 @@ Immediate
  * User accounts
  * More styling
  * async actions with redux-think
- 
+
  * Active skill weighting
  * Variable gold conversion factors
  * Other optimization weights (AD, gold, tapping)
@@ -15,6 +15,11 @@ Immediate
 	* Optimize other things first before artifacts
 	* Relics vs steps
 	* Consider actives
+
+Small things
+ * Hover for plus and drag icons and stuff
+ * Spinner for getting steps
+ * Spinner for logging in
 
 Stuff
  * check in code where equipment boosts are applied

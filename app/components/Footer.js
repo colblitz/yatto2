@@ -5,7 +5,12 @@ class Footer extends React.Component {
     return (
       <footer>
         <div className='footer'>
-          Footer goes here
+          <div className="footer-contact">
+            Maybe put a contact link?
+          </div>
+          <div className="footer-github">
+            Github link
+          </div>
         </div>
       </footer>
     );
