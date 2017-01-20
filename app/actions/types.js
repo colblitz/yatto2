@@ -22,6 +22,8 @@ export const EQUIPMENT_ADDED      = 'EQUIPMENT_ADDED';
 export const EQUIPMENT_REMOVED    = 'EQUIPMENT_REMOVED';
 export const EQUIPMENT_SELECTED   = 'EQUIPMENT_SELECTED';
 
+export const LOGIN = 'LOGIN';
+
 export const NEW_GAME_STATE = "NEW_GAME_STATE";
 // options
 

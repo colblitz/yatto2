@@ -2,6 +2,9 @@ import * as types from './types';
 import { GameState } from '../util/GameState';
 import { getRelicSteps } from '../util/Calculator';
 import { getGamestateFromState } from '../reducers/Reducer';
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 
 export const loadedCSV = (infoName) => {
   return {
@@ -163,6 +166,33 @@ export const newGameState = (newGameState) => {
   return {
     type: types.NEW_GAME_STATE,
     newGameState
+  }
+}
+
+export function login() {
+  return (dispatch, getState) => {
+    console.log("dispatching from login");
+    // url (required), options (optional)
+    var thing = fetch('/test', {
+      method: 'get'
+    }).then(function(response) {
+      return response.json();
+      // console.log("response");
+      // console.log(response);
+      // console.log(response.json());
+      // var jsonPromise = response.json();
+      // jsonPromise.then((val) => console.log("promise value:", val),
+      //   (err) => console.log("rejected: ", err));
+
+    }).catch(function(err) {
+      // Error :(
+      console.log("error");
+      console.log(err);
+    });
+
+    thing.then((val) => console.log("got:", val),
+        (err) => console.log("rejected: ", err));
+
   }
 }
 

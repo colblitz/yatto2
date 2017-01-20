@@ -63,10 +63,15 @@ passport.deserializeUser(function(id, done) {
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+
 // send all requests to index.html so browserHistory works
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'))
-})
+// app.get('*', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'))
+// })
+
+var routes = require('./routes/index')(passport);
+app.use('/', routes);
 
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
