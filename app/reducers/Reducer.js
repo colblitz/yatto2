@@ -59,7 +59,11 @@ export const defaultState = Immutable.fromJS({
   },
   steps: [],
   summarysteps: [],
-  test: 0
+  test: 0,
+  auth: {
+    username: "",
+    password: "",
+  }
 });
 
 export function getGamestateFromState(state) {
@@ -233,6 +237,11 @@ const rootReducer = (state = defaultState, action) => {
           .setIn(['options', 'relics'], action.newGameState.info.relics)
           .setIn(['options', 'maxstage'], action.newGameState.info.maxStage);
       }));
+
+    case types.USERNAME_CHANGED:
+      return state.setIn(['auth', 'username'], action.username);
+    case types.PASSWORD_CHANGED:
+      return state.setIn(['auth', 'password'], action.password);
 
     case types.TEST:
       return state.set('test', action.value);

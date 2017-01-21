@@ -36,6 +36,10 @@ More Stuff
  * Expand pet options to display effects
  * Pair the pets by bonus type
  * Don't necessarily need full hero name
+ * Find way to not send passwords in plaintext
+ * Break up actions by type
+ * Break up reducers
+ * Don't need any of the bower stuff
 
 Other forms
  * Relics from stage

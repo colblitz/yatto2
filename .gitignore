@@ -39,3 +39,5 @@ public/js/*
 scripts/output.txt
 
 data/
+
+mongodb.log*

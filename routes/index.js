@@ -1,38 +1,91 @@
-var express = require('express');
+var express  = require('express');
 var mongoose = require('mongoose');
-var User = require('../models/user');
+var bcrypt   = require('bcryptjs');
+var jwt      = require('jsonwebtoken');
+
+var User  = require('../models/user');
 var State = require('../models/state');
+
+mongoose.Promise = global.Promise;
 
 var router = express.Router();
 
-var sendSuccess = function(res, content) {
-  res.status(200).json({
-    success: true,
-    content: content
-  }).end();
-};
+// Generates hash using bCrypt
+var createHash = function(password){
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(5));
+}
 
-var sendErrResponse = function(res, err) {
-  res.status(400).json({
-    success: false,
-    err: err
-  }).end();
-};
+var isValidPassword = function(user, password){
+  return bcrypt.compareSync(password, user.password);
+}
 
-module.exports = function(passport) {
+function checkLoginRequirements(username, password) {
+  if (!username && !password) { return "Must have both a username and a password"; }
+  if (!username) { return "Must have a username"; }
+  if (!password) { return "Must have a password"; }
+  // other username/password requirements
+  return "";
+}
+
+module.exports = function(passport, jwtSecretOrKey) {
+  function createToken(userId) {
+    return jwt.sign({id: userId}, jwtSecretOrKey);
+  }
+
   router.get('/test', function(req, res) {
-    console.log("sending success for tesT");
-    sendSuccess(res, "asdf");
+    console.log("sending success for test");
+    res.json({ content: "asdf" });
+  });
+
+  router.post('/register', function(req, res) {
+    console.log("register endpoint");
+    var username = req.body.username;
+    var password = req.body.password;
+
+    // Check username and password
+    var s = checkLoginRequirements(username, password);
+    if (s) { res.status(400).json({ error: s }); }
+
+    User.findOne({ 'username' : username }, function(err, user) {
+      // If error or user already exists
+      if (err) { res.status(500).json({ error: "Error checking for user: " + err }); return; }
+      if (user) { res.status(400).json({ error: "User already exists" }); return; }
+
+      // Create user, save, and return token
+      var newUser = new User();
+      newUser.username = username;
+      newUser.password = createHash(password);
+
+      newUser.save(function(err) {
+        if (err) { res.status(500).json({ error: "Error creating user: " + err }); return; }
+        res.json({ token: createToken(newUser._id) });
+      });
+    });
+  });
+
+  router.post("/login", function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    // Check username and password
+    var s = checkLoginRequirements(username, password);
+    if (s) { res.status(400).json({ error: s }); }
+
+    User.findOne({ 'username' : username }, function(err, user) {
+      // If error or user already exists
+      if (err) { res.status(500).json({ error: "Error checking for user: " + err }); return; }
+      if (!user) { res.status(400).json({ error: "User does not exist" }); return; }
+
+      // Check password
+      if (!isValidPassword(user, password)) { res.status(401).json({ error: "Invalid password" }); return; }
+
+      res.json({ token: createToken(user._id) });
+    });
   });
 
   router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   });
-
-  // send all requests to index.html so browserHistory works
-  // app.get('*', function (req, res) {
-  //   res.sendFile(path.join(__dirname, 'public', 'index.html'))
-  // })
 
   return router;
 }

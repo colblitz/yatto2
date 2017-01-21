@@ -5,7 +5,6 @@ import { getGamestateFromState } from '../reducers/Reducer';
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
-
 export const loadedCSV = (infoName) => {
   return {
     type: types.LOADED_CSV,
@@ -169,29 +168,79 @@ export const newGameState = (newGameState) => {
   }
 }
 
+export const usernameChanged = (username) => {
+  return {
+    type: types.USERNAME_CHANGED,
+    username
+  }
+}
+
+export const passwordChanged = (password) => {
+  return {
+    type: types.PASSWORD_CHANGED,
+    password
+  }
+}
+
+export function register() {
+  return (dispatch, getState) => {
+    console.log("dispatching from register");
+
+    var state = getState();
+    var username = state.getIn(['auth', 'username']);
+    var password = state.getIn(['auth', 'password']);
+
+    fetch('/register', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    }).then(response =>
+      response.json().then(json => {
+        if (json.error) {
+          console.log("got error");
+          console.log(json.error);
+        } else {
+          console.log("got response");
+          console.log(json);
+        }
+      }, err => {
+        console.log("Failed to get response");
+      })
+    );
+  }
+}
+
 export function login() {
   return (dispatch, getState) => {
     console.log("dispatching from login");
-    // url (required), options (optional)
-    var thing = fetch('/test', {
-      method: 'get'
-    }).then(function(response) {
-      return response.json();
-      // console.log("response");
-      // console.log(response);
-      // console.log(response.json());
-      // var jsonPromise = response.json();
-      // jsonPromise.then((val) => console.log("promise value:", val),
-      //   (err) => console.log("rejected: ", err));
 
-    }).catch(function(err) {
-      // Error :(
-      console.log("error");
-      console.log(err);
-    });
+    var state = getState();
+    var username = state.getIn(['auth', 'username']);
+    var password = state.getIn(['auth', 'password']);
 
-    thing.then((val) => console.log("got:", val),
-        (err) => console.log("rejected: ", err));
+    fetch('/login', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username,
+        password
+      })
+    }).then(response =>
+      response.json().then(json => {
+        if (json.error) {
+          console.log("got error");
+          console.log(json.error);
+        } else {
+          console.log("got response");
+          console.log(json);
+        }
+      }, err => {
+        console.log("Failed to get response");
+      })
+    );
 
   }
 }

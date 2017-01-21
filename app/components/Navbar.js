@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import LoginButton from './LoginButton';
+import LoginBox from './LoginBox';
 
 class Navbar extends React.Component {
   render() {
@@ -12,7 +12,7 @@ class Navbar extends React.Component {
           <div className='nav-link'><Link to="/faq">FAQ/Thanks</Link></div>
           <div className='nav-link'><Link to="/ref">Reference</Link></div>
           <div className='nav-link'><Link to="/for">Formulas</Link></div>
-          <LoginButton/>
+          <LoginBox/>
         </div>
       </nav>
     );
