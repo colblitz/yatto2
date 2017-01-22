@@ -293,19 +293,19 @@ export class GameState {
       this.calculateBonuses();
     }
 
-    // var goldM = this.getGoldMultiplier();
-    // // assume hero/SM levels are optimal
-    // var skew = this.getTapPercentageFromHeroes();
-    // var r = ServerVarsModel.helperUpgradeBase * skew + ServerVarsModel.playerUpgradeCostGrowth * (1 - skew);
+    var goldM = this.getGoldMultiplier();
+    // assume hero/SM levels are optimal
+    var skew = this.getTapPercentageFromHeroes();
+    var r = ServerVarsModel.helperUpgradeBase * skew + ServerVarsModel.playerUpgradeCostGrowth * (1 - skew);
 
-    // var extraLevels = Math.log(1 + goldM - goldM/r) / Math.log(r);
-    // var a = getHeroCurrentA(this.getTopDamageHeroLevel()) * skew + getPlayerCurrentA(this.swordmaster.level)  * (1 - skew);
+    var extraLevels = Math.log(1 + goldM - goldM/r) / Math.log(r);
+    var a = getHeroCurrentA(this.getTopDamageHeroLevel()) * skew + getPlayerCurrentA(this.swordmaster.level)  * (1 - skew);
 
-    // // TODO: alternative option:
-    // // calculate hero and SM equivalents separately, then skew
-    // return Math.pow(a, extraLevels) * this.getDPS(tps);
+    // TODO: alternative option:
+    // calculate hero and SM equivalents separately, then skew
+    return Math.pow(a, extraLevels) * this.getDPS(tps);
 
-    return Math.pow(1.05, (Math.log(this.getGoldMultiplier()) / Math.log(1.072))) * this.getDPS(tps);
+    // return Math.pow(1.05, (Math.log(this.getGoldMultiplier()) / Math.log(1.072))) * this.getDPS(tps);
   }
 
   // StageLogic.GetEnemyCount()

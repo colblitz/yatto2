@@ -197,6 +197,20 @@ export const tokenChanged = (token) => {
   }
 }
 
+export function handleResponse(response, handleJson, endpoint) {
+  console.log("Endpoint: ", endpoint);
+  response.json().then(json => {
+    if (json.error) {
+      console.log("  Error: ", json.error);
+    } else {
+      console.log("  Response: ", json);
+      handleJson(json);
+    }
+  }, err => {
+    console.log("Failed to get response");
+  })
+}
+
 export function register() {
   return (dispatch, getState) => {
     console.log("dispatching from register");
@@ -212,22 +226,11 @@ export function register() {
         username,
         password
       })
-    }).then(response =>
-      response.json().then(json => {
-        if (json.error) {
-          console.log("got error");
-          console.log(json.error);
-        } else {
-          console.log("got response");
-          console.log(json);
-          if (json.token) {
-            dispatch(tokenChanged(json.token));
-          }
-        }
-      }, err => {
-        console.log("Failed to get response");
-      })
-    );
+    }).then(response => handleResponse(response, json => {
+      if (json.token) {
+        dispatch(tokenChanged(json.token));
+      }
+    }, "POST /register"));
   }
 }
 
@@ -246,23 +249,11 @@ export function login() {
         username,
         password
       })
-    }).then(response =>
-      response.json().then(json => {
-        if (json.error) {
-          console.log("got error");
-          console.log(json.error);
-        } else {
-          console.log("got response");
-          console.log(json);
-          if (json.token) {
-            dispatch(tokenChanged(json.token));
-          }
-        }
-      }, err => {
-        console.log("Failed to get response");
-      })
-    );
-
+    }).then(response => handleResponse(response, json => {
+      if (json.token) {
+        dispatch(tokenChanged(json.token));
+      }
+    }, "POST /login"));
   }
 }
 
@@ -279,20 +270,9 @@ export function saveState(token) {
       body: JSON.stringify({
         state: getStateString(getState())
       })
-    }).then(response =>
-      response.json().then(json => {
-        if (json.error) {
-          console.log("got error");
-          console.log(json.error);
-        } else {
-          console.log("got response");
-          console.log(json);
-        }
-      }, err => {
-        console.log("Failed to get response");
-      })
-    );
+    }).then(response => handleResponse(response, json => {
 
+    }, "POST /state"));
   }
 }
 
@@ -306,22 +286,10 @@ export function getState(token) {
       headers: {
         'Authorization': 'JWT ' + token
       }
-    }).then(response =>
-      response.json().then(json => {
-        if (json.error) {
-          console.log("got error");
-          console.log(json.error);
-        } else {
-          console.log("got get state response");
-          var s = JSON.parse(json.state);
-          console.log(s);
-          dispatch(stateFromServer(Immutable.fromJS(s)));
-        }
-      }, err => {
-        console.log("Failed to get response");
-      })
-    );
-
+    }).then(response => handleResponse(response, json => {
+      var s = JSON.parse(json.state);
+      dispatch(stateFromServer(Immutable.fromJS(s)));
+    }, "GET /state"));
   }
 }
 
