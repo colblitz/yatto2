@@ -12,7 +12,7 @@ var bodyParser     = require('body-parser');
 var mongoose       = require('mongoose');
 var passport       = require('passport');
 var LocalStrategy  = require('passport-local').Strategy;
-var passportJWT    = require("passport-jwt");
+var passportJWT    = require('passport-jwt');
 var jwt            = require('jsonwebtoken');
 
 var ExtractJwt  = passportJWT.ExtractJwt;

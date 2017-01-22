@@ -29,8 +29,7 @@ export const defaultState = Immutable.fromJS({
       weapons: {},
     },
     equipment: {
-      "Hat_Robot": { "level": 30, "equipped": false },
-      "Slash_EmbersBlue": { "level": 26, "equipped": true },
+      "Hat_Ninja": { "level": 327, "equipped": false, bonus: 53.32 }, // TODO: something about bonuses - computed?
     },
     pets: {
       active: "",
@@ -42,7 +41,8 @@ export const defaultState = Immutable.fromJS({
     },
   },
   options: {
-
+    maxstage: 2500,
+    relics: 1000,
   },
   gamestateStats: {
     artifactDamage:        { order: 0, value: 0, label: "Artifact Damage" },
@@ -63,6 +63,7 @@ export const defaultState = Immutable.fromJS({
   auth: {
     username: "",
     password: "",
+    token: "",
   }
 });
 
@@ -78,6 +79,16 @@ export function getGamestateFromState(state) {
     jsState.gamestate.skills,
     jsState.gamestate.clan
   );
+}
+
+export function getStateString(state) {
+  var jsState = state.toJS();
+  return JSON.stringify({
+    gamestate: jsState.gamestate,
+    options: jsState.options,
+    steps: jsState.steps,
+    summarysteps: jsState.summarysteps
+  });
 }
 
  // "info":{
@@ -237,11 +248,15 @@ const rootReducer = (state = defaultState, action) => {
           .setIn(['options', 'relics'], action.newGameState.info.relics)
           .setIn(['options', 'maxstage'], action.newGameState.info.maxStage);
       }));
+    case types.STATE_FROM_SERVER:
+      return updateGamestateValues(state.merge(action.stateToMergeIn));
 
     case types.USERNAME_CHANGED:
       return state.setIn(['auth', 'username'], action.username);
     case types.PASSWORD_CHANGED:
       return state.setIn(['auth', 'password'], action.password);
+    case types.TOKEN_CHANGED:
+      return state.setIn(['auth', 'token'], action.token);
 
     case types.TEST:
       return state.set('test', action.value);

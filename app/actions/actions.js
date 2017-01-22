@@ -1,7 +1,8 @@
 import * as types from './types';
 import { GameState } from '../util/GameState';
 import { getRelicSteps } from '../util/Calculator';
-import { getGamestateFromState } from '../reducers/Reducer';
+import { getGamestateFromState, getStateString } from '../reducers/Reducer';
+var Immutable = require('immutable');
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
@@ -168,6 +169,13 @@ export const newGameState = (newGameState) => {
   }
 }
 
+export const stateFromServer = (stateToMergeIn) => {
+  return {
+    type: types.STATE_FROM_SERVER,
+    stateToMergeIn
+  }
+}
+
 export const usernameChanged = (username) => {
   return {
     type: types.USERNAME_CHANGED,
@@ -179,6 +187,13 @@ export const passwordChanged = (password) => {
   return {
     type: types.PASSWORD_CHANGED,
     password
+  }
+}
+
+export const tokenChanged = (token) => {
+  return {
+    type: types.TOKEN_CHANGED,
+    token
   }
 }
 
@@ -205,6 +220,9 @@ export function register() {
         } else {
           console.log("got response");
           console.log(json);
+          if (json.token) {
+            dispatch(tokenChanged(json.token));
+          }
         }
       }, err => {
         console.log("Failed to get response");
@@ -236,6 +254,9 @@ export function login() {
         } else {
           console.log("got response");
           console.log(json);
+          if (json.token) {
+            dispatch(tokenChanged(json.token));
+          }
         }
       }, err => {
         console.log("Failed to get response");
@@ -245,9 +266,88 @@ export function login() {
   }
 }
 
-export const test = (value) => {
-  return {
-    type: types.TEST,
-    value
+export function saveState(token) {
+  return (dispatch, getState) => {
+    console.log("dispatching from saveState with token: ", token);
+
+    fetch('/state', {
+      method: 'post',
+      headers: {
+        'Authorization': 'JWT ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        state: getStateString(getState())
+      })
+    }).then(response =>
+      response.json().then(json => {
+        if (json.error) {
+          console.log("got error");
+          console.log(json.error);
+        } else {
+          console.log("got response");
+          console.log(json);
+        }
+      }, err => {
+        console.log("Failed to get response");
+      })
+    );
+
+  }
+}
+
+
+export function getState(token) {
+  return (dispatch, getState) => {
+    console.log("dispatching from getState with token: ", token);
+
+    fetch('/state', {
+      method: 'get',
+      headers: {
+        'Authorization': 'JWT ' + token
+      }
+    }).then(response =>
+      response.json().then(json => {
+        if (json.error) {
+          console.log("got error");
+          console.log(json.error);
+        } else {
+          console.log("got get state response");
+          var s = JSON.parse(json.state);
+          console.log(s);
+          dispatch(stateFromServer(Immutable.fromJS(s)));
+        }
+      }, err => {
+        console.log("Failed to get response");
+      })
+    );
+
+  }
+}
+
+
+export function test(token) {
+  return (dispatch, getState) => {
+    console.log("dispatching from state with token: ", token);
+
+    fetch('/state', {
+      method: 'get',
+      headers: {
+        'Authorization': 'JWT ' + token
+      }
+    }).then(response =>
+      response.json().then(json => {
+        if (json.error) {
+          console.log("got error");
+          console.log(json.error);
+        } else {
+          console.log("got response");
+          console.log(json);
+        }
+      }, err => {
+        console.log("Failed to get response");
+      })
+    );
+
   }
 }

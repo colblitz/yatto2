@@ -24,9 +24,11 @@ export const EQUIPMENT_SELECTED   = 'EQUIPMENT_SELECTED';
 
 export const USERNAME_CHANGED = "USERNAME_CHANGED";
 export const PASSWORD_CHANGED = "PASSWORD_CHANGED";
+export const TOKEN_CHANGED = "TOKEN_CHANGED";
 export const LOGIN = 'LOGIN';
 
 export const NEW_GAME_STATE = "NEW_GAME_STATE";
+export const STATE_FROM_SERVER = "STATE_FROM_SERVER";
 // options
 
 // UI

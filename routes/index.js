@@ -37,6 +37,8 @@ module.exports = function(passport, jwtSecretOrKey) {
     res.json({ content: "asdf" });
   });
 
+  //////////////////////////////////////////////////////////
+
   router.post('/register', function(req, res) {
     console.log("register endpoint");
     var username = req.body.username;
@@ -63,6 +65,8 @@ module.exports = function(passport, jwtSecretOrKey) {
     });
   });
 
+  //////////////////////////////////////////////////////////
+
   router.post("/login", function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
@@ -82,6 +86,41 @@ module.exports = function(passport, jwtSecretOrKey) {
       res.json({ token: createToken(user._id) });
     });
   });
+
+  //////////////////////////////////////////////////////////
+
+  router.get("/state", passport.authenticate('jwt', { session: false }), function(req, res) {
+    var userId = req.user._id;
+
+    State.findOne({ 'user': userId }, function(err, state) {
+      if (err) { res.status(500).json({ error: "Error finding state: " + err }); return; }
+      if (!state) { res.status(400).json({ error: "No state found for user" }); return; }
+
+      res.json({ state: state.state });
+    }).sort({'date':-1}).limit(1);
+  });
+
+  //////////////////////////////////////////////////////////
+
+  router.post("/state", passport.authenticate('jwt', { session: false }), function(req, res) {
+    var userId = req.user._id;
+    var state = req.body.state;
+
+    State.remove({ 'user': userId }, function(err) {
+      if (err) { console.log("Error removing previous states for user " + userId); }
+
+      var newState = new State();
+      newState.state = state;
+      newState.user = userId;
+
+      newState.save(function(err) {
+        if (err) { res.status(500).json({ error: "Error saving state: " + err }); return; }
+      });
+      res.json({});
+    });
+  });
+
+  //////////////////////////////////////////////////////////
 
   router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
