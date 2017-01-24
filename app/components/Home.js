@@ -10,6 +10,7 @@ import OptionList from './OptionList';
 import Panel from './Panel';
 import StepList from './StepList';
 import StepButton from './StepButton';
+import TabbedPanel from './TabbedPanel';
 import Test from './Test';
 
 class Home extends React.Component {
@@ -39,13 +40,13 @@ class Home extends React.Component {
           </Panel>
         </div>
         <div className="panel-row">
-          <Panel>
-            <OrderedArtifactList />
-            <OrderedHeroList />
-            <OrderedPetList />
-            <OrderedSkillList />
-            <OrderedEquipmentList />
-          </Panel>
+          <TabbedPanel>
+            <OrderedArtifactList tabLabel="Artifacts"/>
+            <OrderedHeroList tabLabel="Heroes"/>
+            <OrderedPetList tabLabel="Pets"/>
+            <OrderedSkillList tabLabel="Skills"/>
+            <OrderedEquipmentList tabLabel="Equipment"/>
+          </TabbedPanel>
 
           <Panel>
             <StepList />

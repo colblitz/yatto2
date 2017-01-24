@@ -1,3 +1,9 @@
+Advanced Options
+ * TPS
+ * Include steps that go over relic limit (always optimal vs use all relics)
+ * Optimize other things first before artifacts
+ * Active levels...?
+
 Immediate
  * Different buttons/steps for relics/gold/pet/hero/equip optimization
  * User accounts
@@ -11,10 +17,9 @@ Immediate
 
  * Even more styling
  * Options for calculating
-	* Include steps that go over relic limit (always optimal vs use all relics)
-	* Optimize other things first before artifacts
-	* Relics vs steps
-	* Consider actives
+	* Relics vs steps - radio button for which limit
+
+ * Fold tps parameter into gamestate
 
 Small things
  * Hover for plus and drag icons and stuff

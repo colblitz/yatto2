@@ -1,10 +1,94 @@
+body {
+  margin: 0;
+}
 
 html {
   background-color: #333333;
   color: white;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
 }
 
+input {
+  border-radius: 3px;
+  margin: 3px;
+  padding: 2px 5px;
+  border: 1px solid #b7b7b7;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+
+}
+
+button {
+  background-color: #eacc41;
+  border-radius: 2px;
+  padding: 7px 10px;
+  border: none;
+  margin: 5px;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.header {
+  height: 200px;
+  width: 100%;
+  background-color: #478f9a;
+}
+
+.nav-bar {
+  height: 40px;
+  padding: 5px 20px;
+  background-color: #212121;
+  position: relative;
+}
+
+.nav-bar .nav-links {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.nav-bar a {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-bar a:hover {
+  color: #eacc41;
+}
+
+.nav-bar a:visited {
+  color: #eacc41;
+}
+
+.nav-bar .nav-link {
+  margin-left: 10px;
+  margin-right: 10px;
+  vertical-align: middle;
+  line-height: 100%;
+  width: 120px;
+  text-align: center;
+}
+
+.nav-bar .login-box {
+  position: absolute;
+  right: 20px;
+  top: 0px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+
+.tabbed-panel,
 .panel {
   background-color: #EEEEEE;
   color: black;
@@ -31,6 +115,15 @@ footer {
   display: inline-block;
 }
 
+.gamestate-stat-list {
+  width: 300px;
+}
+
+.gamestate-stat-display-box {
+  width: 100%;
+  height: 33px;
+}
+
 .equipment-bonus-input {
   width: 60px;
 }
@@ -51,10 +144,6 @@ footer {
   float: right;
 }
 
-.gamestate-stat-display-box {
-  width: 360px;
-  height: 22px;
-}
 
 .ordered-list {
   margin: 5px;

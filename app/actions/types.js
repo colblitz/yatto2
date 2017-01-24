@@ -16,6 +16,7 @@ export const STEPS_REQUESTED = "STEPS_REQUESTED";
 export const STEPS_CHANGED   = "STEPS_CHANGED";
 export const STEP_APPLIED = "STEP_APPLIED";
 export const SUMMARY_STEP_APPLIED = "SUMMARY_STEP_APPLIED";
+export const METHOD_CHANGED = "METHOD_CHANGED";
 
 export const OPTION_VALUE_CHANGED = "OPTION_VALUE_CHANGED";
 export const EQUIPMENT_ADDED      = 'EQUIPMENT_ADDED';
@@ -32,5 +33,6 @@ export const STATE_FROM_SERVER = "STATE_FROM_SERVER";
 // options
 
 // UI
+export const TAB_CHANGED = "TAB_CHANGED";
 
 export const TEST = 'TEST';

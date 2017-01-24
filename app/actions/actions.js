@@ -96,9 +96,16 @@ export function getStepsAction() {
     setTimeout(function() {
       var state = getState();
       var gamestate = getGamestateFromState(state);
+      var method = state.getIn(['options', 'method'], 0);
       var relics = state.getIn(['options', 'relics'], 0);
       var maxstage = state.getIn(['options', 'maxstage'], 0);
-      var results = getRelicSteps(gamestate, relics);
+      var tps = state.getIn(['options', 'tps'], 0);
+      var results = getRelicSteps(gamestate, {
+        method,
+        relics,
+        maxstage,
+        tps
+      });
       dispatch(stepsChanged(results.steps, results.summarySteps));
     }, 0);
   }
@@ -131,6 +138,14 @@ export const summaryStepApplied = (index) => {
     index
   }
 }
+
+export const methodChanged = (method) => {
+  return {
+    type: types.METHOD_CHANGED,
+    method
+  }
+}
+
 
 export const optionValueChanged = (key, newValue) => {
   return {
@@ -292,6 +307,15 @@ export function getState(token) {
     }, "GET /state"));
   }
 }
+
+export const tabChanged = (tabIndex) => {
+  return {
+    type: types.TAB_CHANGED,
+    tabIndex
+  }
+}
+
+
 
 
 export function test(token) {

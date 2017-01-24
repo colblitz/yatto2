@@ -511,6 +511,10 @@ export class GameState {
 //   return this.GetMonsterGoldDrop(stageNum, MonsterClass.Normal) * (double)(1f + Singleton<BonusModel>.instance.Get10xGoldChance() * 9f) * (1.0 + (double)Singleton<BonusModel>.instance.GetChestersonChance() * (Singleton<BonusModel>.instance.GetChestersonMultiplier() - 1.0)) * (double)(1f + Singleton<BonusModel>.instance.GetMultiMonsterChance() * 2.5f);
 // }
   }
+
+  getRelicsFromStage(stage) {
+
+  }
 }
 
 // For swordmaster levels, hero levels, artifact levels

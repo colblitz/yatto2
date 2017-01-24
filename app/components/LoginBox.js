@@ -5,7 +5,7 @@ import { usernameChanged, passwordChanged, login, register, saveState, getState 
 class LoginBox extends React.Component {
   render() {
     return (
-      <div className="nav-link login-box">
+      <div className="login-box">
         <input type="text"
                className="login-input login-username"
                value={this.props.username}
@@ -18,9 +18,6 @@ class LoginBox extends React.Component {
                onChange={(e) => this.props.onPasswordChange(e)}/>
         <button onClick={this.props.login}>Login</button>
         <button onClick={this.props.register}>Register</button>
-        {this.props.token}
-        <button onClick={(e) => this.props.onSaveState(this.props.token)}>Post</button>
-        <button onClick={(e) => this.props.onGetState(this.props.token)}>Get</button>
       </div>
     )
   }
@@ -30,7 +27,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     username: state.getIn(['auth', 'username']),
     password: state.getIn(['auth', 'password']),
-    token: state.getIn(['auth', 'token']),
   }
 }
 
@@ -43,12 +39,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     onPasswordChange: (e) => {
       dispatch(passwordChanged(e.target.value));
-    },
-    onSaveState: (token) => {
-      dispatch(saveState(token));
-    },
-    onGetState: (token) => {
-      dispatch(getState(token));
     }
   }
 }

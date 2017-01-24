@@ -41,4 +41,7 @@ export const ServerVarsModel = {
   playerUpgradeCostGrowth: 1.062,
   playerUpgradeCostBase: 5,
   artifactCostBase: 1.31,
+  relicFromStageBaseline: 75,
+  relicFromStageDivider: 14,
+  relicFromStagePower: 1.75,
 };

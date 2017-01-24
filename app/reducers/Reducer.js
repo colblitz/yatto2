@@ -43,6 +43,8 @@ export const defaultState = Immutable.fromJS({
   options: {
     maxstage: 2500,
     relics: 1000,
+    method: 6,
+    tps: 15,
   },
   gamestateStats: {
     artifactDamage:        { order: 0, value: 0, label: "Artifact Damage" },
@@ -220,6 +222,8 @@ const rootReducer = (state = defaultState, action) => {
           .setIn(['gamestate', 'artifacts', artifact], levelTo)
           .set('steps', newSteps);
       }));
+    case types.METHOD_CHANGED:
+      return state.setIn(['options', 'method'], action.method);
 
     case types.OPTION_VALUE_CHANGED:
       if (JSON.stringify(action.key).includes('gamestate')) {
@@ -257,6 +261,9 @@ const rootReducer = (state = defaultState, action) => {
       return state.setIn(['auth', 'password'], action.password);
     case types.TOKEN_CHANGED:
       return state.setIn(['auth', 'token'], action.token);
+
+    case types.TAB_CHANGED:
+      return state.set('tabIndex', action.tabIndex);
 
     case types.TEST:
       return state.set('test', action.value);

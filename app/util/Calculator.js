@@ -3,6 +3,8 @@ import { ArtifactInfo, nextArtifactCost, printArtifactLevels } from './Artifact'
 import { GameState, getDiff } from './GameState';
 import { getNextPlayerImprovement } from './PlayerImprovementBonus';
 import { getNextHeroImprovement } from './HeroImprovementBonus';
+import { ServerVarsModel } from './ServerVarsModel';
+import { BonusType } from './BonusType';
 
 function getMax(array, comparator) {
   var max = array[0];
@@ -16,7 +18,69 @@ function getMax(array, comparator) {
   return max;
 }
 
-export function getGoldSteps(gamestate, gold, tps = 15) {
+export const optimizationType = {
+  AD     : 0,
+  Gold   : 1,
+  Pet    : 2,
+  Tap    : 3,
+  Hero   : 4,
+  DmgE   : 5,
+  RelicE : 6,
+};
+
+export const optimizationLabels = {
+  AD     : "AD",
+  Gold   : "Gold",
+  Pet    : "Pet Dmg",
+  Tap    : "Tag Dmg",
+  Hero   : "Hero Dmg",
+  DmgE   : "DmgE",
+  RelicE : "RelicE",
+}
+
+var dmgE = optimizationType.DmgE;
+
+function getValue(gamestate, settings) {
+  gamestate.calculateBonuses();
+  switch (settings.method) {
+    case optimizationType.AD     : return gamestate.getBonus(BonusType.ArtifactDamage);
+    case optimizationType.Gold   : return gamestate.getGoldMultiplier();
+    case optimizationType.Pet    : return gamestate.getPetDamage();
+    case optimizationType.Tap    : return gamestate.getAverageCritDamage();
+    case optimizationType.Hero   : return gamestate.getHeroDamage();
+    case optimizationType.DmgE   : return gamestate.getDamageEquivalent(settings.tps, settings.reload);
+    case optimizationType.RelicE : return [gamestate.getDamageEquivalent(settings.tps, settings.reload), gamestate.getBonus(BonusType.PrestigeRelic)];
+    default: return gamestate.getDamageEquivalent(settings.tps, settings.reload);
+  }
+}
+
+function getEfficiency(newState, baseValue, cost, settings) {
+  newState.calculateBonuses();
+  switch (settings.method) {
+    case optimizationType.RelicE :
+      var dmgE = getValue(newState, settings)[0];
+      var d = dmgE / baseValue[0];
+      var a = ServerVarsModel.relicFromStageBaseline;
+      var c = ServerVarsModel.relicFromStagePower;
+      var s = settings.maxstage; // get stage
+      var b = s > ServerVarsModel.monsterHPLevelOff ? ServerVarsModel.monsterHPBase2 : ServerVarsModel.monsterHPBase1;
+      var prgd = Math.pow(1 + (Math.log(d) / Math.log(b)) / (s-a), c);   // % relic gain from d% gain
+      var prga = newState.getBonus(BonusType.PrestigeRelic) / baseValue[1];
+      var prg = prgd * prga;
+      console.log("prgd: ", prgd, " prga: ", prga, " prg: ", prg);
+      return prg / cost;
+    case optimizationType.AD     :
+    case optimizationType.Gold   :
+    case optimizationType.Pet    :
+    case optimizationType.Tap    :
+    case optimizationType.Hero   :
+    case optimizationType.DmgE   :
+    default:
+      return (getValue(newState, settings) - baseValue) / cost;
+  }
+}
+
+export function getGoldSteps(gamestate, gold, settings) {
   // The growth in swordmaster and hero damage comes from the improvement bonuses
   // swordmaster:
   //   level * improvement * constants * bonuses
@@ -31,7 +95,8 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
     var options = [];
 
     // get base values
-    var baseValue = currentState.getDamageEquivalent(tps);
+    // var baseValue = currentState.getDamageEquivalent(tps);
+    var baseValue = getValue(currentState, settings);
 
     // swordmaster option
     var newState = currentState.getCopy();
@@ -45,7 +110,8 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
         text: "swordmaster to " + nLevel,
         result: newState,
         resultCost: cost,
-        efficiency: (newState.getDamageEquivalent(tps) - baseValue) / cost,
+        // efficiency: (newState.getDamageEquivalent(tps) - baseValue) / cost,
+        efficiency: getEfficiency(newState, baseValue, cost, settings),
       });
     }
 
@@ -58,7 +124,8 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
           text: "buying " + hero,
           result: newHState,
           resultCost: HeroInfo[hero].cost,
-          efficiency: (newHState.getDamageEquivalent(tps) - baseValue) / HeroInfo[hero].cost,
+          // efficiency: (newHState.getDamageEquivalent(tps) - baseValue) / HeroInfo[hero].cost,
+          efficiency: getEfficiency(newHState, baseValue, HeroInfo[hero].cost, settings),
         });
       // heroes that can be leveled
       } else if (hero in currentState.heroes.levels) {
@@ -74,7 +141,8 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
             text: "hero " + hero + " to " + nHLevel,
             result: newHState,
             resultCost: costH,
-            efficiency: (newHState.getDamageEquivalent(tps) - baseValue) / costH,
+            // efficiency: (newHState.getDamageEquivalent(tps) - baseValue) / costH,
+            efficiency: getEfficiency(newHState, baseValue, costH, settings),
           });
         }
       }
@@ -96,23 +164,27 @@ export function getGoldSteps(gamestate, gold, tps = 15) {
   return currentState;
 }
 
-function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficiency, tps) {
+function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficiency, settings) {
   // initialize stuff
+  var newSettings = Object.assign({}, settings, {reload: true});
   var newState = startState.getCopy();
   var totalCost = 0;
   var currentLevel = 1;
   newState.artifacts[artifact] = 1;
 
   // get starting state, save for later
-  var baseDamageEquivalent = newState.getDamageEquivalent(tps, true);
+  // var baseDamageEquivalent = newState.getDamageEquivalent(tps, true);
+  var baseDamageEquivalent = getValue(newState, newSettings);
   var savedBasedDamageEquivalent = baseDamageEquivalent;
 
   // find cost -> find efficiency for next upgrade
   var currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
   newState.artifacts[artifact] = ++currentLevel;
   totalCost += currentCost;
-  var currentDmgEquivalent = newState.getDamageEquivalent(tps, true);
-  var currentEfficiency = (currentDmgEquivalent - baseDamageEquivalent) / currentCost;
+  // var currentDmgEquivalent = newState.getDamageEquivalent(tps, true);
+  var currentDmgEquivalent = getValue(newState, newSettings);
+  // var currentEfficiency = (currentDmgEquivalent - baseDamageEquivalent) / currentCost;
+  var currentEfficiency = getEfficiency(newState, baseDamageEquivalent, currentCost, newSettings);
   baseDamageEquivalent = currentDmgEquivalent;
 
   // loop while upgrade efficiency better than leveling
@@ -120,8 +192,10 @@ function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficien
     currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
     newState.artifacts[artifact] = ++currentLevel;
     totalCost += currentCost;
-    currentDmgEquivalent = newState.getDamageEquivalent(tps, true);
-    currentEfficiency = (currentDmgEquivalent - baseDamageEquivalent) / currentCost;
+    // currentDmgEquivalent = newState.getDamageEquivalent(tps, true);
+    currentDmgEquivalent = getValue(newState, newSettings);
+    // currentEfficiency = (currentDmgEquivalent - baseDamageEquivalent) / currentCost;
+    currentEfficiency = getEfficiency(newState, baseDamageEquivalent, currentCost, newSettings);
     baseDamageEquivalent = currentDmgEquivalent;
   }
 
@@ -129,16 +203,19 @@ function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficien
   var canLevelTo = currentLevel - 1;
   totalCost -= currentCost;
   newState.artifacts[artifact] = canLevelTo;
-  currentDmgEquivalent = newState.getDamageEquivalent(tps, true);
+  // currentDmgEquivalent = newState.getDamageEquivalent(tps, true);
+  // currentDmgEquivalent = getValue(newState, tps, method, true);
   totalCost += costToBuy;
-  return (currentDmgEquivalent - savedBasedDamageEquivalent) / totalCost;
+  // return (currentDmgEquivalent - savedBasedDamageEquivalent) / totalCost;
+  return getEfficiency(newState, savedBasedDamageEquivalent, totalCost, newSettings);
 }
 
-export function getRelicSteps(gamestate, relics, tps = 15) {
+export function getRelicSteps(gamestate, settings) {
   var t0 = performance.now();
   // ASSUMPTION: SM/heroes are already optimal and won't change
+
   var currentState = gamestate.getCopy();
-  var relicsLeft = relics;
+  var relicsLeft = settings.relics;
   var shouldBuy = false;
   var steps = [];
   var totalSpent = 0;
@@ -146,7 +223,8 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
     var options = [];
 
     // get base values
-    var baseValue = currentState.getDamageEquivalent(tps);
+    // var baseValue = currentState.getDamageEquivalent(tps);
+    var baseValue = getValue(currentState, settings);
 
     for (var artifact in currentState.artifacts) {
       if (ArtifactInfo[artifact].canLevel(currentState.artifacts[artifact])) {
@@ -159,7 +237,8 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
             levelTo: newState.artifacts[artifact],
             result: newState,
             cost: cost,
-            efficiency: (newState.getDamageEquivalent(tps) - baseValue) / cost,
+            // efficiency: (newState.getDamageEquivalent(tps) - baseValue) / cost,
+            efficiency: getEfficiency(newState, baseValue, cost, settings),
           });
         }
       }
@@ -181,7 +260,7 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
         var overallEfficiencies = [];
         for (var artifact in ArtifactInfo) {
           if (!(artifact in currentState.artifacts)) {
-            overallEfficiencies.push(getOverallEfficiency(currentState, artifact, costToBuy, bestLevelEfficiency, tps));
+            overallEfficiencies.push(getOverallEfficiency(currentState, artifact, costToBuy, bestLevelEfficiency, settings));
           }
         }
         var averageOverallEfficiency = overallEfficiencies.reduce(function(a, b) { return a + b; }) / overallEfficiencies.length;
@@ -220,6 +299,7 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
         break;
       } else {
         totalSpent += bestOption.cost;
+        console.log("bestOption.efficiency: ", bestOption.artifact, bestOption.efficiency);
         steps.push({
           buy: false,
           artifact: bestOption.artifact,
@@ -237,7 +317,7 @@ export function getRelicSteps(gamestate, relics, tps = 15) {
   } // end while
 
   var t1 = performance.now();
-  console.log("took: " + (t1-t0) + " milliseconds for " + relics);
+  console.log("took: " + (t1-t0) + " milliseconds for " + settings.relics);
 
   var summary = {};
   var summarySteps = [];
