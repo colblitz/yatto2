@@ -6,10 +6,10 @@ class Footer extends React.Component {
       <footer>
         <div className='footer'>
           <div className="footer-contact">
-            Maybe put a contact link?
+            Updated for: Tap Titans 2 (1.1.6)
           </div>
           <div className="footer-github">
-            Github link
+            <a href="https://github.com/colblitz/yatto2">Github</a>
           </div>
         </div>
       </footer>
