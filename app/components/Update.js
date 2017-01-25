@@ -14,6 +14,7 @@ class Update extends React.Component {
               <li>Advanced options currently don't do anything</li>
               <li>Editing equipment values is kind of fucked up right now, you have to move the cursor to where you want to edit and then edit instead of "normal" typing/backspacing</li>
               <li>Can't navigate directly to FAQ/Reference/Formula urls</li>
+              <li>Steps option currently doesn't do anything</li>
             </ul>
           </div>
         }
