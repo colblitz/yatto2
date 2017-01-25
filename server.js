@@ -63,6 +63,10 @@ app.use(passport.initialize());
 var routes = require('./routes/index')(passport, jwtOptions.secretOrKey);
 app.use('/', routes);
 
+app.all('*', function(req, res) {
+  res.redirect("/");
+});
+
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });

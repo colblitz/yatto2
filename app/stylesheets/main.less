@@ -30,10 +30,18 @@ button {
   font-weight: bold;
 }
 
+.step-button {
+
+}
+
 .header {
   height: 200px;
   width: 100%;
   background-color: #478f9a;
+
+  h1 {
+    margin: 0;
+  }
 }
 
 .nav-bar {
@@ -87,6 +95,23 @@ button {
   align-items: center;
 }
 
+.nav-bar .login-text {
+  display: inline-block;
+}
+
+.update {
+  width: 100%;
+}
+
+.update-toggle {
+
+}
+
+.update-icon {
+  display: block;
+  margin: auto;
+  width: 10px;
+}
 
 .tabbed-panel,
 .panel {
@@ -97,22 +122,41 @@ button {
   border: 1px solid #222222;
   display: inline-block;
   border-radius: 5px;
+}
+
+.panels {
   display: flex;
+  align-items: stretch;
+  justify-content: center;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .panel-row {
   display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  // flex-grow: 1;
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 95%;
-  background-color: #123423;
+.panel-col {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-grow: 1;
+}
+
+.panel-grow {
+  flex-grow: 1;
 }
 
 .label {
   display: inline-block;
+}
+
+.state-options {
+  text-align: center;
 }
 
 .gamestate-stat-list {
@@ -170,5 +214,9 @@ footer {
 
 .main-page {
   display: block;
-  padding-bottom: 50px; // room for footer
+}
+
+footer {
+  height: 20px;
+  background-color: #123423;
 }

@@ -1,13 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux';
+import { allStepsApplied, resetSteps } from '../actions/actions';
 import Step from './Step';
 
 class StepList extends React.Component {
   render() {
     return (
       <div className="step-list">
-        <button>Apply All</button>
-        <button>Reset Steps</button>
+        <button onClick={this.props.onApplyAllSteps}>Apply All</button>
+        <button onClick={this.props.onResetSteps}>Reset Steps</button>
         <h3>Summary Steps</h3>
         <table>
           <tbody>
@@ -47,7 +48,6 @@ class StepList extends React.Component {
   }
 }
 
-
 function mapStateToProps(state) {
   return {
     steps: state.get("steps").toJS(),
@@ -55,4 +55,15 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(StepList);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onApplyAllSteps: () => {
+      dispatch(allStepsApplied());
+    },
+    onResetSteps: () => {
+      dispatch(resetSteps());
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StepList);

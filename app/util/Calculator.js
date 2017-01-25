@@ -32,7 +32,7 @@ export const optimizationLabels = {
   AD     : "AD",
   Gold   : "Gold",
   Pet    : "Pet Dmg",
-  Tap    : "Tag Dmg",
+  Tap    : "Tap Dmg",
   Hero   : "Hero Dmg",
   DmgE   : "DmgE",
   RelicE : "RelicE",
@@ -67,8 +67,7 @@ function getEfficiency(newState, baseValue, cost, settings) {
       var prgd = Math.pow(1 + (Math.log(d) / Math.log(b)) / (s-a), c);   // % relic gain from d% gain
       var prga = newState.getBonus(BonusType.PrestigeRelic) / baseValue[1];
       var prg = prgd * prga;
-      console.log("prgd: ", prgd, " prga: ", prga, " prg: ", prg);
-      return prg / cost;
+      return (prg - 1) / cost;
     case optimizationType.AD     :
     case optimizationType.Gold   :
     case optimizationType.Pet    :
@@ -299,7 +298,6 @@ export function getRelicSteps(gamestate, settings) {
         break;
       } else {
         totalSpent += bestOption.cost;
-        console.log("bestOption.efficiency: ", bestOption.artifact, bestOption.efficiency);
         steps.push({
           buy: false,
           artifact: bestOption.artifact,

@@ -45,6 +45,8 @@ export const defaultState = Immutable.fromJS({
     relics: 1000,
     method: 6,
     tps: 15,
+    advanced: false,
+    update: true,
   },
   gamestateStats: {
     artifactDamage:        { order: 0, value: 0, label: "Artifact Damage" },
@@ -222,8 +224,21 @@ const rootReducer = (state = defaultState, action) => {
           .setIn(['gamestate', 'artifacts', artifact], levelTo)
           .set('steps', newSteps);
       }));
+    case types.ALL_STEPS_APPLIED:
+      // TODO:
+
+    case types.RESET_STEPS:
+      return state.withMutations(state => {
+        state.set('steps', Immutable.fromJS([]))
+          .set('summarysteps', Immutable.fromJS([]));
+      });
+
     case types.METHOD_CHANGED:
       return state.setIn(['options', 'method'], action.method);
+    case types.TOGGLE_ADVANCED:
+      return state.setIn(['options', 'advanced'], action.show);
+    case types.TOGGLE_UPDATE:
+      return state.setIn(['options', 'update'], action.show);
 
     case types.OPTION_VALUE_CHANGED:
       if (JSON.stringify(action.key).includes('gamestate')) {
@@ -261,6 +276,12 @@ const rootReducer = (state = defaultState, action) => {
       return state.setIn(['auth', 'password'], action.password);
     case types.TOKEN_CHANGED:
       return state.setIn(['auth', 'token'], action.token);
+    case types.LOGOUT:
+      return state.withMutations(state => {
+        state.setIn(['auth', 'username'], "")
+          .setIn(['auth', 'password'], "")
+          .setIn(['auth', 'token'], "");
+      });
 
     case types.TAB_CHANGED:
       return state.set('tabIndex', action.tabIndex);

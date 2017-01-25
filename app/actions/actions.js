@@ -139,10 +139,36 @@ export const summaryStepApplied = (index) => {
   }
 }
 
+export const allStepsApplied = () => {
+  return {
+    type: types.ALL_STEPS_APPLIED,
+  }
+}
+
+export const resetSteps = () => {
+  return {
+    type: types.RESET_STEPS,
+  }
+}
+
 export const methodChanged = (method) => {
   return {
     type: types.METHOD_CHANGED,
     method
+  }
+}
+
+export const toggleAdvanced = (show) => {
+  return {
+    type: types.TOGGLE_ADVANCED,
+    show
+  }
+}
+
+export const toggleUpdate = (show) => {
+  return {
+    type: types.TOGGLE_UPDATE,
+    show
   }
 }
 
@@ -269,6 +295,12 @@ export function login() {
         dispatch(tokenChanged(json.token));
       }
     }, "POST /login"));
+  }
+}
+
+export const logout = () => {
+  return {
+    type: types.LOGOUT,
   }
 }
 
