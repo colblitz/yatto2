@@ -225,7 +225,17 @@ const rootReducer = (state = defaultState, action) => {
           .set('steps', newSteps);
       }));
     case types.ALL_STEPS_APPLIED:
-      // TODO:
+      var totalCost = state.get('summarysteps')
+        .reduce((total, s) => total + s.get('cost'), 0);
+      var summaryLevels = state.get('summarysteps')
+        .reduce((levels, s) => { levels[s.get('artifact')] = s.get('levelTo'); return levels; }, {});
+
+      return updateGamestateValues(state.withMutations(state => {
+        state.updateIn(['options', 'relics'], val => Math.max(val - totalCost, 0))
+          .updateIn(['gamestate', 'artifacts'], artifact => artifact.map((v, k) => k in summaryLevels ? summaryLevels[k] : v))
+          .set('steps', Immutable.fromJS([]))
+          .set('summarysteps', Immutable.fromJS([]));
+      }));
 
     case types.RESET_STEPS:
       return state.withMutations(state => {
