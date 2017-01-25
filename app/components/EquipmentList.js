@@ -5,7 +5,7 @@ import { EquipmentInfo } from '../util/Equipment';
 import EquipmentInput from './EquipmentInput';
 import EquipmentAdd from './EquipmentAdd';
 
-class EquipmentList extends React.Component {
+class EquipmentTable extends React.Component {
   renderEquipmentInput(eid, category) {
     return <EquipmentInput key={eid} eid={eid} category={category}/>;
   }
@@ -41,45 +41,41 @@ class EquipmentList extends React.Component {
   }
   render() {
     return (
+      <div className="equipment-table">
+        <table>
+          <tr>
+            <th className="equipment-h equipment-h0">Equipped</th>
+            <th className="equipment-h equipment-h1">Bonus</th>
+            <th className="equipment-h equipment-h2"></th>
+            <th className="equipment-h equipment-h3"></th>
+          </tr>
+          { this.getEquipment(this.props.category, this.props.equipment) }
+          { this.hasAddOptions(this.props.category, this.props.equipment) &&
+            <EquipmentAdd category={this.props.category}/>
+          }
+        </table>
+      </div>
+    );
+  }
+}
+
+class EquipmentList extends React.Component {
+  render() {
+    return (
       <div className='equipment-list'>
         <h3>
           Equipment (multiplier)
         </h3>
         <h4>Weapons</h4>
-        <div>
-          { this.getEquipment(4, this.props.equipment) }
-          { this.hasAddOptions(4, this.props.equipment) &&
-            <EquipmentAdd category={4}/>
-          }
-        </div>
+        <EquipmentTable category={4} equipment={this.props.equipment}/>
         <h4>Helmets</h4>
-        <div>
-          { this.getEquipment(1, this.props.equipment) }
-          { this.hasAddOptions(1, this.props.equipment) &&
-            <EquipmentAdd category={1}/>
-          }
-        </div>
+        <EquipmentTable category={1} equipment={this.props.equipment}/>
         <h4>Suits</h4>
-        <div>
-          { this.getEquipment(3, this.props.equipment) }
-          { this.hasAddOptions(3, this.props.equipment) &&
-            <EquipmentAdd category={3}/>
-          }
-        </div>
+        <EquipmentTable category={3} equipment={this.props.equipment}/>
         <h4>Auras</h4>
-        <div>
-          { this.getEquipment(0, this.props.equipment) }
-          { this.hasAddOptions(0, this.props.equipment) &&
-            <EquipmentAdd category={0}/>
-          }
-        </div>
+        <EquipmentTable category={0} equipment={this.props.equipment}/>
         <h4>Slashes</h4>
-        <div>
-          { this.getEquipment(2, this.props.equipment) }
-          { this.hasAddOptions(2, this.props.equipment) &&
-            <EquipmentAdd category={2}/>
-          }
-        </div>
+        <EquipmentTable category={2} equipment={this.props.equipment}/>
       </div>
     );
   }

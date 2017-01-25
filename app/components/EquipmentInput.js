@@ -9,20 +9,29 @@ import { BonusType, notPercentageBonuses } from '../util/BonusType';
 class EquipmentInput extends React.Component {
   render() {
     return (
-      <div className='equipment-input-box'>
-        <input type="checkbox"
-               className="input equipment-input"
-               checked={this.props.equipped}
-               onChange={(e) => this.props.onEquipmentActiveChange(this.props.eid, e)}/>
-        <input type="text"
-               className="input equipment-bonus-input"
-               value={this.props.formattedBonus}
-               onChange={(e) => this.props.onEquipmentBonusChange(this.props.eid, e, this.props.boost, this.props.fMultiplier)}/>
-        <div className="label equipment-label">
-          {getEquipmentName(this.props.eid)}
-        </div>
-        <i className="fa fa-remove" onClick={(e) => this.props.removeEquipment(this.props.eid)}></i>
-      </div>
+      <tr className='equipment-row'>
+        <td>
+          <input type="checkbox"
+                 className="input equipment-input"
+                 checked={this.props.equipped}
+                 onChange={(e) => this.props.onEquipmentActiveChange(this.props.eid, e)}/>
+        </td>
+        <td>
+          <input type="text"
+                 className="input equipment-bonus-input"
+                 value={this.props.formattedBonus}
+                 disabled={true}
+                 onChange={(e) => this.props.onEquipmentBonusChange(this.props.eid, e, this.props.boost, this.props.fMultiplier)}/>
+        </td>
+        <td>
+          <div className="label equipment-label">
+            {getEquipmentName(this.props.eid)}
+          </div>
+        </td>
+        <td>
+          <i className="fa fa-remove" onClick={(e) => this.props.removeEquipment(this.props.eid)}></i>
+        </td>
+      </tr>
     );
   }
 }
@@ -40,14 +49,6 @@ var categoryToBonusType = {
   3: BonusType.ArmorBoost,
   2: BonusType.SlashBoost,
 }
-
-// var categoryToArtifactEffect = {
-//   4: ArtifactInfo["Artifact25"].effects[BonusType.SwordBoost],
-//   1: ArtifactInfo["Artifact17"].effects[BonusType.HelmetBoost],
-//   3: ArtifactInfo["Artifact23"].effects[BonusType.ArmorBoost],
-//   2: ArtifactInfo["Artifact28"].effects[BonusType.SlashBoost],
-//   0: ArtifactInfo["Artifact28"].effects[BonusType.SlashBoost],
-// }
 
 function mapStateToProps(state, ownProps) {
   // TODO: need to do something better if more than one source of boost

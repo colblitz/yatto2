@@ -8,6 +8,7 @@ class Update extends React.Component {
       <div className="update">
         { this.props.update &&
           <div className="update-stuff">
+            <h3>Update (1/26/2017)</h3>
             <h3>Welcome to YATTWO. This is still a work in progress. No guarantees of anything being right, use at your own risk, etc. etc.</h3>
             <h3>Current/known issues:</h3>
             <ul>
@@ -15,6 +16,7 @@ class Update extends React.Component {
               <li>Editing equipment values is kind of fucked up right now, you have to move the cursor to where you want to edit and then edit instead of "normal" typing/backspacing</li>
               <li>Can't navigate directly to FAQ/Reference/Formula urls</li>
               <li>Steps option currently doesn't do anything</li>
+              <li>Can only have one of each type of equipment (but really, why would you have two -__-)</li>
             </ul>
           </div>
         }

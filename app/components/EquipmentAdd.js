@@ -13,12 +13,20 @@ class EquipmentAdd extends React.Component {
   }
   render() {
     return (
-      <div className='equipment-add-box'>
-        <i className="fa fa-plus" onClick={(e) => this.props.onEquipmentAdded(this.props.selected)}></i>
-        <select className='equipment-select' value={this.props.selected} onChange={(e) => this.props.onEquipmentSelected(this.props.category, e)}>
-          {this.getEquipmentOptions(this.props.equipment)}
-        </select>
-      </div>
+      <tr className="equipment-add">
+        <td></td>
+        <td>
+          <input type="text" className="input equipment-bonus-input"/>
+        </td>
+        <td>
+          <select className='equipment-select' value={this.props.selected} onChange={(e) => this.props.onEquipmentSelected(this.props.category, e)}>
+            {this.getEquipmentOptions(this.props.equipment)}
+          </select>
+        </td>
+        <td>
+          <i className="fa fa-plus" onClick={(e) => this.props.onEquipmentAdded(this.props.selected)}></i>
+        </td>
+      </tr>
     );
   }
 }
