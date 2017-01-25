@@ -23,7 +23,7 @@ class FilePicker extends React.Component {
         <div className="file-chooser-div">
           <input type="file"
                  accept=".fadat,.adat"
-                 placeholder="Choose File"
+                 placeholder="Load Information From File"
                  className="file-chooser"
                  onChange={this.handleChange}>
           </input>

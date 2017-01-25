@@ -6,6 +6,8 @@ class StepList extends React.Component {
   render() {
     return (
       <div className="step-list">
+        <button>Apply All</button>
+        <button>Reset Steps</button>
         <h3>Summary Steps</h3>
         <table>
           <tbody>

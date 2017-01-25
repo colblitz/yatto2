@@ -1,5 +1,6 @@
 import React from 'react';
 import FilePicker from './FilePicker';
+import StateOptions from './StateOptions';
 import OrderedArtifactList from './OrderedArtifactList';
 import OrderedEquipmentList from './OrderedEquipmentList';
 import OrderedHeroList from './OrderedHeroList';
@@ -28,6 +29,7 @@ class Home extends React.Component {
         <div className="panel-row">
           <Panel>
             <FilePicker />
+            <StateOptions />
           </Panel>
 
           <Panel>

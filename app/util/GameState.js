@@ -546,6 +546,7 @@ export function getDiff(g1, g2) {
 }
 
 export function fromSaveFile(saveJSON) {
+  console.log(saveJSON);
   var artifactLevels = {};
   for (var artifact in saveJSON.ArtifactModel.allArtifactInfo) {
     var level = saveJSON.ArtifactModel.allArtifactInfo[artifact].level.$content;
@@ -586,7 +587,11 @@ export function fromSaveFile(saveJSON) {
       lastEquipMaxStage   : saveJSON.EquipmentModel.lastMaxStage.$content,
       lastSkillMaxStage   : saveJSON.PlayerModel.lastSkillPointsCollectedStage.$content,
       skillPoints         : saveJSON.PlayerModel.skillPointsReceivedServer.$content,
-      maxStage            : saveJSON.PrestigeModel.maxPrestigeStageCount.$content,
+      maxStage            : Math.max(saveJSON.PrestigeModel.maxPrestigeStageCount.$content,
+                              saveJSON.StageLogicController.currentStage.$content,
+                              saveJSON.AchievementModel.ReachStageprogress.$content,
+                              saveJSON.EquipmentModel.lastMaxStage.$content,
+                              saveJSON.PlayerModel.lastSkillPointsCollectedStage.$content),
     },
     // swordmaster
     {
