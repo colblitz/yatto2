@@ -75,10 +75,11 @@ export const equipmentBonusChanged = (eid, newBonus) => {
   }
 }
 
-export const equipmentActiveChanged = (eid) => {
+export const equipmentActiveChanged = (eid, checked) => {
   return {
     type: types.EQUIPMENT_ACTIVE_CHANGED,
-    eid
+    eid,
+    checked
   }
 }
 

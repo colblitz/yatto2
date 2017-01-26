@@ -162,14 +162,17 @@ const rootReducer = (state = defaultState, action) => {
     case types.EQUIPMENT_LEVEL_CHANGED:
       return updateGamestateValues(state.setIn(['gamestate', 'equipment', action.eid, 'level'], action.newLevel));
     case types.EQUIPMENT_ACTIVE_CHANGED:
-      // unequip all others in that category
-      return updateGamestateValues(state.withMutations(state => {
-        state.updateIn(['gamestate', 'equipment'], equipmentMap => equipmentMap.map(
-          (eMap, eKey) => eKey.slice(0, 2) == action.eid.slice(0, 2) ? eMap.update('equipped', v => false) : eMap
-        ))
-          .setIn(['gamestate', 'equipment', action.eid, 'equipped'], true);
-      }));
-      // return state.setIn(['gamestate', 'equipment', action.eid, 'equipped'], true);
+      if (action.checked) {
+        // unequip all others in that category
+        return updateGamestateValues(state.withMutations(state => {
+          state.updateIn(['gamestate', 'equipment'], equipmentMap => equipmentMap.map(
+            (eMap, eKey) => eKey.slice(0, 2) == action.eid.slice(0, 2) ? eMap.update('equipped', v => false) : eMap
+          ))
+            .setIn(['gamestate', 'equipment', action.eid, 'equipped'], true);
+        }));
+      } else {
+        return updateGamestateValues(state.setIn(['gamestate', 'equipment', action.eid, 'equipped'], false));
+      }
     case types.SKILL_LEVEL_CHANGED:
       return updateGamestateValues(state.setIn(['gamestate', 'skills', action.sid], action.newLevel));
 
