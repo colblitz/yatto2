@@ -19,17 +19,17 @@ export const defaultState = Immutable.fromJS({
   gamestate: {
     info: {},
     swordmaster: {
-      level: 1,
+      level: 0,
     },
     artifacts: {
-      Artifact4: 2
+      // Artifact4: 2
     },
     heroes: {
       levels: {},
       weapons: {},
     },
     equipment: {
-      "Hat_Ninja": { "level": 327, "equipped": false, bonus: 53.32 }, // TODO: something about bonuses - computed?
+      // "Hat_Ninja": { "level": 327, "equipped": false, bonus: 53.32 }, // TODO: something about bonuses - computed?
     },
     pets: {
       active: "",
@@ -37,7 +37,7 @@ export const defaultState = Immutable.fromJS({
     },
     skills: {},
     clan: {
-      score: 1,
+      score: 0,
     },
   },
   options: {
