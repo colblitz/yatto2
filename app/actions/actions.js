@@ -158,6 +158,13 @@ export const methodChanged = (method) => {
   }
 }
 
+export const aorderChanged = (aorder) => {
+  return {
+    type: types.AORDER_CHANGED,
+    aorder
+  }
+}
+
 export const toggleAdvanced = (show) => {
   return {
     type: types.TOGGLE_ADVANCED,
@@ -181,10 +188,13 @@ export const optionValueChanged = (key, newValue) => {
   }
 }
 
-export const equipmentAdded = (eid) => {
+// TODO: change to a thunk
+export const equipmentAdded = (eid, level, bonus) => {
   return {
     type: types.EQUIPMENT_ADDED,
-    eid
+    eid,
+    level,
+    bonus
   }
 }
 
@@ -200,6 +210,14 @@ export const equipmentSelected = (category, eid) => {
     type: types.EQUIPMENT_SELECTED,
     category,
     eid
+  }
+}
+
+export const equipmentAddedBonus = (category, bonus) => {
+  return {
+    type: types.EQUIPMENT_ADDED_BONUS,
+    category,
+    bonus
   }
 }
 

@@ -39,20 +39,32 @@ class EquipmentTable extends React.Component {
                   return !equipment.includes(eid);
                 }).length > 0;
   }
+  getBlank() {
+    return (
+      <tr>
+        <td colSpan="4">
+        No equipment!
+        </td>
+      </tr>
+    )
+  }
   render() {
+    const equipment = this.getEquipment(this.props.category, this.props.equipment);
     return (
       <div className="equipment-table">
         <table>
-          <tr>
-            <th className="equipment-h equipment-h0">Equipped</th>
-            <th className="equipment-h equipment-h1">Bonus</th>
-            <th className="equipment-h equipment-h2"></th>
-            <th className="equipment-h equipment-h3"></th>
-          </tr>
-          { this.getEquipment(this.props.category, this.props.equipment) }
-          { this.hasAddOptions(this.props.category, this.props.equipment) &&
-            <EquipmentAdd category={this.props.category}/>
-          }
+          <tbody>
+            <tr>
+              <th className="equipment-h equipment-h0">Equipped</th>
+              <th className="equipment-h equipment-h1">Bonus</th>
+              <th className="equipment-h equipment-h2"></th>
+              <th className="equipment-h equipment-h3"></th>
+            </tr>
+            { equipment.length > 0 ? equipment : this.getBlank() }
+            { this.hasAddOptions(this.props.category, this.props.equipment) &&
+              <EquipmentAdd category={this.props.category}/>
+            }
+          </tbody>
         </table>
       </div>
     );
@@ -63,6 +75,7 @@ class EquipmentList extends React.Component {
   render() {
     return (
       <div className='equipment-list'>
+        <p>Add a new equip with the selectors - you won't be able to edit the equip bonus aftewards (yet), but you can always just remove it and re-add it. The bonus should be the number that you see in-game, and it'll try to figure out the level from the multiplier.</p>
         <h3>Weapons</h3>
         <EquipmentTable category={4} equipment={this.props.equipment}/>
         <h3>Helmets</h3>

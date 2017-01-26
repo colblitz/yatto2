@@ -246,6 +246,8 @@ const rootReducer = (state = defaultState, action) => {
 
     case types.METHOD_CHANGED:
       return state.setIn(['options', 'method'], action.method);
+    case types.AORDER_CHANGED:
+      return state.setIn(['options', 'aorder'], action.aorder);
     case types.TOGGLE_ADVANCED:
       return state.setIn(['options', 'advanced'], action.show);
     case types.TOGGLE_UPDATE:
@@ -258,11 +260,13 @@ const rootReducer = (state = defaultState, action) => {
         return state.setIn(action.key, action.newValue);
       }
     case types.EQUIPMENT_ADDED:
-      return state.setIn(['gamestate', 'equipment', action.eid], Immutable.fromJS({}));
+      return state.setIn(['gamestate', 'equipment', action.eid], Immutable.fromJS({level: action.level, bonus: action.bonus}));
     case types.EQUIPMENT_REMOVED:
       return state.deleteIn(['gamestate', 'equipment', action.eid]);
     case types.EQUIPMENT_SELECTED:
       return state.setIn(['equipmentSelected', action.category], action.eid);
+    case types.EQUIPMENT_ADDED_BONUS:
+      return state.setIn(['options', 'toAddBonus', action.category], action.bonus);
 
     case types.NEW_GAME_STATE:
       return updateGamestateValues(state.withMutations(state => {

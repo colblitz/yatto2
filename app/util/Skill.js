@@ -68,21 +68,17 @@ const skillTypes = {
   "BurstSkillBoost" : SkillType.Active
 }
 
-const skillTree = {
-  "PetQTE" : "",
-  "OfflineGold" : "",
-  "BurstSkillBoost" : ""
-}
+const skillTree = {}
 
 function getDepth(skill) {
   var depth = 0;
   var s = skill;
-  console.log(skillTree);
   while (s in skillTree) {
-    console.log(s);
-    s = skillTree[skill];
+    s = skillTree[s];
     if (s in skillTree) {
       depth += 1;
+    } else {
+      break;
     }
   }
   return depth;
@@ -97,7 +93,8 @@ const removedSkills = [
 export function loadSkillInfo(callback) {
   parse(skillCSV, {delimiter: ',', columns: true}, function(err, data) {
     for (var skill of data) {
-      if (skill.Attributes in removedSkills) {
+      var name = skill.Attributes;
+      if (removedSkills.indexOf(name) > -1) {
         continue;
       }
       var costs = Object.keys(skill).filter(function(k){return /C\d+/.test(k);})
@@ -107,18 +104,17 @@ export function loadSkillInfo(callback) {
                                       .sort(function(k1, k2){return parseInt(k1.substring(1)) - parseInt(k2.substring(1));})
                                       .map(function(k){return parseFloat(skill[k])});
       var skillType;
-      if (skill.Attributes in skillTypes) {
-        skillType = skillTypes[skill.Attributes];
+      if (name in skillTypes) {
+        skillType = skillTypes[name];
       } else {
         skillType = skillTypes[skill.Req];
-        skillTypes[skill.Attributes] = skillType;
+        skillTypes[name] = skillType;
       }
-      skillTree[skill.Attributes] = skill.Req;
-      console.log(skillTree);
-      var depth = getDepth(skill);
+      skillTree[name] = skill.Req;
+      var depth = getDepth(name);
 
-      SkillInfo[skill.Attributes] = new Skill(
-        skill.Attributes,
+      SkillInfo[name] = new Skill(
+        name,
         skillType,
         skill.Req,
         depth,
