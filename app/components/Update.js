@@ -17,6 +17,7 @@ class Update extends React.Component {
               <li>Can't navigate directly to FAQ/Reference/Formula urls</li>
               <li>Steps option currently doesn't do anything</li>
               <li>Can only have one of each type of equipment (but really, why would you have two -__-)</li>
+              <li>Logs out when you reload</li>
             </ul>
           </div>
         }
