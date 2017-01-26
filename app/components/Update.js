@@ -13,11 +13,11 @@ class Update extends React.Component {
             <h3>Current/known issues (besides the things in the todo):</h3>
             <ul>
               <li>Advanced options currently don't do anything</li>
-              <li>Editing equipment values is kind of fucked up right now, you have to move the cursor to where you want to edit and then edit instead of "normal" typing/backspacing</li>
               <li>Can't navigate directly to FAQ/Reference/Formula urls</li>
               <li>Steps option currently doesn't do anything</li>
               <li>Can only have one of each type of equipment (but really, why would you have two -__-)</li>
               <li>Logs out when you reload</li>
+              <li>Site locks up when optimizing instead of some sort of spinner</li>
             </ul>
           </div>
         }
