@@ -1,67 +1,50 @@
-Advanced Options
- * TPS
- * Include steps that go over relic limit (always optimal vs use all relics)
- * Optimize other things first before artifacts
- * Active levels...?
+### UI things
+ - Highlight artifact when at max level
+ - Drag and drop
+ - Format tab buttons
+ - Highlight input when invalid
+ - Highlight step on hover
+ - Highlight the equipped pet/equip
+ - Graphically show skill tree
+ - Fix input typing
+ - Allow invalid inputs
+ - Displays differently on mac?
+ - Steps get slightly larger with long artifact names
+ - Radio button for relics vs steps
+ - Spinner for getting steps
+ - Spinner for logging in
+ - Localization selector
+ - Expand pet options to display effects
+ - Pair pets by bonus type
+ - Pet sorting
+ - Show hero type
+ - Don't necessarily need full hero name
+ - "Saved!" animation
+ - ? reset upon logout?
 
-Immediate
- * Different buttons/steps for relics/gold/pet/hero/equip optimization
- * User accounts
- * More styling
- * async actions with redux-think
+### Things to add
+ - Figure out offline gold
+ - Relics from stage
+ - Equipment evaluator
+ - Salvage costs
 
- * Active skill weighting
- * Variable gold conversion factors
- * Other optimization weights (AD, gold, tapping)
-    * Figure out offline gold
+### Things
+ - Cookie management
+ - Active skill weighting
+ - Variable gold conversion factors
+ - Fold tps parameter into gamestate object
+ - Check application of equipment boosts in game code
+ - Check for "formatBonus" in game code
+ - Change notPercentageBonus - not not?
+ - Re-check skills<->bonuses, not all are bound
+ - Skill level weights for hero level optimizer
+ - Redux-form
+ - Automated ServerVarsModel.cs -> ServerVarsModel.js
+ - Google analytics
 
- * Even more styling
- * Options for calculating
-	* Relics vs steps - radio button for which limit
-
- * Fold tps parameter into gamestate
-
-Small things
- * Hover for plus and drag icons and stuff
- * Spinner for getting steps
- * Spinner for logging in
-
-Stuff
- * check in code where equipment boosts are applied
- * check in code for a "formatBonus"
- * Editing equipment values is pretty fucked up
- * notPercentageBonuses - really need "not"?
- * Localization selector
- * Drag and drop artifacts
- * Drag and drop equipment
-
-More Stuff
- * Order skills intelligently
- 	* Graphically display skills in a tree
- * Expand pet options to display effects
- * Pair the pets by bonus type
- * Don't necessarily need full hero name
- * Find way to not send passwords in plaintext
- * Break up actions by type
- * Break up reducers
- * Don't need any of the bower stuff
-
-Other forms
- * Relics from stage
- * Equipment comparer
- * UA forms
- * Salvage costs
-
-Other pages
- * Artifact costs/stats explorer
- * Formulas
- * FAQ/Thanks/Help
- * Re-check skills<->bonuses, not all are bound
- * Check relative hero skill bonuses compared to everything else (extra weight for skills in gold/hero level optimizer?)
- * Changelog
-
- Eventually
- * Redux-form
- * Automated ServerVarsModel.cs -> ServerVarsModel.js
- * Document where formulas come from
- * Google analytics
+### Code Organization
+ - Break up actions.js
+ - Break up reducers
+ - Break up main.less
+ - Get rid of superfluous components
+ - Don't need any of the bower stuff

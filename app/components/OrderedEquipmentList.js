@@ -5,9 +5,11 @@ import EquipmentList from './EquipmentList';
 const OrderedEquipmentList = ({ allLoaded }) => {
   return (
     <div className="ordered-equipment-list ordered-list">
-      { allLoaded &&
-        <EquipmentList />
-      }
+      <div className="list-wrapper">
+        { allLoaded &&
+          <EquipmentList />
+        }
+      </div>
     </div>
   );
 };

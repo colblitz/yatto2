@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { saveState, getState } from '../actions/actions';
+import { saveUserState, getUserState } from '../actions/actions';
 
 class StateOptions extends React.Component {
   render() {
@@ -24,12 +24,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSaveState: (token) => {
       if (token) {
-        dispatch(saveState(token));
+        dispatch(saveUserState(token));
       }
     },
     onGetState: (token) => {
       if (token) {
-        dispatch(getState(token));
+        dispatch(getUserState(token));
       }
     }
   }

@@ -5,7 +5,6 @@ class Header extends React.Component {
     return (
       <header>
         <div className='header'>
-          <h1>~*~*YATTWO*~*~</h1>
         </div>
       </header>
     );

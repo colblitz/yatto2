@@ -19,9 +19,6 @@ class ArtifactList extends React.Component {
     const artifacts = this.getArtifacts();
     return (
       <div className='artifact-list'>
-        <h3>
-          Artifacts
-        </h3>
         { artifacts }
       </div>
     );

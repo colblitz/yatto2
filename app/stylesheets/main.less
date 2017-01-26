@@ -3,7 +3,7 @@ body {
 }
 
 html {
-  background-color: #333333;
+  background-color: #444444;
   color: white;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 14px;
@@ -21,7 +21,7 @@ input {
 
 button {
   background-color: #eacc41;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 7px 10px;
   border: none;
   margin: 5px;
@@ -30,14 +30,26 @@ button {
   font-weight: bold;
 }
 
+button:hover:enabled {
+  cursor: pointer;
+  color: white;
+  transition: 0.2s;
+}
+
+.faq-page h3 {
+  margin: 0px;
+}
+
 .step-button {
 
 }
 
 .header {
-  height: 200px;
+  height: 100px;
   width: 100%;
-  background-color: #478f9a;
+  // background-color: #cbf1fe;
+  background: url('/img/yattwo.png') no-repeat left #cbf1fe;
+
 
   h1 {
     margin: 0;
@@ -95,16 +107,41 @@ button {
   align-items: center;
 }
 
+.nav-bar .login-input {
+  vertical-align: middle;
+}
+
 .nav-bar .login-text {
   display: inline-block;
+}
+
+.nav-bar .login-button {
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0px 10px;
 }
 
 .update {
   width: 100%;
 }
 
-.update-toggle {
+.update-stuff {
+  padding: 5px 15px;
+}
 
+.panel.update-panel {
+  background-color: #fff6cf;
+  padding: 0px;
+}
+
+.update-toggle {
+  background-color: #efdb84;
+}
+
+.update-toggle:hover {
+  background-color: #eacc41;
 }
 
 .update-icon {
@@ -119,9 +156,13 @@ button {
   color: black;
   padding: 15px;
   margin: 5px;
-  border: 1px solid #222222;
   display: inline-block;
   border-radius: 5px;
+}
+
+.tabbed-panel {
+  width: 100%;
+  padding: 0;
 }
 
 .panels {
@@ -129,8 +170,9 @@ button {
   align-items: stretch;
   justify-content: center;
   width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  // margin-left: auto;
+  // margin-right: auto;
+  margin: 20px auto;
 }
 
 .panel-row {
@@ -159,8 +201,18 @@ button {
   text-align: center;
 }
 
+.options-list {
+  padding: 10px;
+}
+
+.method-options {
+  padding: 10px;
+}
+
 .gamestate-stat-list {
   width: 300px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .gamestate-stat-display-box {
@@ -188,20 +240,20 @@ button {
   float: right;
 }
 
-
-.ordered-list {
-  margin: 5px;
-  padding: 5px;
-  display: inline-block;
-  border: 1px solid black;
-  align-self: flex-start;
-}
-
 .file-chooser-div {
   width: 250px;
   input {
     z-index: 1;
   }
+}
+
+.state-options {
+  text-align: center;
+  margin-left: 30px;
+}
+
+.state-options button {
+  width: 160px;
 }
 
 .footer-contact {
@@ -218,5 +270,124 @@ button {
 
 footer {
   height: 20px;
-  background-color: #123423;
+  background-color: #212121;
+  text-transform: uppercase;
+  color: white;
+  padding: 3px 10px;
+}
+
+.footer-github a, .footer-github a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-github a:hover {
+  color: #eacc41;
+}
+
+.buy-step {
+  background-color: #b38bca;
+}
+
+.step-list table {
+  width: 100%;
+}
+
+.step-col2,
+.step-col3,
+.step-col4 {
+  text-align: center;
+}
+
+td i:hover {
+  cursor: pointer;
+  color: #62cc0e;
+}
+
+.step-button {
+  text-align: center;
+}
+
+.step-button button {
+  background-color: #f77c28;
+  font-size: 14px;
+  width: 210px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 5px;
+}
+
+.step-list-buttons {
+  text-align: center;
+  width: 100%;
+}
+
+.step-list-buttons button {
+  width: 100px;
+}
+
+.tab-buttons button {
+  width: 90px;
+  text-align: center;
+  margin-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 10px;
+}
+
+.tab-buttons button:nth-child(1) {
+  background-color: #f77c28;
+  margin-left: 0;
+}
+.tab-buttons button:nth-child(2) {
+  background-color: #10a1ca;
+}
+.tab-buttons button:nth-child(3) {
+  background-color: #eacc41;
+}
+.tab-buttons button:nth-child(4) {
+  background-color: #62cc0e;
+}
+.tab-buttons button:nth-child(5) {
+  background-color: #952cce;
+}
+
+.ordered-list {
+  width: 100%;
+  padding: 0px 5px;
+  display: inline-block;
+  align-self: flex-start;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+}
+
+.ordered-skill-list {
+  background-color: #f77c28;
+}
+
+.ordered-hero-list {
+  background-color: #10a1ca;
+}
+
+.ordered-equipment-list {
+  background-color: #eacc41;
+}
+
+.ordered-pet-list {
+  background-color: #62cc0e;
+}
+
+.ordered-artifact-list {
+  background-color: #952cce;
+}
+
+.list-wrapper {
+  margin: 8px 4px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+}
+
+.ordered-list .label {
+  padding: 0px 4px;
 }

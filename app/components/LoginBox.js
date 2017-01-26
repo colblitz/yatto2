@@ -23,8 +23,8 @@ class LoginBox extends React.Component {
                    value={this.props.password}
                    placeholder="Password"
                    onChange={(e) => this.props.onPasswordChange(e)}/>
-            <button onClick={this.props.login}>Login</button>
-            <button onClick={this.props.register}>Register</button>
+            <button className="login-button" onClick={this.props.login}>Login</button>
+            <button className="login-button" onClick={this.props.register}>Register</button>
           </div>
         )}
       </div>

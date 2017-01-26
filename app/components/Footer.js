@@ -6,10 +6,10 @@ class Footer extends React.Component {
       <footer>
         <div className='footer'>
           <div className="footer-contact">
-            Updated for: Tap Titans 2 (1.1.6)
+            <b>Updated for:</b> Tap Titans 2 (1.1.6)
           </div>
           <div className="footer-github">
-            <a href="https://github.com/colblitz/yatto2">Github</a>
+            <a href="https://github.com/colblitz/yatto2"><b>Github</b></a>
           </div>
         </div>
       </footer>

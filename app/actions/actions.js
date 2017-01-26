@@ -293,6 +293,7 @@ export function login() {
     }).then(response => handleResponse(response, json => {
       if (json.token) {
         dispatch(tokenChanged(json.token));
+        getUserState(json.token)(dispatch, getState);
       }
     }, "POST /login"));
   }
@@ -304,7 +305,7 @@ export const logout = () => {
   }
 }
 
-export function saveState(token) {
+export function saveUserState(token) {
   return (dispatch, getState) => {
     console.log("dispatching from saveState with token: ", token);
 
@@ -324,7 +325,7 @@ export function saveState(token) {
 }
 
 
-export function getState(token) {
+export function getUserState(token) {
   return (dispatch, getState) => {
     console.log("dispatching from getState with token: ", token);
 

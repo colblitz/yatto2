@@ -63,18 +63,15 @@ class EquipmentList extends React.Component {
   render() {
     return (
       <div className='equipment-list'>
-        <h3>
-          Equipment (multiplier)
-        </h3>
-        <h4>Weapons</h4>
+        <h3>Weapons</h3>
         <EquipmentTable category={4} equipment={this.props.equipment}/>
-        <h4>Helmets</h4>
+        <h3>Helmets</h3>
         <EquipmentTable category={1} equipment={this.props.equipment}/>
-        <h4>Suits</h4>
+        <h3>Suits</h3>
         <EquipmentTable category={3} equipment={this.props.equipment}/>
-        <h4>Auras</h4>
+        <h3>Auras</h3>
         <EquipmentTable category={0} equipment={this.props.equipment}/>
-        <h4>Slashes</h4>
+        <h3>Slashes</h3>
         <EquipmentTable category={2} equipment={this.props.equipment}/>
       </div>
     );

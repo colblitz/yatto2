@@ -5,9 +5,11 @@ import PetList from './PetList';
 const OrderedPetList = ({ allLoaded }) => {
   return (
     <div className="ordered-pet-list ordered-list">
-      { allLoaded &&
-        <PetList />
-      }
+      <div className="list-wrapper">
+        { allLoaded &&
+          <PetList />
+        }
+      </div>
     </div>
   );
 };

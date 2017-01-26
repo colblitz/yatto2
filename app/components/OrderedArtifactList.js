@@ -5,9 +5,11 @@ import ArtifactList from './ArtifactList';
 const OrderedArtifactList = ({ allLoaded }) => {
   return (
     <div className="ordered-artifact-list ordered-list">
-      { allLoaded &&
-        <ArtifactList />
-      }
+      <div className="list-wrapper">
+        { allLoaded &&
+          <ArtifactList />
+        }
+      </div>
     </div>
   );
 };

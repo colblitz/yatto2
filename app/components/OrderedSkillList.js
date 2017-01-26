@@ -5,9 +5,11 @@ import SkillList from './SkillList';
 const OrderedSkillList = ({ allLoaded }) => {
   return (
     <div className="ordered-skill-list ordered-list">
-      { allLoaded &&
-        <SkillList />
-      }
+      <div className="list-wrapper">
+        { allLoaded &&
+          <SkillList />
+        }
+      </div>
     </div>
   );
 };

@@ -68,7 +68,8 @@ export const defaultState = Immutable.fromJS({
     username: "",
     password: "",
     token: "",
-  }
+  },
+  tabIndex: 4,
 });
 
 export function getGamestateFromState(state) {

@@ -22,7 +22,7 @@ class Home extends React.Component {
       <div className="main-page home-page">
         <div className="panels">
           <div className="panel-col">
-            <div className="panel panel-row">
+            <div className="panel update-panel panel-row">
               <Update />
             </div>
             <div className="panel-row">
@@ -51,11 +51,11 @@ class Home extends React.Component {
                 </div>
                 <div className="panel panel-row">
                   <TabbedPanel>
-                    <OrderedArtifactList tabLabel="Artifacts"/>
-                    <OrderedHeroList tabLabel="Heroes"/>
-                    <OrderedPetList tabLabel="Pets"/>
                     <OrderedSkillList tabLabel="Skills"/>
+                    <OrderedHeroList tabLabel="Heroes"/>
                     <OrderedEquipmentList tabLabel="Equipment"/>
+                    <OrderedPetList tabLabel="Pets"/>
+                    <OrderedArtifactList tabLabel="Artifacts"/>
                   </TabbedPanel>
                 </div>
               </div>

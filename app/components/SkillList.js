@@ -23,9 +23,6 @@ class SkillList extends React.Component {
     const skills = this.getSkills();
     return (
       <div className='skill-list'>
-        <h3>
-          Skills
-        </h3>
         <h4>Yellow</h4>
         <div>
           { this.getSkills(0) }

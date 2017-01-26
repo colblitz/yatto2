@@ -5,9 +5,11 @@ import HeroList from './HeroList';
 const OrderedHeroList = ({ allLoaded }) => {
   return (
     <div className="ordered-hero-list ordered-list">
-      { allLoaded &&
-        <HeroList />
-      }
+      <div className="list-wrapper">
+        { allLoaded &&
+          <HeroList />
+        }
+      </div>
     </div>
   );
 };

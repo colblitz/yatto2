@@ -52,6 +52,9 @@ class FAQ extends React.Component {
               <li><b>RelicE</b> - uses a formula (I'll write a post about it soon) to convert damage increases to an equivalent relics gain increase in order to include Book of Shadows in the optimizations</li>
             </ul>
 
+            <h3>You should do ____!</h3>
+            <p>This is my <a href="https://github.com/colblitz/yatto2/blob/master/todo.txt">current todo list</a>. If your idea isn't on there, feel free to contact me</p>
+
             <h3>Can I look at the source?</h3>
             <p>Repo link in footer</p>
 

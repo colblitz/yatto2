@@ -7,8 +7,10 @@ class StepList extends React.Component {
   render() {
     return (
       <div className="step-list">
-        <button onClick={this.props.onApplyAllSteps}>Apply All</button>
-        <button onClick={this.props.onResetSteps}>Reset Steps</button>
+        <div className="step-list-buttons">
+          <button onClick={this.props.onApplyAllSteps}>Apply All</button>
+          <button onClick={this.props.onResetSteps}>Reset Steps</button>
+        </div>
         <h3>Summary Steps</h3>
         <table>
           <tbody>
