@@ -9,8 +9,8 @@ class Update extends React.Component {
         { this.props.update &&
           <div className="update-stuff">
             <h3>Update (1/26/2017)</h3>
-            <h3>Welcome to YATTWO. This is still a work in progress. No guarantees of anything being right, use at your own risk, etc. etc.</h3>
-            <h3>Current/known issues:</h3>
+            <h3>Welcome to YATTWO's initial launch. This is still a work in progress, so expect a lot of rough edges. Please read through the FAQ if you don't know what's going on.</h3>
+            <h3>Current/known issues (besides the things in the todo):</h3>
             <ul>
               <li>Advanced options currently don't do anything</li>
               <li>Editing equipment values is kind of fucked up right now, you have to move the cursor to where you want to edit and then edit instead of "normal" typing/backspacing</li>
