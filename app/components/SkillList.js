@@ -13,6 +13,7 @@ class SkillList extends React.Component {
                   return SkillInfo[sid].type == tree;
                 })
                 .sort(function(a, b) { return getSkillName(a).localeCompare(getSkillName(b)); })
+                .sort(function(a, b) { return SkillInfo[a].depth - SkillInfo[b].depth; })
                 .map(function(sid) {
                   return (
                     this.renderSkillInput(sid)

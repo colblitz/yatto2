@@ -35,10 +35,11 @@ var SkillToBonus = {
 };
 
 export class Skill {
-  constructor(id, type, req, stageReq, costs, amounts) {
+  constructor(id, type, req, depth, stageReq, costs, amounts) {
     this.id = id; // PetQTE
     this.type = type;
     this.req = req;
+    this.depth = depth;
     this.stageReq = stageReq;
     this.costs = costs;
     this.amounts = amounts;
@@ -67,10 +68,38 @@ const skillTypes = {
   "BurstSkillBoost" : SkillType.Active
 }
 
+const skillTree = {
+  "PetQTE" : "",
+  "OfflineGold" : "",
+  "BurstSkillBoost" : ""
+}
+
+function getDepth(skill) {
+  var depth = 0;
+  var s = skill;
+  console.log(skillTree);
+  while (s in skillTree) {
+    console.log(s);
+    s = skillTree[skill];
+    if (s in skillTree) {
+      depth += 1;
+    }
+  }
+  return depth;
+}
+
+const removedSkills = [
+  "GoblinQTE",
+  "BossCountQTE",
+  "GoldRateBoost"
+]
+
 export function loadSkillInfo(callback) {
   parse(skillCSV, {delimiter: ',', columns: true}, function(err, data) {
     for (var skill of data) {
-
+      if (skill.Attributes in removedSkills) {
+        continue;
+      }
       var costs = Object.keys(skill).filter(function(k){return /C\d+/.test(k);})
                                     .sort(function(k1, k2){return parseInt(k1.substring(1)) - parseInt(k2.substring(1));})
                                     .map(function(k){return parseInt(skill[k])});
@@ -84,10 +113,15 @@ export function loadSkillInfo(callback) {
         skillType = skillTypes[skill.Req];
         skillTypes[skill.Attributes] = skillType;
       }
+      skillTree[skill.Attributes] = skill.Req;
+      console.log(skillTree);
+      var depth = getDepth(skill);
+
       SkillInfo[skill.Attributes] = new Skill(
         skill.Attributes,
         skillType,
         skill.Req,
+        depth,
         skill.StageReq,
         costs,
         amounts
