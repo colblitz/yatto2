@@ -10,9 +10,9 @@ class ArtifactList extends React.Component {
   }
   getArtifacts(aorder) {
     const alphabetical = (a, b) => ArtifactInfo[a].name.localeCompare(ArtifactInfo[b].name);
-    const artifactID = (a, b) => parseInt(a.substring(8)) - parseInt(b.substring(8));
+    const artifactOrder = (a, b) => ArtifactInfo[a].index - ArtifactInfo[b].index;
     return Object.keys(ArtifactInfo)
-                .sort(aorder == 0 ? alphabetical : artifactID)
+                .sort(aorder == 0 ? alphabetical : artifactOrder)
                 .map(function(aid) {
                   return (
                     this.renderArtifactInput(aid)

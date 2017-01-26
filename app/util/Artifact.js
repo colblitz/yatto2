@@ -5,8 +5,9 @@ var parse = require('csv-parse');
 var artifactCSV = require('../data/ArtifactInfo.csv');
 
 export class Artifact {
-  constructor(id, number, name, costc, coste, maxLevel, effects) {
+  constructor(id, index, number, name, costc, coste, maxLevel, effects) {
     this.id = id; // Artifact1
+    this.index = index;
     this.number = number; // 1
     this.name = name;
     this.costc = costc;
@@ -57,9 +58,11 @@ export const ArtifactInfo = {};
 
 export function loadArtifactInfo(callback) {
   parse(artifactCSV, {delimiter: ',', columns: true}, function(err, data) {
+    var index = 0;
     for (var artifact of data) {
       ArtifactInfo[artifact.ArtifactID] = new Artifact(
         artifact.ArtifactID,
+        index,
         parseInt(artifact.ArtifactID.substring(8)),
         artifact.Name,
         parseFloat(artifact.CostCoef),
@@ -70,6 +73,7 @@ export function loadArtifactInfo(callback) {
           [stringToBonus[artifact.BonusType]]: parseFloat(artifact.EffectPerLevel),
         }
       );
+      index += 1;
     }
     console.log("loader - Done loading ArtifactInfo");
     callback(true);
