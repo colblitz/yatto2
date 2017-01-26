@@ -100,7 +100,7 @@ const mapDispatchToProps = (dispatch) => {
         }
         var baseBonus = bonus / (boost * fMultiplier);
         var level = EquipmentInfo[eid].getLevelFromBonus(baseBonus);
-        dispatch(equipmentAdded(eid, level, bonus));
+        dispatch(equipmentAdded(eid, level, baseBonus));
       }
     },
     onEquipmentBonus: (e, category) => {
