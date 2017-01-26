@@ -117,7 +117,7 @@ function updateGamestateValues(state) {
   gamestate.calculateBonuses();
 
   return state.withMutations(state => {
-    state.setIn(['gamestateStats', 'artifactDamage', 'value'], getBonus(gamestate.bonuses, BonusType.ArtifactDamage))
+    state.setIn(['gamestateStats', 'artifactDamage', 'value'], getBonus(gamestate.bonuses, BonusType.ArtifactDamage) * getBonus(gamestate.bonuses, BonusType.HSArtifactDamage))
       .setIn(['gamestateStats', 'baseTapDamage', 'value'], gamestate.getBaseTapDamage())
       .setIn(['gamestateStats', 'averageCritDamage', 'value'], gamestate.getAverageCritDamage())
       .setIn(['gamestateStats', 'petDamage', 'value'], gamestate.getPetDamage())

@@ -21,6 +21,7 @@
  - Don't necessarily need full hero name
  - "Saved!" animation
  - ? reset upon logout?
+ - Space every 5 heroes
 
 ### Things to add
  - Figure out offline gold
@@ -29,8 +30,9 @@
  - Salvage costs
 
 ### Things
+ - Warning if not everything is filled out
  - Cookie management
- - Active skill weighting
+ - Active skill weighting, option to not consider actives
  - Variable gold conversion factors
  - Fold tps parameter into gamestate object
  - Check application of equipment boosts in game code
@@ -38,6 +40,8 @@
  - Change notPercentageBonus - not not?
  - Re-check skills<->bonuses, not all are bound
  - Skill level weights for hero level optimizer
+ - Passwords are sent as plaintext
+ - Usernames are case sensitive
  - Redux-form
  - Automated ServerVarsModel.cs -> ServerVarsModel.js
  - Google analytics
