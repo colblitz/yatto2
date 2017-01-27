@@ -407,7 +407,7 @@ export class GameState {
 
   // MonsterModel.GetMonsterHP
   getBaseMonsterHP(stage) {
-    var num = ServerVarsModel.monsterHPMultiplier *
+    return ServerVarsModel.monsterHPMultiplier *
       Math.pow(ServerVarsModel.monsterHPBase1, Math.min(stage, ServerVarsModel.monsterHPLevelOff)) *
       Math.pow(ServerVarsModel.monsterHPBase2, Math.max(stage - ServerVarsModel.monsterHPLevelOff, 0));
   }
