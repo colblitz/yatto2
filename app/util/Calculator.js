@@ -77,6 +77,7 @@ function getEfficiency(newState, baseValue, cost, settings) {
     case optimizationType.Hero   :
     case optimizationType.DmgE   :
     default:
+      // console.log("new value: ", getValue(newState, settings), " efficiency: ", (getValue(newState, settings) - baseValue) / cost);
       return (getValue(newState, settings) - baseValue) / cost;
   }
 }
@@ -216,8 +217,8 @@ export function getRelicSteps(gamestate, settings) {
   // ASSUMPTION: SM/heroes are already optimal and won't change
 
   var currentState = gamestate.getCopy();
-  // console.log("starting state");
-  // console.log(currentState);
+  console.log("starting state");
+  console.log(currentState);
 
   var relicsLeft = settings.relics;
   var shouldBuy = false;
