@@ -1,3 +1,12 @@
+### Issues
+ - Advanced options don't do anything
+ - Can't navigate directly to other urls
+ - Steps option currently doesn't do anything
+ - Can only have one of each type of equipment
+ - Logs out when you reload
+ - Site locks up when calculating instead of using some sort of spinner
+ - Need to input artifact levels before equipment information, otherwise the bonuses will get modified by the equipment boosting artifacts
+
 ### UI things
  - Highlight artifact when at max level
  - Drag and drop

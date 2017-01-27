@@ -8,19 +8,12 @@ class Update extends React.Component {
       <div className="update">
         { this.props.update &&
           <div className="update-stuff">
-            <h3>Update (1/26/2017)</h3>
-            <h3>Welcome to YATTWO's initial launch. This is still a work in progress, so expect a lot of rough edges. Please read through the FAQ if you don't know what's going on.</h3>
-            <h3>Current/known issues (besides the things in the todo):</h3>
+            <h3>Update (1/27/2017)</h3>
+            <h3>Still tweaking some formulas, working through bugs. Moved most of the "current issues" to the todo list</h3>
             <ul>
-              <li>Advanced options currently don't do anything</li>
-              <li>Can't navigate directly to FAQ/Reference/Formula urls</li>
-              <li>Steps option currently doesn't do anything</li>
-              <li>Can only have one of each type of equipment (but really, why would you have two -__-)</li>
-              <li>Logs out when you reload</li>
-              <li>Site locks up when optimizing instead of some sort of spinner</li>
-              <li><b>Stone of the Valrunes thing should be fixed - for those who had been getting it, how many of you manually input info?</b></li>
+              <li><b>Made a change to the gold formula, please let me know if this broke things</b></li>
+              <li>If you're getting weird values, make sure that you've filled in all your info (<b>artifacts before equipment</b>), and if possible, import information from your save file</li>
               <li>Save files - for Android, this save file would be somewhere like /sdcard/Android/data/com.gavehivecorp.taptitans2/files/ISavableGlobal.adat, whereas for iOS I assume it's something like Apps->Tap Titans 2->Documents->ISavableGlobal.adat (going off of what it was for TT1)</li>
-              <li>For now, make sure you input your artifact levels before your equipment information, otherwise the equipment bonuses will get modified by the equipment boosting artifacts</li>
             </ul>
           </div>
         }
