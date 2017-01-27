@@ -66,9 +66,7 @@ function getEfficiency(newState, baseValue, cost, settings) {
       var b = s > ServerVarsModel.monsterHPLevelOff ? ServerVarsModel.monsterHPBase2 : ServerVarsModel.monsterHPBase1;
       var prgd = Math.pow(1 + (Math.log(d) / Math.log(b)) / (s-a), c);   // % relic gain from d% gain
       var prga = newState.getBonus(BonusType.PrestigeRelic) / baseValue[1];
-      // console.log("prgd: ", prgd, " prga: ", prga);
       var prg = prgd * prga;
-      // console.log("prg-1: ", (prg-1), " cost: ", cost, " efficiency: ", (prg - 1) / cost);
       return (prg - 1) / cost;
     case optimizationType.AD     :
     case optimizationType.Gold   :
@@ -77,7 +75,6 @@ function getEfficiency(newState, baseValue, cost, settings) {
     case optimizationType.Hero   :
     case optimizationType.DmgE   :
     default:
-      // console.log("new value: ", getValue(newState, settings), " efficiency: ", (getValue(newState, settings) - baseValue) / cost);
       return (getValue(newState, settings) - baseValue) / cost;
   }
 }
@@ -97,7 +94,6 @@ export function getGoldSteps(gamestate, gold, settings) {
     var options = [];
 
     // get base values
-    // var baseValue = currentState.getDamageEquivalent(tps);
     var baseValue = getValue(currentState, settings);
 
     // swordmaster option
@@ -112,7 +108,6 @@ export function getGoldSteps(gamestate, gold, settings) {
         text: "swordmaster to " + nLevel,
         result: newState,
         resultCost: cost,
-        // efficiency: (newState.getDamageEquivalent(tps) - baseValue) / cost,
         efficiency: getEfficiency(newState, baseValue, cost, settings),
       });
     }
@@ -126,7 +121,6 @@ export function getGoldSteps(gamestate, gold, settings) {
           text: "buying " + hero,
           result: newHState,
           resultCost: HeroInfo[hero].cost,
-          // efficiency: (newHState.getDamageEquivalent(tps) - baseValue) / HeroInfo[hero].cost,
           efficiency: getEfficiency(newHState, baseValue, HeroInfo[hero].cost, settings),
         });
       // heroes that can be leveled
@@ -143,7 +137,6 @@ export function getGoldSteps(gamestate, gold, settings) {
             text: "hero " + hero + " to " + nHLevel,
             result: newHState,
             resultCost: costH,
-            // efficiency: (newHState.getDamageEquivalent(tps) - baseValue) / costH,
             efficiency: getEfficiency(newHState, baseValue, costH, settings),
           });
         }
@@ -175,7 +168,6 @@ function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficien
   newState.artifacts[artifact] = 1;
 
   // get starting state, save for later
-  // var baseDamageEquivalent = newState.getDamageEquivalent(tps, true);
   var baseDamageEquivalent = getValue(newState, newSettings);
   var savedBasedDamageEquivalent = baseDamageEquivalent;
 
@@ -183,9 +175,7 @@ function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficien
   var currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
   newState.artifacts[artifact] = ++currentLevel;
   totalCost += currentCost;
-  // var currentDmgEquivalent = newState.getDamageEquivalent(tps, true);
   var currentDmgEquivalent = getValue(newState, newSettings);
-  // var currentEfficiency = (currentDmgEquivalent - baseDamageEquivalent) / currentCost;
   var currentEfficiency = getEfficiency(newState, baseDamageEquivalent, currentCost, newSettings);
   baseDamageEquivalent = currentDmgEquivalent;
 
@@ -194,9 +184,7 @@ function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficien
     currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
     newState.artifacts[artifact] = ++currentLevel;
     totalCost += currentCost;
-    // currentDmgEquivalent = newState.getDamageEquivalent(tps, true);
     currentDmgEquivalent = getValue(newState, newSettings);
-    // currentEfficiency = (currentDmgEquivalent - baseDamageEquivalent) / currentCost;
     currentEfficiency = getEfficiency(newState, baseDamageEquivalent, currentCost, newSettings);
     baseDamageEquivalent = currentDmgEquivalent;
   }
@@ -205,10 +193,7 @@ function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficien
   var canLevelTo = currentLevel - 1;
   totalCost -= currentCost;
   newState.artifacts[artifact] = canLevelTo;
-  // currentDmgEquivalent = newState.getDamageEquivalent(tps, true);
-  // currentDmgEquivalent = getValue(newState, tps, method, true);
   totalCost += costToBuy;
-  // return (currentDmgEquivalent - savedBasedDamageEquivalent) / totalCost;
   return getEfficiency(newState, savedBasedDamageEquivalent, totalCost, newSettings);
 }
 
@@ -225,18 +210,14 @@ export function getRelicSteps(gamestate, settings) {
   var steps = [];
   var totalSpent = 0;
 
-  // console.log("useAll: ", settings.useAll);
   while (relicsLeft > 0) {
     var options = [];
 
     // get base values
-    // var baseValue = currentState.getDamageEquivalent(tps);
-    // console.log("base value");
     var baseValue = getValue(currentState, settings);
 
     for (var artifact in currentState.artifacts) {
       if (ArtifactInfo[artifact].canLevel(currentState.artifacts[artifact])) {
-        // console.log(ArtifactInfo[artifact].name);
         var newState = currentState.getCopy();
         var cost = ArtifactInfo[artifact].getCostToLevelUp(newState.artifacts[artifact]);
         if ((settings.useAll && cost < relicsLeft) || !settings.useAll) {
@@ -246,17 +227,11 @@ export function getRelicSteps(gamestate, settings) {
             levelTo: newState.artifacts[artifact],
             result: newState,
             cost: cost,
-            // efficiency: (newState.getDamageEquivalent(tps) - baseValue) / cost,
             efficiency: getEfficiency(newState, baseValue, cost, settings),
           });
         }
       }
     }
-
-    // console.log("leveling options: ");
-    // console.log(options);
-
-    // console.log(steps);
 
     var costToBuy = nextArtifactCost(Object.keys(currentState.artifacts).length);
     if (options.length > 0) {
@@ -295,9 +270,6 @@ export function getRelicSteps(gamestate, settings) {
       relicsLeft = 0;
       break;
     }
-
-    // console.log("options: ");
-    // console.log(options);
 
     if (options.length > 0) {
       var bestOption = getMax(options, function(o1, o2) {
@@ -363,8 +335,6 @@ export function getRelicSteps(gamestate, settings) {
     }
   }
 
-  // console.log(summary);
-
   for (var artifact in summary) {
     summarySteps.push({
       artifact: artifact,
@@ -373,9 +343,6 @@ export function getRelicSteps(gamestate, settings) {
     });
   }
 
-  // console.log(summarySteps);
-
-  // var diff = getDiff(gamestate, currentState);
   return {
     steps,
     summarySteps

@@ -25,12 +25,13 @@
  - Localization selector
  - Expand pet options to display effects
  - Pair pets by bonus type
- - Pet sorting
+ - Pet sorting - by bonus, by type
  - Show hero type
  - Don't necessarily need full hero name
  - "Saved!" animation
  - ? reset upon logout?
  - Space every 5 heroes
+ - Sort artifacts by type
 
 ### Things to add
  - Figure out offline gold
