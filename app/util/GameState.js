@@ -106,9 +106,13 @@ export class GameState {
     // ArtifactModel.ApplyAllArtifactBonuses
     addBonus(allBonuses, BonusType.AllDamage, getBonus(allBonuses, BonusType.ArtifactDamage) * getBonus(allBonuses, BonusType.HSArtifactDamage));
 
+    console.log("before heroes monster: ", getBonus(allBonuses, BonusType.GoldMonster), " boss: ", getBonus(allBonuses, BonusType.GoldBoss));
+
     for (var hero in this.heroes.levels) {
       HeroInfo[hero].getAllBonuses(this.heroes.levels[hero], allBonuses);
     }
+
+    console.log("after heroes monster: ", getBonus(allBonuses, BonusType.GoldMonster), " boss: ", getBonus(allBonuses, BonusType.GoldBoss));
 
     for (var equip in this.equipment) {
       if (this.equipment[equip].equipped) {
@@ -318,12 +322,13 @@ export class GameState {
 
     // Get base gold (without bonuses)
     var monsterCount = this.getMonsterCount(this.info.maxStage);
-    var hpBase = this.info.maxStage > ServerVarsModel.monsterHPLevelOff ? ServerVarsModel.monsterHPBase2 : ServerVarsModel.monsterHPBase1;
+    var baseHP = this.getBaseMonsterHP(this.info.maxStage);
+    var hpGrowth = this.info.maxStage > ServerVarsModel.monsterHPLevelOff ? ServerVarsModel.monsterHPBase2 : ServerVarsModel.monsterHPBase1;
     var baseGold = 0;
     var actualGold = 0;
     for (var i of [0, 1, 2, 3, 4]) {
       // Get base monster gold with 1 as base
-      var baseMonsterHP = Math.pow(hpBase, i);
+      var baseMonsterHP = Math.pow(hpGrowth, i) * baseHP;
       var baseMonsterGold = this.getMonsterGold(baseMonsterHP, this.info.maxStage, {}) * monsterCount;
 
       // Get actual monster gold with bonuses
@@ -343,8 +348,9 @@ export class GameState {
 
       baseGold += baseMonsterGold + baseBossGold;
       actualGold += monsterGold + bossGold;
-      console.log("monster m: ", monsterGold/baseMonsterGold);
-      console.log("boss m: ", bossGold/baseBossGold);
+      console.log("monster / boss: ", monsterGold / bossGold);
+      // console.log("monster m: ", monsterGold/baseMonsterGold);
+      // console.log("boss m: ", bossGold/baseBossGold);
     }
     console.log("overall: ", actualGold / baseGold);
 
@@ -400,30 +406,10 @@ export class GameState {
   }
 
   // MonsterModel.GetMonsterHP
-  getMonsterHP(stage, isBoss) {
-  //   var num = ServerVarsModel.monsterHPMultiplier * Math.pow(ServerVarsModel.monsterHPBase1, Math.min(stage, ServerVarsModel.monsterHPLevelOff))
-  //   double num = (double)ServerVarsModel.monsterHPMultiplier *
-  //   Math.Pow(
-  //     (double)ServerVarsModel.monsterHPBase1,
-  //     (double)Math.Min(
-  //       (float)stageNum,
-  //       ServerVarsModel.monsterHPLevelOff)) *
-  //   Math.Pow(
-  //     (double)ServerVarsModel.monsterHPBase2,
-  //     (double)Math.Max(
-  //       (float)stageNum - ServerVarsModel.monsterHPLevelOff,
-  //       0f)) *
-  //   Singleton<BonusModel>.instance.GetBonus(BonusType.MonsterHP);
-
-  //   if (monsterClass == MonsterClass.Boss)
-  //   {
-  //     if (stageNum >= 1)
-  //     {
-  //       num *= (double)ServerVarsModel.themeMultiplierSequence[(stageNum - 1) % 5];
-  //     }
-  //   }
-  //   return num;
-  // }
+  getBaseMonsterHP(stage) {
+    var num = ServerVarsModel.monsterHPMultiplier *
+      Math.pow(ServerVarsModel.monsterHPBase1, Math.min(stage, ServerVarsModel.monsterHPLevelOff)) *
+      Math.pow(ServerVarsModel.monsterHPBase2, Math.max(stage - ServerVarsModel.monsterHPLevelOff, 0));
   }
 
   // StageLogic.GetEnemyCount()
