@@ -517,6 +517,49 @@ export class GameState {
 // }
   }
 
+  getSplashGold(numSplashed, stage) {
+    return numSplashed * this.getInactiveMonsterGoldDrop(stage);
+  }
+
+  // MonsterModel.GetInactiveMonsterGoldDrop
+  getInactiveMonsterGoldDrop(stageNum) {
+    var monsterGoldDrop = this.getMonsterGoldDrop(stageNum); //, MonsterClass.Normal);
+
+    var goldx10Chance = ServerVarsModel.goldx10Chance + this.getBonus(BonusType.Goldx10Chance);
+    var goldx10Multiplier = ((goldx10Chance * 9) + 1);
+
+    var chestersonChance = ServerVarsModel.chestersonChance + this.getBonus(BonusType.ChestChance);
+    var chestersonMultiplier = ServerVarsModel.treasureGold * this.getBonus(BonusType.ChestAmount);
+
+    var familyChance = ServerVarsModel.multiMonsterBaseChance + this.getBonus(BonusType.MultiMonster);
+    var familyMultiplier = ((familyChance * 2.5) + 1);
+
+    return monsterGoldDrop * goldx10Multiplier * (1.0 + chestersonChance * (chestersonMultiplier - 1.0)) * familyMultiplier;
+  }
+
+  // MonsterModel.GetMonsterGoldDrop
+  getMonsterGoldDrop(stageNum) {//, MonsterClass monsterClass) {
+    // double num = (this.GetMonsterHP(stageNum, monsterClass) * (double)ServerVarsModel.monsterGoldMultiplier + (double)(ServerVarsModel.monsterGoldSlope * Math.Min((float)stageNum, ServerVarsModel.noMoreMonsterGoldSlope))) * Singleton<BonusModel>.instance.GetBonus(BonusType.GoldAll);
+    // if (monsterClass == MonsterClass.Chesterson)
+    // {
+    //   num *= Singleton<BonusModel>.instance.GetChestersonMultiplier();
+    // }
+    // else if (monsterClass == MonsterClass.Boss)
+    // {
+    //   num *= Math.Max((double)ServerVarsModel.maxBossGoldMultiplier, Math.Min(1.0, Math.Ceiling((double)((stageNum - 5) / 5)) * (double)ServerVarsModel.bossGoldMultiplierSlope)) * Singleton<BonusModel>.instance.GetBonus(BonusType.GoldBoss);
+    // }
+    // else
+    // {
+    //   num *= Singleton<BonusModel>.instance.GetBonus(BonusType.GoldMonster);
+    // }
+    // if (num < 100.0)
+    // {
+    //   num = Math.Ceiling(num);
+    // }
+    // return Math.Max(Singleton<BonusModel>.instance.GetBonus(BonusType.GoldAll), num);
+  }
+
+
   getRelicsFromStage(stage) {
 
   }

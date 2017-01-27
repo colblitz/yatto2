@@ -50,7 +50,7 @@ export const defaultState = Immutable.fromJS({
     useAll: false,
   },
   gamestateStats: {
-    artifactDamage:        { order: 0, value: 0, label: "Artifact Damage" },
+    artifactDamage:        { order: 0, value: 0, label: "Artifact Damage (%)" },
     baseTapDamage:         { order: 1, value: 0, label: "Tap Damage" },
     averageCritDamage:     { order: 2, value: 0, label: "Average Tap Damage with Crits" },
     petDamage:             { order: 3, value: 0, label: "Pet Damage" },
@@ -121,12 +121,12 @@ function updateGamestateValues(state) {
   gamestate.calculateBonuses();
 
   return state.withMutations(state => {
-    state.setIn(['gamestateStats', 'artifactDamage', 'value'], getBonus(gamestate.bonuses, BonusType.ArtifactDamage) * getBonus(gamestate.bonuses, BonusType.HSArtifactDamage))
+    state.setIn(['gamestateStats', 'artifactDamage', 'value'], getBonus(gamestate.bonuses, BonusType.ArtifactDamage) * getBonus(gamestate.bonuses, BonusType.HSArtifactDamage) * 100)
       .setIn(['gamestateStats', 'baseTapDamage', 'value'], gamestate.getBaseTapDamage())
       .setIn(['gamestateStats', 'averageCritDamage', 'value'], gamestate.getAverageCritDamage())
       .setIn(['gamestateStats', 'petDamage', 'value'], gamestate.getPetDamage())
       .setIn(['gamestateStats', 'heroDamage', 'value'], gamestate.getHeroDamage())
-      .setIn(['gamestateStats', 'allDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.AllDamage) - 1) * 100)
+      .setIn(['gamestateStats', 'allDamageMultiplier', 'value'], getBonus(gamestate.bonuses, BonusType.AllDamage) * 100)
       .setIn(['gamestateStats', 'heroDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.AllHelperDamage) - 1) * 100)
       .setIn(['gamestateStats', 'meleeDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.MeleeHelperDamage) - 1) * 100)
       .setIn(['gamestateStats', 'rangeDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.RangedHelperDamage) - 1) * 100)
