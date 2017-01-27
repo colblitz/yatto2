@@ -23,7 +23,8 @@ bower install
 # install dev libraries
 npm install --only=dev
 
-# run these in terminals
+# run each of these in separate terminal sessions
+mongod
 gulp
 npm run watch
 ```
