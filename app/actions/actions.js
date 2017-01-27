@@ -302,19 +302,28 @@ export function login() {
     var username = state.getIn(['auth', 'username']);
     var password = state.getIn(['auth', 'password']);
 
-    fetch('/login', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username,
-        password
-      })
-    }).then(response => handleResponse(response, json => {
-      if (json.token) {
-        dispatch(tokenChanged(json.token));
-        getUserState(json.token)(dispatch, getState);
-      }
-    }, "POST /login"));
+    if (username && password) {
+      fetch('/login', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      }).then(response => handleResponse(response, json => {
+        if (json.token) {
+          dispatch(tokenChanged(json.token));
+          getUserState(json.token)(dispatch, getState);
+        }
+      }, "POST /login"));
+    } else if (username) {
+      fetch('/state?username=' + username, {
+        method: 'get',
+      }).then(response => handleResponse(response, json => {
+        var s = JSON.parse(json.state);
+        dispatch(stateFromServer(Immutable.fromJS(s)));
+      }, "GET /state"));
+    }
   }
 }
 
@@ -344,19 +353,21 @@ export function saveUserState(token) {
 }
 
 
-export function getUserState(token) {
+export function getUserState() {
   return (dispatch, getState) => {
-    console.log("dispatching from getState with token: ", token);
+    console.log("dispatching from getState");
 
-    fetch('/state', {
-      method: 'get',
-      headers: {
-        'Authorization': 'JWT ' + token
-      }
-    }).then(response => handleResponse(response, json => {
-      var s = JSON.parse(json.state);
-      dispatch(stateFromServer(Immutable.fromJS(s)));
-    }, "GET /state"));
+    var state = getState();
+    var username = state.getIn(['auth', 'username']);
+
+    if (username) {
+      fetch('/state?username=' + username, {
+        method: 'get',
+      }).then(response => handleResponse(response, json => {
+        var s = JSON.parse(json.state);
+        dispatch(stateFromServer(Immutable.fromJS(s)));
+      }, "GET /state"));
+    }
   }
 }
 

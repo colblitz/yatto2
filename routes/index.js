@@ -89,15 +89,18 @@ module.exports = function(passport, jwtSecretOrKey) {
 
   //////////////////////////////////////////////////////////
 
-  router.get("/state", passport.authenticate('jwt', { session: false }), function(req, res) {
-    var userId = req.user._id;
+  router.get("/state", function(req, res) {
+    User.findOne({ 'username': req.query.username }, function(err, user) {
+      if (err) { res.status(500).json({ error: "Error finding user: " + err }); return; }
+      if (!user) { res.status(400).json({ error: "No user found" }); return; }
 
-    State.findOne({ 'user': userId }, function(err, state) {
-      if (err) { res.status(500).json({ error: "Error finding state: " + err }); return; }
-      if (!state) { res.status(400).json({ error: "No state found for user" }); return; }
+      State.findOne({ 'user': user._id }, function(err, state) {
+        if (err) { res.status(500).json({ error: "Error finding state: " + err }); return; }
+        if (!state) { res.status(400).json({ error: "No state found for user" }); return; }
 
-      res.json({ state: state.state });
-    }).sort({'date':-1}).limit(1);
+        res.json({ state: state.state });
+      }).sort({'date':-1}).limit(1);
+    });
   });
 
   //////////////////////////////////////////////////////////

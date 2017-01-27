@@ -7,7 +7,7 @@ class StateOptions extends React.Component {
     return (
       <div className="state-options">
         <button onClick={(e) => this.props.onSaveState(this.props.token)} disabled={!this.props.hasToken}>Save to Account</button><br />
-        <button onClick={(e) => this.props.onGetState(this.props.token)} disabled={!this.props.hasToken}>Load from Account</button>
+        <button onClick={(e) => this.props.onGetState()} disabled={!this.props.hasToken}>Load from Account</button>
       </div>
     );
   }
@@ -27,10 +27,8 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(saveUserState(token));
       }
     },
-    onGetState: (token) => {
-      if (token) {
-        dispatch(getUserState(token));
-      }
+    onGetState: () => {
+      dispatch(getUserState());
     }
   }
 }
