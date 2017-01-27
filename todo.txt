@@ -30,6 +30,8 @@
  - Salvage costs
 
 ### Things
+ - Don't edit equip bonuses if artifacts input after
+ - Option for aa/ab notation
  - Warning if not everything is filled out
  - Cookie management
  - Active skill weighting, option to not consider actives
@@ -42,6 +44,8 @@
  - Skill level weights for hero level optimizer
  - Passwords are sent as plaintext
  - Usernames are case sensitive
+ - Resetting password
+ - "View" user functionality
  - Redux-form
  - Automated ServerVarsModel.cs -> ServerVarsModel.js
  - Google analytics
