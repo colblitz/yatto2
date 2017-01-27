@@ -43,7 +43,7 @@ var dmgE = optimizationType.DmgE;
 function getValue(gamestate, settings) {
   gamestate.calculateBonuses();
   switch (settings.method) {
-    case optimizationType.AD     : return gamestate.getBonus(BonusType.ArtifactDamage);
+    case optimizationType.AD     : return gamestate.getBonus(BonusType.ArtifactDamage) * gamestate.getBonus(BonusType.HSArtifactDamage);
     case optimizationType.Gold   : return gamestate.getGoldMultiplier();
     case optimizationType.Pet    : return gamestate.getPetDamage();
     case optimizationType.Tap    : return gamestate.getAverageCritDamage();
