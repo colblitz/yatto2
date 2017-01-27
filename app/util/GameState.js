@@ -343,7 +343,10 @@ export class GameState {
 
       baseGold += baseMonsterGold + baseBossGold;
       actualGold += monsterGold + bossGold;
+      console.log("monster m: ", monsterGold/baseMonsterGold);
+      console.log("boss m: ", bossGold/baseBossGold);
     }
+    console.log("overall: ", actualGold / baseGold);
 
     // Get multiplier
     return actualGold / baseGold;

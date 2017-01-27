@@ -12,6 +12,7 @@ class Update extends React.Component {
             <h3>Still tweaking some formulas, working through bugs. Moved most of the "current issues" to the todo list</h3>
             <ul>
               <li><b>Made a change to the gold formula, please let me know if this broke things</b></li>
+              <li>Fixed Heavenly Sword</li>
               <li>If you're getting weird values, make sure that you've filled in all your info (<b>artifacts before equipment</b>), and if possible, import information from your save file</li>
               <li>Save files - for Android, this save file would be somewhere like /sdcard/Android/data/com.gavehivecorp.taptitans2/files/ISavableGlobal.adat, whereas for iOS I assume it's something like Apps->Tap Titans 2->Documents->ISavableGlobal.adat (going off of what it was for TT1)</li>
             </ul>
