@@ -74,6 +74,9 @@ export const defaultState = Immutable.fromJS({
 
 export function getGamestateFromState(state) {
   var jsState = state.toJS();
+  if (!jsState.gamestate.info.maxStage) {
+    jsState.gamestate.info.maxStage = state.getIn(['options', 'maxstage']);
+  }
   return new GameState(
     jsState.gamestate.info,
     jsState.gamestate.swordmaster,
