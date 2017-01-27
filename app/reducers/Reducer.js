@@ -47,6 +47,7 @@ export const defaultState = Immutable.fromJS({
     tps: 15,
     advanced: false,
     update: true,
+    useAll: false,
   },
   gamestateStats: {
     artifactDamage:        { order: 0, value: 0, label: "Artifact Damage" },

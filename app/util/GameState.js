@@ -303,6 +303,7 @@ export class GameState {
 
     // TODO: alternative option:
     // calculate hero and SM equivalents separately, then skew
+    // console.log("multiplier: ", Math.pow(a, extraLevels), " dps: ", this.getDPS(tps));
     return Math.pow(a, extraLevels) * this.getDPS(tps);
 
     // return Math.pow(1.05, (Math.log(this.getGoldMultiplier()) / Math.log(1.072))) * this.getDPS(tps);
@@ -339,10 +340,14 @@ export class GameState {
   getAverageMonsterGold() {
     var monsterCount = this.getMonsterCount(this.info.maxStage);
 
+    var actualBase = this.getAverageMonsterHPUnits() * 1 * ServerVarsModel.monsterGoldMultiplier +
+               (ServerVarsModel.monsterGoldSlope * Math.min(this.info.maxStage, ServerVarsModel.noMoreMonsterGoldSlope));
+
     // MonterModel.GetMonsterGoldDrop
     var base = (this.getAverageMonsterHPUnits() * this.getBonus(BonusType.MonsterHP) * ServerVarsModel.monsterGoldMultiplier +
                (ServerVarsModel.monsterGoldSlope * Math.min(this.info.maxStage, ServerVarsModel.noMoreMonsterGoldSlope))) *
               this.getBonus(BonusType.GoldAll);
+    var baseMultiplier = base / actualBase;
 
     // goldx10Chance of the time, you get x10
     // (1 - goldx10Chance) of the time, you get x1
@@ -380,7 +385,7 @@ export class GameState {
     //                             +
     //                            (monsterChance * chestersonChance * chestersonMultiplier * familyMultiplier)
     var nonBossMultiplier = familyMultiplier * (chestersonChance * chestersonMultiplier + monsterChance * monsterMultiplier);
-    return base * goldx10Multiplier * (bossChance * bossMultiplier + nonBossChance * nonBossMultiplier);
+    return baseMultiplier * goldx10Multiplier * (bossChance * bossMultiplier + nonBossChance * nonBossMultiplier);
   }
 
   // InactiveGameplayModel.GetTotalDPS()

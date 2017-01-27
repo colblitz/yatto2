@@ -8,7 +8,7 @@ class OptionCheck extends React.Component {
       <div className='option-input-box'>
         <input type="checkbox"
                className="input option-check"
-               checked={this.props.isChecked}
+               checked={this.props.value}
                disabled={this.props.disabled}
                onChange={(e) => this.props.onOptionValueChange(this.props.okey, e)}/>
         <div className="label option-label">

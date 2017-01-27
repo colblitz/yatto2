@@ -66,7 +66,9 @@ function getEfficiency(newState, baseValue, cost, settings) {
       var b = s > ServerVarsModel.monsterHPLevelOff ? ServerVarsModel.monsterHPBase2 : ServerVarsModel.monsterHPBase1;
       var prgd = Math.pow(1 + (Math.log(d) / Math.log(b)) / (s-a), c);   // % relic gain from d% gain
       var prga = newState.getBonus(BonusType.PrestigeRelic) / baseValue[1];
+      // console.log("prgd: ", prgd, " prga: ", prga);
       var prg = prgd * prga;
+      // console.log("prg-1: ", (prg-1), " cost: ", cost, " efficiency: ", (prg - 1) / cost);
       return (prg - 1) / cost;
     case optimizationType.AD     :
     case optimizationType.Gold   :
@@ -214,22 +216,29 @@ export function getRelicSteps(gamestate, settings) {
   // ASSUMPTION: SM/heroes are already optimal and won't change
 
   var currentState = gamestate.getCopy();
+  // console.log("starting state");
+  // console.log(currentState);
+
   var relicsLeft = settings.relics;
   var shouldBuy = false;
   var steps = [];
   var totalSpent = 0;
+
+  // console.log("useAll: ", settings.useAll);
   while (relicsLeft > 0) {
     var options = [];
 
     // get base values
     // var baseValue = currentState.getDamageEquivalent(tps);
+    // console.log("base value");
     var baseValue = getValue(currentState, settings);
 
     for (var artifact in currentState.artifacts) {
       if (ArtifactInfo[artifact].canLevel(currentState.artifacts[artifact])) {
+        // console.log(ArtifactInfo[artifact].name);
         var newState = currentState.getCopy();
         var cost = ArtifactInfo[artifact].getCostToLevelUp(newState.artifacts[artifact]);
-        if (cost < relicsLeft) {
+        if ((settings.useAll && cost < relicsLeft) || !settings.useAll) {
           newState.artifacts[artifact] += 1;
           options.push({
             artifact: artifact,
@@ -243,6 +252,11 @@ export function getRelicSteps(gamestate, settings) {
       }
     }
 
+    // console.log("leveling options: ");
+    // console.log(options);
+
+    // console.log(steps);
+
     var costToBuy = nextArtifactCost(Object.keys(currentState.artifacts).length);
     if (options.length > 0) {
       var bestOption = getMax(options, function(o1, o2) {
@@ -255,22 +269,24 @@ export function getRelicSteps(gamestate, settings) {
       // of the previously owned artifacts, then get the overall efficiency with the costToBuy factored in.
       // Then take the average of all these overall efficiencies to get a "buy" efficiency
       // console.log("cost to buy: " + costToBuy + ", relicsLeft: " + relicsLeft);
-      if (costToBuy < relicsLeft) {
+      if ((settings.useAll && costToBuy < relicsLeft) || !settings.useAll) {
         var overallEfficiencies = [];
         for (var artifact in ArtifactInfo) {
-          if (!(artifact in currentState.artifacts)) {
+          if (!(artifact in currentState.artifacts) || currentState.artifacts[artifact] == 0) {
             overallEfficiencies.push(getOverallEfficiency(currentState, artifact, costToBuy, bestLevelEfficiency, settings));
           }
         }
         var averageOverallEfficiency = overallEfficiencies.reduce(function(a, b) { return a + b; }) / overallEfficiencies.length;
         options.push({
+          cost: costToBuy,
           efficiency: averageOverallEfficiency,
         });
       }
 
-    } else if (costToBuy < relicsLeft) {
+    } else if ((settings.useAll && costToBuy < relicsLeft) || !settings.useAll) {
       // only option is to buy another artifact
       options.push({
+        cost: costToBuy,
         efficiency: 0,
       });
     } else {
@@ -279,10 +295,18 @@ export function getRelicSteps(gamestate, settings) {
       break;
     }
 
+    // console.log("options: ");
+    // console.log(options);
+
     if (options.length > 0) {
       var bestOption = getMax(options, function(o1, o2) {
         return o1.efficiency > o2.efficiency;
       });
+
+      if (!settings.useAll && bestOption.cost > relicsLeft) {
+        break;
+      }
+
       if (!(bestOption.result)) {
         // best option is to buy an artifact - terminate
         shouldBuy = true;
@@ -338,7 +362,7 @@ export function getRelicSteps(gamestate, settings) {
     }
   }
 
-  console.log(summary);
+  // console.log(summary);
 
   for (var artifact in summary) {
     summarySteps.push({
@@ -348,7 +372,7 @@ export function getRelicSteps(gamestate, settings) {
     });
   }
 
-  console.log(summarySteps);
+  // console.log(summarySteps);
 
   // var diff = getDiff(gamestate, currentState);
   return {
