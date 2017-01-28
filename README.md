@@ -13,12 +13,10 @@ After pulling the repo, install the dependencies. Then compile with gulp and the
 ```
 # install things
 npm install -g gulp
-npm install -g bower
 npm install -g nodemon
 
 # install libraries
 npm install
-bower install
 
 # install dev libraries
 npm install --only=dev

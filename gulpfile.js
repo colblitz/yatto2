@@ -18,7 +18,6 @@ var stringify = require('stringify');
 var production = process.env.NODE_ENV === 'production';
 
 var dependencies = [
-  'alt',
   'react',
   'react-dom',
   'react-router',
@@ -31,12 +30,7 @@ var dependencies = [
  |--------------------------------------------------------------------------
  */
 gulp.task('vendor', function() {
-  return gulp.src([
-    'bower_components/jquery/dist/jquery.js',
-    'bower_components/bootstrap/dist/js/bootstrap.js',
-    'bower_components/magnific-popup/dist/jquery.magnific-popup.js',
-    'bower_components/toastr/toastr.js'
-  ]).pipe(concat('vendor.js'))
+  return gulp.src([]).pipe(concat('vendor.js'))
     .pipe(gulpif(production, uglify({ mangle: false })))
     .pipe(gulp.dest('public/js'));
 });
