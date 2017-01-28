@@ -369,15 +369,18 @@ export function getUserState() {
   }
 }
 
+export const updateGamestateValues = () => {
+  return {
+    type: types.UPDATE_GAMESTATE_VALUES,
+  }
+}
+
 export const tabChanged = (tabIndex) => {
   return {
     type: types.TAB_CHANGED,
     tabIndex
   }
 }
-
-
-
 
 export function test(token) {
   return (dispatch, getState) => {

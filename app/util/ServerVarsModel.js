@@ -44,4 +44,5 @@ export const ServerVarsModel = {
   relicFromStageBaseline: 75,
   relicFromStageDivider: 14,
   relicFromStagePower: 1.75,
+  bossHPModBase: 1.1,
 };

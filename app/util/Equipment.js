@@ -38,7 +38,7 @@ export class Equipment {
   }
 
   getBonus(level, allBonuses = {}, boostFromArtifact = 1) {
-    addBonus(allBonuses, this.bonusType, this.bonusBase + level * this.bonusInc);
+    addBonus(allBonuses, this.bonusType, boostFromArtifact * (this.bonusBase + level * this.bonusInc));
     return allBonuses;
   }
 

@@ -29,7 +29,7 @@ function checkLoginRequirements(username, password) {
 
 module.exports = function(passport, jwtSecretOrKey) {
   function createToken(userId) {
-    return jwt.sign({id: userId}, jwtSecretOrKey);
+    return jwt.sign({id: userId}, jwtSecretOrKey, { expiresIn: "12h" });
   }
 
   router.get('/test', function(req, res) {

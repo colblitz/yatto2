@@ -37,6 +37,8 @@ export const LOGOUT = 'LOGOUT';
 
 export const NEW_GAME_STATE = "NEW_GAME_STATE";
 export const STATE_FROM_SERVER = "STATE_FROM_SERVER";
+export const UPDATE_GAMESTATE_VALUES = "UPDATE_GAMESTATE_VALUES";
+
 // options
 
 // UI

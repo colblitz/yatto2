@@ -138,15 +138,15 @@ function updateGamestateValues(state) {
 const rootReducer = (state = defaultState, action) => {
   switch (action.type) {
     case types.LOADED_CSV:
-      var left = [];
-      for (var doc in state.get('infoDocs').toJS()) {
-        if (!state.getIn(['infoDocs', doc])) {
-          left.push(doc);
-        }
-      }
-      if (left.length == 1 && action.infoName == left[0]) {
-        return updateGamestateValues(state.setIn(['infoDocs', action.infoName], true));
-      }
+      // var left = [];
+      // for (var doc in state.get('infoDocs').toJS()) {
+      //   if (!state.getIn(['infoDocs', doc])) {
+      //     left.push(doc);
+      //   }
+      // }
+      // if (left.length == 1 && action.infoName == left[0]) {
+      //   return updateGamestateValues(state.setIn(['infoDocs', action.infoName], true));
+      // }
       return state.setIn(['infoDocs', action.infoName], true);
 
     case types.SWORDMASTER_CHANGED:
@@ -291,14 +291,20 @@ const rootReducer = (state = defaultState, action) => {
       }));
     case types.STATE_FROM_SERVER:
       return updateGamestateValues(state.merge(action.stateToMergeIn));
+    case types.UPDATE_GAMESTATE_VALUES:
+      return updateGamestateValues(state);
 
     case types.USERNAME_CHANGED:
       return state.setIn(['auth', 'username'], action.username);
     case types.PASSWORD_CHANGED:
       return state.setIn(['auth', 'password'], action.password);
     case types.TOKEN_CHANGED:
+      localStorage.setItem('token', action.token);
+      localStorage.setItem('username', state.getIn(['auth', 'username']));
       return state.setIn(['auth', 'token'], action.token);
     case types.LOGOUT:
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
       return state.withMutations(state => {
         state.setIn(['auth', 'username'], "")
           .setIn(['auth', 'password'], "")
