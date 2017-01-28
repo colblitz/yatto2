@@ -8,6 +8,10 @@ class Update extends React.Component {
       <div className="update">
         { this.props.update &&
           <div className="update-stuff">
+            <h3>Quick Update (1/28/2017)</h3>
+            <ul>
+              <li>Herp derp seems like I broke everything last night - things should work again now</li>
+            </ul>
             <h3>Update (1/27/2017) #2</h3>
             <h3>Still tweaking formulas and artifacts, fewer actual bugs now (*fingers crossed*)</h3>
             <ul>
