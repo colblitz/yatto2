@@ -297,7 +297,7 @@ export class GameState {
       var monsterGold = this.getMonsterGold(monsterHP, this.info.maxStage, this.bonuses) * monsterCount;
 
       // Get base boss gold
-      var baseBossHP = baseMonsterHP * ServerVarsModel.themeMultiplierSequence[i] * Math.min(2.5, Math.pow(ServerVarsModel.bossHPModBase, stageNum / 200));
+      var baseBossHP = baseMonsterHP * ServerVarsModel.themeMultiplierSequence[i] * Math.min(2.5, Math.pow(ServerVarsModel.bossHPModBase, this.info.maxStage / 200));
       var baseBossGold = this.getBossGold(baseBossHP, this.info.maxStage, {});
 
       // Get actual boss gold
