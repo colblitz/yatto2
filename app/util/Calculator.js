@@ -252,7 +252,7 @@ export function getRelicSteps(gamestate, settings) {
             overallEfficiencies.push(getOverallEfficiency(currentState, artifact, costToBuy, bestLevelEfficiency, settings));
           }
         }
-        var averageOverallEfficiency = overallEfficiencies.reduce(function(a, b) { return a + b; }) / overallEfficiencies.length;
+        var averageOverallEfficiency = overallEfficiencies.reduce(function(a, b) { return a + b; }, 0) / overallEfficiencies.length;
         options.push({
           cost: costToBuy,
           efficiency: averageOverallEfficiency,
