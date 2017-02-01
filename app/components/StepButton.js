@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getStepsAction } from '../actions/actions';
+import { callWorker } from '../handler';
 
 class StepButton extends React.Component {
   render() {
@@ -21,7 +22,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getSteps: () => {
-      dispatch(getStepsAction());
+      callWorker();
+      // dispatch(getStepsAction());
     }
   }
 }

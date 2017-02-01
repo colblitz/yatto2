@@ -2,6 +2,7 @@ import * as types from './types';
 import { GameState } from '../util/GameState';
 import { getRelicSteps } from '../util/Calculator';
 import { getGamestateFromState, getStateString } from '../reducers/Reducer';
+import { callWorker } from '../handler';
 var Immutable = require('immutable');
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -94,19 +95,33 @@ export const skillLevelChanged = (sid, newLevel) => {
 export function getStepsAction() {
   return (dispatch, getState) => {
     dispatch(stepsRequested());
-    setTimeout(function() {
-      var state = getState();
-      console.log("options: ", state.get('options').toJS());
-      var gamestate = getGamestateFromState(state);
-      var results = getRelicSteps(gamestate, {
-        method   : state.getIn(['options', 'method'], 0),
-        relics   : state.getIn(['options', 'relics'], 0),
-        maxstage : state.getIn(['options', 'maxstage'], 0),
-        tps      : state.getIn(['options', 'tps'], 0),
-        useAll   : state.getIn(['options', 'useAll'], false),
-      });
-      dispatch(stepsChanged(results.steps, results.summarySteps));
-    }, 0);
+
+
+    var state = getState();
+    console.log("options: ", state.get('options').toJS());
+    var gamestate = getGamestateFromState(state);
+    var settings = {
+      method   : state.getIn(['options', 'method'], 0),
+      relics   : state.getIn(['options', 'relics'], 0),
+      maxstage : state.getIn(['options', 'maxstage'], 0),
+      tps      : state.getIn(['options', 'tps'], 0),
+      useAll   : state.getIn(['options', 'useAll'], false),
+    };
+
+    callWorker(gamestate, settings);
+    // setTimeout(function() {
+    //   var state = getState();
+    //   console.log("options: ", state.get('options').toJS());
+    //   var gamestate = getGamestateFromState(state);
+    //   var results = getRelicSteps(gamestate, {
+    //     method   : state.getIn(['options', 'method'], 0),
+    //     relics   : state.getIn(['options', 'relics'], 0),
+    //     maxstage : state.getIn(['options', 'maxstage'], 0),
+    //     tps      : state.getIn(['options', 'tps'], 0),
+    //     useAll   : state.getIn(['options', 'useAll'], false),
+    //   });
+    //   dispatch(stepsChanged(results.steps, results.summarySteps));
+    // }, 0);
   }
 }
 
@@ -382,28 +397,35 @@ export const tabChanged = (tabIndex) => {
   }
 }
 
-export function test(token) {
-  return (dispatch, getState) => {
-    console.log("dispatching from state with token: ", token);
-
-    fetch('/state', {
-      method: 'get',
-      headers: {
-        'Authorization': 'JWT ' + token
-      }
-    }).then(response =>
-      response.json().then(json => {
-        if (json.error) {
-          console.log("got error");
-          console.log(json.error);
-        } else {
-          console.log("got response");
-          console.log(json);
-        }
-      }, err => {
-        console.log("Failed to get response");
-      })
-    );
-
+export const test = (value) => {
+  return {
+    type: types.TEST,
+    value
   }
 }
+
+// export function test(token) {
+//   return (dispatch, getState) => {
+//     console.log("dispatching from state with token: ", token);
+
+//     fetch('/state', {
+//       method: 'get',
+//       headers: {
+//         'Authorization': 'JWT ' + token
+//       }
+//     }).then(response =>
+//       response.json().then(json => {
+//         if (json.error) {
+//           console.log("got error");
+//           console.log(json.error);
+//         } else {
+//           console.log("got response");
+//           console.log(json);
+//         }
+//       }, err => {
+//         console.log("Failed to get response");
+//       })
+//     );
+
+//   }
+// }

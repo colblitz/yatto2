@@ -44,7 +44,8 @@
     "serve-favicon": "^2.3.2",
     "socket.io": "^1.7.2",
     "stringify": "^5.1.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "webworkify": "^1.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
