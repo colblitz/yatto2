@@ -22,7 +22,7 @@ class OptionInput extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    disabled: state.get('calculatingSteps'),
+    disabled: state.getIn(['ui', 'calculatingSteps'], false),
     value: state.getIn(ownProps.okey, 0),
     okey: ownProps.okey,
     label: ownProps.label

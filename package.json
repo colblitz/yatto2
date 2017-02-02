@@ -41,6 +41,7 @@
     "redux-logger": "^2.7.4",
     "redux-thunk": "^2.2.0",
     "request": "^2.79.0",
+    "semantic-ui-react": "^0.64.5",
     "serve-favicon": "^2.3.2",
     "socket.io": "^1.7.2",
     "stringify": "^5.1.0",

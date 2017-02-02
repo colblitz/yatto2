@@ -2,7 +2,7 @@ import * as types from './types';
 import { GameState } from '../util/GameState';
 import { getRelicSteps } from '../util/Calculator';
 import { getGamestateFromState, getStateString } from '../reducers/Reducer';
-import { callWorker } from '../handler';
+import { workerGetRelicSteps } from '../handler';
 var Immutable = require('immutable');
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
@@ -96,7 +96,6 @@ export function getStepsAction() {
   return (dispatch, getState) => {
     dispatch(stepsRequested());
 
-
     var state = getState();
     console.log("options: ", state.get('options').toJS());
     var gamestate = getGamestateFromState(state);
@@ -108,7 +107,7 @@ export function getStepsAction() {
       useAll   : state.getIn(['options', 'useAll'], false),
     };
 
-    callWorker(gamestate, settings);
+    workerGetRelicSteps(gamestate, settings);
     // setTimeout(function() {
     //   var state = getState();
     //   console.log("options: ", state.get('options').toJS());
@@ -128,6 +127,13 @@ export function getStepsAction() {
 export const stepsRequested = () => {
   return {
     type: types.STEPS_REQUESTED
+  }
+}
+
+export const stepsProgressed = (progress) => {
+  return {
+    type: types.STEPS_PROGRESSED,
+    progress
   }
 }
 

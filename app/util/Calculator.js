@@ -197,7 +197,7 @@ function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficien
   return getEfficiency(newState, savedBasedDamageEquivalent, totalCost, newSettings);
 }
 
-export function getRelicSteps(gamestate, settings) {
+export function getRelicSteps(gamestate, settings, progressCallback) {
   var t0 = performance.now();
   // ASSUMPTION: SM/heroes are already optimal and won't change
 
@@ -305,6 +305,8 @@ export function getRelicSteps(gamestate, settings) {
       }
       currentState = bestOption.result;
       relicsLeft -= bestOption.cost;
+
+      progressCallback(totalSpent / settings.relics);
     } else {
       relicsLeft = 0;
       break;

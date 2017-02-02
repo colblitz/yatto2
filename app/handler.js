@@ -1,20 +1,28 @@
 var work = require('webworkify');
 import store from './store';
-import { test } from './actions/actions';
+import { stepsProgressed, stepsChanged } from './actions/actions';
 
 var myWorker = work(require('./worker.js'));
 
-export function callWorker() {
-  myWorker.postMessage("lakjsdf");
-  console.log("message posted to worker");
+export function workerGetRelicSteps(gamestate, settings) {
+  myWorker.postMessage({
+    type: "GET_RELIC_STEPS",
+    gamestate,
+    settings,
+  });
 }
 
 myWorker.addEventListener('message', function (ev) {
-  console.log(ev.data);
-  store.dispatch(test(ev.data));
+  console.log("message from worker: ", ev.data);
+  switch (ev.data.type) {
+    case "RELIC_PROGRESS_UPDATE":
+      store.dispatch(stepsProgressed(Math.round(ev.data.progress * 100)));
+      break;
+    case "RELIC_DONE":
+      var r = ev.data.results;
+      store.dispatch(stepsChanged(r.steps, r.summarySteps));
+      break;
+    default:
+      break;
+  }
 });
-
-// myWorker.onmessage = function(e) {
-//   var result = e.data;
-//   console.log('Message received from worker: ', result);
-// }

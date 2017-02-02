@@ -23,7 +23,7 @@ class TabbedPanel extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    tabIndex: state.get('tabIndex', 0),
+    tabIndex: state.getIn(['ui', 'tabIndex'], 0),
   }
 }
 

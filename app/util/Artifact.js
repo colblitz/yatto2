@@ -75,7 +75,7 @@ export function loadArtifactInfo(callback) {
       );
       index += 1;
     }
-    console.log("loader - Done loading ArtifactInfo");
+    console.log("Done loading ArtifactInfo");
     callback(true);
   });
 }

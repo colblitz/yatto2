@@ -70,7 +70,9 @@ export const defaultState = Immutable.fromJS({
     password: "",
     token: "",
   },
-  tabIndex: 4,
+  ui: {
+    tabIndex: 4,
+  },
 });
 
 export function getGamestateFromState(state) {
@@ -181,10 +183,12 @@ const rootReducer = (state = defaultState, action) => {
       return updateGamestateValues(state.setIn(['gamestate', 'skills', action.sid], action.newLevel));
 
     case types.STEPS_REQUESTED:
-      return state.set('calculatingSteps', true);
+      return state.setIn(['ui', 'calculatingSteps'], true);
+    case types.STEPS_PROGRESSED:
+      return state.setIn(['ui', 'stepsProgress'], action.progress);
     case types.STEPS_CHANGED:
       return state.withMutations(state => {
-        state.set('calculatingSteps', false)
+        state.setIn(['ui', 'calculatingSteps'], false)
           .set('steps', Immutable.fromJS(action.newSteps))
           .set('summarysteps', Immutable.fromJS(action.newSummarySteps));
       });
@@ -312,9 +316,10 @@ const rootReducer = (state = defaultState, action) => {
       });
 
     case types.TAB_CHANGED:
-      return state.set('tabIndex', action.tabIndex);
+      return state.setIn(['ui', 'tabIndex'], action.tabIndex);
 
     case types.TEST:
+      console.log("reducer, setting test");
       return state.set('test', action.value);
     default:
       return state;

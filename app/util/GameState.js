@@ -192,7 +192,8 @@ export class GameState {
   }
 
   getPetTotalLevels() {
-    return Object.values(this.pets.levels).reduce((a, b) => a + b, 0);
+    return Object.keys(this.pets.levels).reduce((s, n) => s + this.pets.levels[n], 0);
+    // return Object.values(this.pets.levels).reduce((a, b) => a + b, 0);
   }
 
   // PetModel.GetPetOfflineDPS()
