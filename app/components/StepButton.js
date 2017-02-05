@@ -10,7 +10,7 @@ class StepButton extends React.Component {
       <div className="step-button">
         <button onClick={this.props.getSteps} disabled={this.props.calculatingSteps}>Get Steps</button>
         { this.props.calculatingSteps &&
-          <Progress percent={this.props.progress} size='small'/>
+          <Progress percent={this.props.progress} size='small' active/>
         }
       </div>
     )
