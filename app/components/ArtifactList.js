@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { connect } from 'react-redux';
 import { aorderChanged } from '../actions/actions';
 import { ArtifactInfo } from '../util/Artifact';

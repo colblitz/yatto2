@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { optionValueChanged } from '../actions/actions';
+import { optionValueChanged, optionsChanged } from '../actions/actions';
 
 class OptionInput extends React.Component {
   render() {
     return (
       <div className='option-input-box'>
+        { this.props.radio &&
+          <input type="radio" value={this.props.rvalue} name={this.props.radio} checked={this.props.svalue == this.props.rvalue} onChange={(e) => this.props.optionsChange(this.props.radio, e)}/>
+        }
         <input type="number"
-               className="input option-input"
+               className={"input option-input " + (this.props.radio ? "radio" : "")}
                value={this.props.value}
                min="0"
                disabled={this.props.disabled}
@@ -21,11 +24,18 @@ class OptionInput extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  var disabled = state.getIn(['ui', 'calculatingSteps'], false);
+  if (ownProps.radio) {
+    disabled = disabled || state.getIn(['options', ownProps.radio], -1) != ownProps.rvalue;
+  }
   return {
-    disabled: state.getIn(['ui', 'calculatingSteps'], false),
+    disabled,
     value: state.getIn(ownProps.okey, 0),
     okey: ownProps.okey,
-    label: ownProps.label
+    label: ownProps.label,
+    radio: ownProps.radio,
+    rvalue: ownProps.rvalue,
+    svalue: state.getIn(['options', ownProps.radio], -1),
   }
 }
 
@@ -36,6 +46,9 @@ const mapDispatchToProps = (dispatch) => {
       if (!isNaN(value)) {
         dispatch(optionValueChanged(okey, value))
       }
+    },
+    optionsChange: (radio, e) => {
+      dispatch(optionsChanged(radio, parseInt(e.target.value)));
     }
   }
 }

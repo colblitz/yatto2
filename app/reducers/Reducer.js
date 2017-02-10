@@ -43,11 +43,13 @@ export const defaultState = Immutable.fromJS({
   options: {
     maxstage: 2500,
     relics: 1000,
+    steps: 0,
     method: 6,
     tps: 15,
     advanced: false,
     update: true,
     useAll: false,
+    limittype: 0,
   },
   gamestateStats: {
     artifactDamage:        { order: 0, value: 0, label: "Artifact Damage (%)" },
@@ -189,6 +191,7 @@ const rootReducer = (state = defaultState, action) => {
     case types.STEPS_CHANGED:
       return state.withMutations(state => {
         state.setIn(['ui', 'calculatingSteps'], false)
+          .setIn(['ui', 'stepsProgress'], 0)
           .set('steps', Immutable.fromJS(action.newSteps))
           .set('summarysteps', Immutable.fromJS(action.newSummarySteps));
       });
@@ -259,6 +262,10 @@ const rootReducer = (state = defaultState, action) => {
       return state.setIn(['options', 'method'], action.method);
     case types.AORDER_CHANGED:
       return state.setIn(['options', 'aorder'], action.aorder);
+    case types.PORDER_CHANGED:
+      return state.setIn(['options', 'porder'], action.porder);
+    case types.OPTIONS_CHANGED:
+      return state.setIn(['options', action.radio], action.value);
     case types.TOGGLE_ADVANCED:
       return state.setIn(['options', 'advanced'], action.show);
     case types.TOGGLE_UPDATE:

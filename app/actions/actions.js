@@ -100,11 +100,13 @@ export function getStepsAction() {
     console.log("options: ", state.get('options').toJS());
     var gamestate = getGamestateFromState(state);
     var settings = {
-      method   : state.getIn(['options', 'method'], 0),
-      relics   : state.getIn(['options', 'relics'], 0),
-      maxstage : state.getIn(['options', 'maxstage'], 0),
-      tps      : state.getIn(['options', 'tps'], 0),
-      useAll   : state.getIn(['options', 'useAll'], false),
+      method    : state.getIn(['options', 'method'], 0),
+      relics    : state.getIn(['options', 'relics'], 0),
+      steps     : state.getIn(['options', 'steps'], 0),
+      limittype : state.getIn(['options', 'limittype'], 0),
+      maxstage  : state.getIn(['options', 'maxstage'], 0),
+      tps       : state.getIn(['options', 'tps'], 0),
+      useAll    : state.getIn(['options', 'useAll'], false),
     };
 
     workerGetRelicSteps(gamestate, settings);
@@ -182,6 +184,21 @@ export const aorderChanged = (aorder) => {
   return {
     type: types.AORDER_CHANGED,
     aorder
+  }
+}
+
+export const porderChanged = (porder) => {
+  return {
+    type: types.PORDER_CHANGED,
+    porder
+  }
+}
+
+export const optionsChanged = (radio, value) => {
+  return {
+    type: types.OPTIONS_CHANGED,
+    radio,
+    value
   }
 }
 

@@ -10,7 +10,7 @@ class ArtifactInput extends React.Component {
     return (
       <div className='artifact-input-box'>
         <input type="number"
-               className="input artifact-input"
+               className={"input artifact-input " + (this.props.level == a.maxLevel ? "at-cap" : "")}
                value={this.props.level}
                min="0"
                max={a.maxLevel}

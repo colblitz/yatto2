@@ -198,7 +198,7 @@ function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficien
 }
 
 export function getRelicSteps(gamestate, settings, progressCallback) {
-  var t0 = performance.now();
+  // var t0 = performance.now();
   // ASSUMPTION: SM/heroes are already optimal and won't change
 
   var currentState = gamestate.getCopy();
@@ -210,7 +210,8 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
   var steps = [];
   var totalSpent = 0;
 
-  while (relicsLeft > 0) {
+  while ((settings.limittype == 0 && relicsLeft > 0) ||
+         (settings.limittype == 1 && steps.length < settings.steps)) {
     var options = [];
 
     // get base values
@@ -220,7 +221,7 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
       if (ArtifactInfo[artifact].canLevel(currentState.artifacts[artifact])) {
         var newState = currentState.getCopy();
         var cost = ArtifactInfo[artifact].getCostToLevelUp(newState.artifacts[artifact]);
-        if ((settings.useAll && cost < relicsLeft) || !settings.useAll) {
+        if ((settings.useAll && cost < relicsLeft) || !settings.useAll || settings.limittypes == 1) {
           newState.artifacts[artifact] += 1;
           options.push({
             artifact: artifact,
@@ -245,7 +246,7 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
       // of the previously owned artifacts, then get the overall efficiency with the costToBuy factored in.
       // Then take the average of all these overall efficiencies to get a "buy" efficiency
       // console.log("cost to buy: " + costToBuy + ", relicsLeft: " + relicsLeft);
-      if ((settings.useAll && costToBuy < relicsLeft) || !settings.useAll) {
+      if ((settings.useAll && costToBuy < relicsLeft) || !settings.useAll || settings.limittypes == 1) {
         var overallEfficiencies = [];
         for (var artifact in ArtifactInfo) {
           if (!(artifact in currentState.artifacts) || currentState.artifacts[artifact] == 0) {
@@ -259,7 +260,7 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
         });
       }
 
-    } else if ((settings.useAll && costToBuy < relicsLeft) || !settings.useAll) {
+    } else if ((settings.useAll && costToBuy < relicsLeft) || !settings.useAll || settings.limittypes == 1) {
       // only option is to buy another artifact
       options.push({
         cost: costToBuy,
@@ -306,15 +307,19 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
       currentState = bestOption.result;
       relicsLeft -= bestOption.cost;
 
-      progressCallback(totalSpent / settings.relics);
+      if (settings.limittype == 1) {
+        progressCallback(steps.length / settings.steps);
+      } else {
+        progressCallback(totalSpent / settings.relics);
+      }
     } else {
       relicsLeft = 0;
       break;
     }
   } // end while
 
-  var t1 = performance.now();
-  console.log("took: " + (t1-t0) + " milliseconds for " + settings.relics);
+  // var t1 = performance.now();
+  // console.log("took: " + (t1-t0) + " milliseconds for " + settings.relics);
 
   var summary = {};
   var summarySteps = [];
