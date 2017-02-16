@@ -651,10 +651,11 @@ export function fromSaveFile(saveJSON) {
     // skills
     skillLevels,
     // clan
+    saveJSON.ClanModel.clan ?
     {
       id: saveJSON.ClanModel.clan.clanID,
       name: saveJSON.ClanModel.clan.name,
       score: saveJSON.ClanModel.clan.score,
-    }
+    } : { id: "", name: "", score: 0 },
   );
 }
