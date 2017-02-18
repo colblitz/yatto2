@@ -31,6 +31,8 @@ class FAQ extends React.Component {
             <h3>Do I need to input all of my information? Can I skip x, y, or z?</h3>
             <p>It's recommended that you input everything (even more recommended to load your information for your save file)</p>
 
+            <p>For your hero levels, you want to enter in the hero levels that you would have near your MS. These don't have to be exact values - the important thing is that YATTWO needs to know what hero skills you have, which can have a significant effect.</p>
+
             <h3>How does this actually work?</h3>
             <p>Given a set of artifact levels, pet stats, etc., you can calculate certain values (for example, DPS would be a value, or total AD would be a value, or some sort of overall gold multiplier would be a value). What happens in the optimizations is that you calculate your value of choice for a given starting gamestate, then re-calculate the value again for the gamestate with each artifact leveled up once. Find the option that gives you the greatest gain in value divided by relic cost, and then level that artifact to get you your next starting gamestate. Repeat until you run out of relics.</p>
 

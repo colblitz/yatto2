@@ -15,6 +15,7 @@ export class Artifact {
     this.maxLevel = maxLevel == 0 ? null : maxLevel;
     this.effects = effects;
     this.adpl = this.effects[BonusType.ArtifactDamage];
+    this.levelCosts = {};
   }
 
   canLevel(cLevel) {
@@ -23,11 +24,24 @@ export class Artifact {
 
   // TODO: precompute
   getCostToLevelUp(cLevel) {
+    if (cLevel in this.levelCosts) {
+      return this.levelCosts[cLevel];
+    }
     if (cLevel == 0 || (this.maxLevel != null && cLevel >= this.maxLevel)) {
       return Infinity;
     } else {
-      return Math.round(this.costc * Math.pow(cLevel + 1, this.coste));
+      var cost = Math.round(this.costc * Math.pow(cLevel + 1, this.coste));
+      this.levelCosts[cLevel] = cost;
+      return cost;
     }
+  }
+
+  getCostToLevelFromTo(cLevel, eLevel) {
+    var totalCost = 0;
+    for (var i = cLevel; i < eLevel; i++) {
+      totalCost += this.getCostToLevelUp(i);
+    }
+    return totalCost;
   }
 
   getAllBonuses(level, allBonuses = {}) {

@@ -185,7 +185,11 @@ const rootReducer = (state = defaultState, action) => {
       return updateGamestateValues(state.setIn(['gamestate', 'skills', action.sid], action.newLevel));
 
     case types.STEPS_REQUESTED:
-      return state.setIn(['ui', 'calculatingSteps'], true);
+      return state.withMutations(state => {
+        state.setIn(['ui', 'calculatingSteps'], false)
+          .setIn(['ui', 'stepsProgress'], 0)
+          .setIn(['ui', 'stepsMessage'], '');
+      });
     case types.STEPS_PROGRESSED:
       return state.setIn(['ui', 'stepsProgress'], action.progress);
     case types.STEPS_CHANGED:
@@ -194,6 +198,12 @@ const rootReducer = (state = defaultState, action) => {
           .setIn(['ui', 'stepsProgress'], 0)
           .set('steps', Immutable.fromJS(action.newSteps))
           .set('summarysteps', Immutable.fromJS(action.newSummarySteps));
+      });
+    case types.UPDATE_STEP_MESSAGE:
+      return state.withMutations(state => {
+        state.setIn(['ui', 'calculatingSteps'], false)
+          .setIn(['ui', 'stepsProgress'], 0)
+          .setIn(['ui', 'stepsMessage'], action.message);
       });
     case types.STEP_APPLIED:
       var step = state.get('steps').get(action.index).toJS();

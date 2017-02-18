@@ -427,6 +427,13 @@ export const test = (value) => {
   }
 }
 
+export const updateStepMessage = (message) => {
+  return {
+    type: types.UPDATE_STEP_MESSAGE,
+    message
+  }
+}
+
 // export function test(token) {
 //   return (dispatch, getState) => {
 //     console.log("dispatching from state with token: ", token);

@@ -159,42 +159,139 @@ export function getGoldSteps(gamestate, gold, settings) {
   return currentState;
 }
 
-function getOverallEfficiency(startState, artifact, costToBuy, bestLevelEfficiency, settings) {
+function getOverallEfficiency(startState, artifact, costToBuy, bestLevelArtifact, settings) {
   // initialize stuff
+  console.log("get overall efficiency for ", artifact, ArtifactInfo[artifact].name);
   var newSettings = Object.assign({}, settings, {reload: true});
   var newState = startState.getCopy();
-  var totalCost = 0;
-  var currentLevel = 1;
-  newState.artifacts[artifact] = 1;
 
-  // get starting state, save for later
-  var baseDamageEquivalent = getValue(newState, newSettings);
-  var savedBasedDamageEquivalent = baseDamageEquivalent;
-
-  // find cost -> find efficiency for next upgrade
-  var currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
-  newState.artifacts[artifact] = ++currentLevel;
-  totalCost += currentCost;
-  var currentDmgEquivalent = getValue(newState, newSettings);
-  var currentEfficiency = getEfficiency(newState, baseDamageEquivalent, currentCost, newSettings);
-  baseDamageEquivalent = currentDmgEquivalent;
-
-  // loop while upgrade efficiency better than leveling
-  while (currentEfficiency > bestLevelEfficiency && ArtifactInfo[artifact].canLevel(currentLevel)) {
-    currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
-    newState.artifacts[artifact] = ++currentLevel;
-    totalCost += currentCost;
-    currentDmgEquivalent = getValue(newState, newSettings);
-    currentEfficiency = getEfficiency(newState, baseDamageEquivalent, currentCost, newSettings);
-    baseDamageEquivalent = currentDmgEquivalent;
+  function getEfficiencyAtLevel(a, baseValue) {
+    newState.artifacts[a] += 1;
+    var currentCost = ArtifactInfo[a].getCostToLevelUp(newState.artifacts[a] - 1);
+    var efficiency = getEfficiency(newState, baseValue, currentCost, newSettings);
+    newState.artifacts[a] -= 1;
+    return efficiency;
   }
 
-  // "undo" the latest levelup
-  var canLevelTo = currentLevel - 1;
-  totalCost -= currentCost;
-  newState.artifacts[artifact] = canLevelTo;
-  totalCost += costToBuy;
-  return getEfficiency(newState, savedBasedDamageEquivalent, totalCost, newSettings);
+  function isBestLevelEfficiency(cLevel) {
+    // console.log("checking is best efficiency at level: ", cLevel);
+    newState.artifacts[artifact] = cLevel;
+    var options = [];
+    var baseValue = getValue(newState, newSettings);
+
+    var thisEfficiency = getEfficiencyAtLevel(artifact, baseValue);
+    var bestEfficiency = getEfficiencyAtLevel(bestLevelArtifact, baseValue);
+    return thisEfficiency >= bestEfficiency;
+
+
+
+    // for (var a in newState.artifacts) {
+    //   if (ArtifactInfo[a].canLevel(newState.artifacts[a])) {
+    //     var copyState = newState.getCopy();
+    //     var cost = ArtifactInfo[a].getCostToLevelUp(copyState.artifacts[a]);
+
+    //     copyState.artifacts[a] += 1;
+    //     options.push({
+    //       artifact: a,
+    //       efficiency: getEfficiency(copyState, baseValue, cost, settings),
+    //     });
+    //     if (a == artifact) {
+    //       aEfficiency = getEfficiency(copyState, baseValue, cost, settings);
+    //     }
+    //   }
+    // }
+
+    // var bestOption = getMax(options, function(o1, o2) {
+    //   return o1.efficiency > o2.efficiency;
+    // });
+    // var isBest = bestOption.artifact == artifact;
+    // console.log("isBest: ", isBest, "best: ", ArtifactInfo[bestOption.artifact].name);
+    // return bestOption.artifact == artifact;
+  }
+
+  // console.log("get base to save");
+  var baseDamageEquivalent = getValue(newState, newSettings);
+
+  // isBestLevelEfficiency(0);
+
+  var levelUpper = 1;
+  var levelLower = 1;
+  newState.artifacts[artifact] = 1;
+
+  console.log("before first while");
+  // var currentEfficiency = getEfficiencyAtLevel(levelUpper);
+  while (isBestLevelEfficiency(levelUpper)) {
+    console.log(levelLower, levelUpper);
+    levelLower = levelUpper;
+    levelUpper *= 2;
+    // currentEfficiency = getEfficiencyAtLevel(levelUpper);
+  }
+
+
+  console.log("before second while: ", levelLower, levelUpper);
+  while ((levelUpper - levelLower) > 1) {
+    console.log("before: ", levelLower, levelUpper);
+    var levelHalfway = (levelUpper + levelLower) / 2
+    // currentEfficiency = getEfficiencyAtLevel(levelHalfway);
+
+    if (isBestLevelEfficiency(levelHalfway)) {
+      levelLower = levelHalfway;
+    } else {
+      levelUpper = levelHalfway;
+    }
+    // } else if (currentEfficiency < bestLevelEfficiency) {
+    //   levelUpper = levelHalfway;
+    // } else if (currentEfficiency == bestLevelEfficiency) {
+    //   levelLower = levelHalfway;
+    //   levelUpper = levelHalfway;
+    // }
+    console.log("after : ", levelLower, levelUpper);
+  }
+
+  // console.log("returning");
+  var shouldLevelTo = levelLower;
+  var totalCost = ArtifactInfo[artifact].getCostToLevelFromTo(1, shouldLevelTo) + costToBuy;
+
+  // console.log("shouldLevelTo: ", shouldLevelTo);
+  // console.log("totalCost: ", totalCost);
+  newState.artifacts[artifact] = shouldLevelTo;
+  return getEfficiency(newState, baseDamageEquivalent, totalCost, newSettings);
+
+
+
+  // var totalCost = 0;
+  // var currentLevel = 1;
+  // newState.artifacts[artifact] = 1;
+
+  // // get starting state, save for later
+  // var baseDamageEquivalent = getValue(newState, newSettings);
+  // var savedBasedDamageEquivalent = baseDamageEquivalent;
+
+  // // find cost -> find efficiency for next upgrade
+  // var currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
+  // newState.artifacts[artifact] = ++currentLevel;
+  // totalCost += currentCost;
+  // var currentDmgEquivalent = getValue(newState, newSettings);
+  // var currentEfficiency = getEfficiency(newState, baseDamageEquivalent, currentCost, newSettings);
+  // baseDamageEquivalent = currentDmgEquivalent;
+
+  // // loop while upgrade efficiency better than leveling
+  // while (currentEfficiency > bestLevelEfficiency && ArtifactInfo[artifact].canLevel(currentLevel)) {
+  //   currentCost = ArtifactInfo[artifact].getCostToLevelUp(currentLevel);
+  //   console.log("c vs b at ", currentLevel, " for ", currentCost, ": ", currentEfficiency, " | ", bestLevelEfficiency);
+  //   newState.artifacts[artifact] = ++currentLevel;
+  //   totalCost += currentCost;
+  //   currentDmgEquivalent = getValue(newState, newSettings);
+  //   currentEfficiency = getEfficiency(newState, baseDamageEquivalent, currentCost, newSettings);
+  //   baseDamageEquivalent = currentDmgEquivalent;
+  // }
+
+  // // "undo" the latest levelup
+  // var canLevelTo = currentLevel - 1;
+  // totalCost -= currentCost;
+  // newState.artifacts[artifact] = canLevelTo;
+  // totalCost += costToBuy;
+  // return getEfficiency(newState, savedBasedDamageEquivalent, totalCost, newSettings);
 }
 
 export function getRelicSteps(gamestate, settings, progressCallback) {
@@ -212,6 +309,7 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
 
   while ((settings.limittype == 0 && relicsLeft > 0) ||
          (settings.limittype == 1 && steps.length < settings.steps)) {
+    console.log("start of loop");
     var options = [];
 
     // get base values
@@ -234,12 +332,15 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
       }
     }
 
+    console.log("done calculating level efficiencies");
+
     var costToBuy = nextArtifactCost(Object.keys(currentState.artifacts).length);
     if (options.length > 0) {
       var bestOption = getMax(options, function(o1, o2) {
         return o1.efficiency > o2.efficiency;
       });
-      var bestLevelEfficiency = bestOption.efficiency;
+      var bestLevelArtifact = bestOption.artifact;
+      // var bestLevelEfficiency = bestOption.efficiency;
 
       // if we can buy an artifact, then for each artifact that we don't own, simulate buying and then
       // leveling it up until the next level-up efficiency is lower than the best level up efficiency
@@ -250,7 +351,7 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
         var overallEfficiencies = [];
         for (var artifact in ArtifactInfo) {
           if (!(artifact in currentState.artifacts) || currentState.artifacts[artifact] == 0) {
-            overallEfficiencies.push(getOverallEfficiency(currentState, artifact, costToBuy, bestLevelEfficiency, settings));
+            overallEfficiencies.push(getOverallEfficiency(currentState, artifact, costToBuy, bestLevelArtifact, settings));
           }
         }
         var averageOverallEfficiency = overallEfficiencies.reduce(function(a, b) { return a + b; }, 0) / overallEfficiencies.length;
@@ -259,18 +360,21 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
           efficiency: averageOverallEfficiency,
         });
       }
-
     } else if ((settings.useAll && costToBuy < relicsLeft) || !settings.useAll || settings.limittypes == 1) {
       // only option is to buy another artifact
+      console.log("only option is to buy another artifact");
       options.push({
         cost: costToBuy,
         efficiency: 0,
       });
     } else {
+      console.log("no options");
       // no options - go prestige more
       relicsLeft = 0;
       break;
     }
+
+    console.log("got options: " + options.length);
 
     if (options.length > 0) {
       var bestOption = getMax(options, function(o1, o2) {
@@ -307,17 +411,24 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
       currentState = bestOption.result;
       relicsLeft -= bestOption.cost;
 
+      console.log("lkjalskjdlkjf");
+
       if (settings.limittype == 1) {
+        console.log("steps.length / settings.steps: ", steps.length / settings.steps);
         progressCallback(steps.length / settings.steps);
       } else {
+        console.log("totalSpent / settings.relics: ", totalSpent / settings.relics);
         progressCallback(totalSpent / settings.relics);
       }
     } else {
+      console.log("no options");
       relicsLeft = 0;
       break;
     }
   } // end while
 
+
+  console.log("done with lkajsdf");
   // var t1 = performance.now();
   // console.log("took: " + (t1-t0) + " milliseconds for " + settings.relics);
 
@@ -349,6 +460,8 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
       cost: summary[artifact].cost
     });
   }
+
+  console.log("returning");
 
   return {
     steps,
