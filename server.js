@@ -18,6 +18,15 @@ var jwt            = require('jsonwebtoken');
 var ExtractJwt  = passportJWT.ExtractJwt;
 var JwtStrategy = passportJWT.Strategy;
 
+var fs    = require('fs');
+var http  = require('http');
+var https = require('https');
+
+var options = {
+  key  : fs.readFileSync('key.pem'),
+  cert : fs.readFileSync('cert.pem')
+};
+
 // Get mongoose models
 var User  = require('./models/user');
 var State = require('./models/state');
@@ -67,6 +76,11 @@ app.all('*', function(req, res) {
   res.redirect("/");
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
+// http.createServer(app).listen(80);
+https.createServer(options, app).listen(app.get('port'), function() {
+  console.log('Express server listening on https port ' + app.get('port'));
 });
+
+// app.listen(app.get('port'), function() {
+//   console.log('Express server listening on port ' + app.get('port'));
+// });
