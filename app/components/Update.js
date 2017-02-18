@@ -1,24 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleUpdate } from '../actions/actions';
+import { toggleUpdate, saveIfToken } from '../actions/actions';
+
+const lastUpdate = "2017-02-18-1";
 
 class Update extends React.Component {
   render() {
     return (
       <div className="update">
-        { this.props.update &&
+        { this.props.showUpdate &&
           <div className="update-stuff">
-            <h3>Update (2/4/2017)</h3>
+            <h3>Update (2/18/2017)</h3>
             <ul>
-              <li>Haven't been able to do much the past few days - main thing, <b>added a little progress bar for getting steps (behind the scenes it should now do calculations in a worker and so not lock up the whole screen)</b></li>
-              <li>Hero damage artifacts are next in line to be examined</li>
-              <li>If you're getting weird values, make sure that you've filled in all your info (<b>artifacts before equipment</b>), and if possible, import information from your save file</li>
-              <li>Save files - for Android, this save file would be somewhere like /sdcard/Android/data/com.gavehivecorp.taptitans2/files/ISavableGlobal.adat, whereas for iOS I assume it's something like Apps->Tap Titans 2->Documents->ISavableGlobal.adat (going off of what it was for TT1)</li>
+              <li>HTTPS is now enabled (big thanks to <a href="https://www.reddit.com/user/mokrinsky">/u/mokrinsky</a>!) - if you're even reading this, that means that things worked. If you're not reading this, well... ¯\_(ツ)_/¯</li>
+              <li>There have been a couple of bugfixes in the past few days, as always, let me know if you find more</li>
+              <li>There have also been a few QOL things - a notification if some of your stuff isn't filled, a bit of color, tweaks to the artifact buying suggestions</li>
             </ul>
           </div>
         }
-        <div className="update-toggle" onClick={(e) => this.props.onToggleUpdate(!this.props.update)}>
-          { this.props.update ? (
+        <div className="update-toggle" onClick={(e) => this.props.onToggleUpdate(!this.props.showUpdate)}>
+          { this.props.showUpdate ? (
             <i className="update-icon fa fa-angle-double-up"></i>
           ) : (
             <i className="update-icon fa fa-angle-double-down"></i>
@@ -29,17 +30,19 @@ class Update extends React.Component {
   }
 }
 
-
 const mapStateToProps = (state) => {
+  var toggle = state.getIn(['ui', 'update'], false);
+  var lastDate = state.getIn(['ui', 'lastUpdate'], "");
   return {
-    update: state.getIn(['options', 'update'], false),
+    showUpdate: toggle || (lastUpdate > lastDate),
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onToggleUpdate: (show) => {
-      dispatch(toggleUpdate(show));
+      dispatch(toggleUpdate(show, lastUpdate));
+      dispatch(saveIfToken());
     }
   }
 }

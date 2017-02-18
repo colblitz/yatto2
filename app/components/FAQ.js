@@ -33,6 +33,12 @@ class FAQ extends React.Component {
 
             <p>For your hero levels, you want to enter in the hero levels that you would have near your MS. These don't have to be exact values - the important thing is that YATTWO needs to know what hero skills you have, which can have a significant effect.</p>
 
+            <h3>Where do I find my save file?</h3>
+            <ul>
+              <li>For Android, this save file would be somewhere like /sdcard/Android/data/com.gavehivecorp.taptitans2/files/ISavableGlobal.adat</li>
+              <li>For iOS I assume it's something like Apps->Tap Titans 2->Documents->ISavableGlobal.adat (going off of what it was for TT1)</li>
+            </ul>
+
             <h3>How does this actually work?</h3>
             <p>Given a set of artifact levels, pet stats, etc., you can calculate certain values (for example, DPS would be a value, or total AD would be a value, or some sort of overall gold multiplier would be a value). What happens in the optimizations is that you calculate your value of choice for a given starting gamestate, then re-calculate the value again for the gamestate with each artifact leveled up once. Find the option that gives you the greatest gain in value divided by relic cost, and then level that artifact to get you your next starting gamestate. Repeat until you run out of relics.</p>
 
@@ -65,6 +71,7 @@ class FAQ extends React.Component {
               <li><Reddit username="Titansmasher_"/> for helping to find the constants files</li>
               <li>Discord user n1nja for helping with decrypting the save file</li>
               <li>Marzx13 and <Reddit username="ElGuien"/> for hashing out the <a href="https://redd.it/5oeks2">gold to damage conversion</a></li>
+              <li><Reddit username="mokrinsky"/> for fixing my nginx setup</li>
             </ul>
           </div>
         </div>

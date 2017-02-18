@@ -75,6 +75,7 @@ class EquipmentList extends React.Component {
   render() {
     return (
       <div className='equipment-list'>
+        <p><b>Make sure that your artifact info has been filled out before you do these, otherwise the values might get messed up</b></p>
         <p>Add a new equip with the selectors - you won't be able to edit the equip bonus aftewards (yet), but you can always just remove it and re-add it. The bonus should be the number that you see in-game, and it'll try to figure out the level from the multiplier.</p>
         <h3>Weapons</h3>
         <EquipmentTable category={4} equipment={this.props.equipment}/>

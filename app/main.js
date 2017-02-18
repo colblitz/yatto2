@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 
 import store from './store';
 
-import { loadedCSV, tokenChanged, usernameChanged, getUserState, updateGamestateValues } from './actions/actions';
+import { loadedCSV, tokenChanged, usernameChanged, getUserState, updateGamestateValues, toggleUpdate } from './actions/actions';
 
 import App from './components/App';
 import Home from './components/Home';
@@ -24,8 +24,6 @@ import { loadPlayerImprovementInfo } from './util/PlayerImprovementBonus';
 import { loadSkillInfo } from './util/Skill';
 
 console.log("in main.js");
-
-console.log("store created");
 
 // See if we're logged in
 var token = localStorage.getItem('token');

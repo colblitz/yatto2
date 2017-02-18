@@ -74,6 +74,8 @@ export const defaultState = Immutable.fromJS({
   },
   ui: {
     tabIndex: 4,
+    update: true,
+    lastUpdate: "",
   },
 });
 
@@ -100,7 +102,8 @@ export function getStateString(state) {
     gamestate: jsState.gamestate,
     options: jsState.options,
     steps: jsState.steps,
-    summarysteps: jsState.summarysteps
+    summarysteps: jsState.summarysteps,
+    ui: jsState.ui
   });
 }
 
@@ -279,7 +282,12 @@ const rootReducer = (state = defaultState, action) => {
     case types.TOGGLE_ADVANCED:
       return state.setIn(['options', 'advanced'], action.show);
     case types.TOGGLE_UPDATE:
-      return state.setIn(['options', 'update'], action.show);
+      localStorage.setItem('update', action.show);
+      localStorage.setItem('lastUpdate', action.date);
+      return state.withMutations(state => {
+        state.setIn(['ui', 'update'], action.show)
+          .setIn(['ui', 'lastUpdate'], action.date);
+      });
 
     case types.OPTION_VALUE_CHANGED:
       if (JSON.stringify(action.key).includes('gamestate')) {

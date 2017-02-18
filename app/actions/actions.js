@@ -209,10 +209,11 @@ export const toggleAdvanced = (show) => {
   }
 }
 
-export const toggleUpdate = (show) => {
+export const toggleUpdate = (show, date) => {
   return {
     type: types.TOGGLE_UPDATE,
-    show
+    show,
+    date
   }
 }
 
@@ -366,6 +367,18 @@ export function login() {
 export const logout = () => {
   return {
     type: types.LOGOUT,
+  }
+}
+
+export function saveIfToken() {
+  return (dispatch, getState) => {
+    console.log("save if token");
+    var state = getState();
+    var token = state.getIn(['auth', 'token'], "");
+    if (token) {
+      console.log("sending to save");
+      dispatch(saveUserState(token));
+    }
   }
 }
 
