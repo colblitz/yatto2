@@ -19,7 +19,7 @@ class HeroList extends React.Component {
     const heroes = this.getHeroes();
     return (
       <div className='hero-list'>
-        <h3>Level - Weapons</h3>
+        <h3>Level - Weapons</h3> (Orange is melee, green is ranged, blue is spell)
         { heroes }
       </div>
     );

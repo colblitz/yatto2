@@ -25,6 +25,19 @@ export class Hero {
     this.skills[level] = {"type": type, "magnitude": magnitude};
   }
 
+  getTypeString() {
+    switch (this.type) {
+      case BonusType.MeleeHelperDamage:
+        return "melee";
+      case BonusType.RangedHelperDamage:
+        return "ranged";
+      case BonusType.SpellHelperDamage:
+        return "spell";
+      default:
+        return "none";
+    }
+  }
+
   // TODO: precompute
   getCostToLevelUp(cLevel) {
     // TODO: do this

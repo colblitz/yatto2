@@ -10,12 +10,12 @@ class HeroInput extends React.Component {
     return (
       <div className='hero-input-box'>
         <input type="number"
-               className="input hero-level-input"
+               className={"input hero-level-input hero-type-" + h.getTypeString()}
                value={this.props.level}
                min="0"
                onChange={(e) => this.props.onHeroLevelChange(this.props.hid, e)}/>
         <input type="number"
-               className="input hero-weapon-input"
+               className={"input hero-weapon-input hero-type-" + h.getTypeString()}
                value={this.props.weapon}
                min="0"
                onChange={(e) => this.props.onHeroWeaponChange(this.props.hid, e)}/>

@@ -186,7 +186,7 @@ const rootReducer = (state = defaultState, action) => {
 
     case types.STEPS_REQUESTED:
       return state.withMutations(state => {
-        state.setIn(['ui', 'calculatingSteps'], false)
+        state.setIn(['ui', 'calculatingSteps'], true)
           .setIn(['ui', 'stepsProgress'], 0)
           .setIn(['ui', 'stepsMessage'], '');
       });

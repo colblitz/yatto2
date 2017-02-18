@@ -1,36 +1,28 @@
 ### Issues
  - Advanced options don't do anything
  - Can't navigate directly to other urls
- - Steps option currently doesn't do anything
  - Can only have one of each type of equipment
- - Logs out when you reload
  - Site locks up when calculating instead of using some sort of spinner
  - Need to input artifact levels before equipment information, otherwise the bonuses will get modified by the equipment boosting artifacts
 
 ### UI things
- - Highlight artifact when at max level
+ - Show update if new update
  - Drag and drop
- - Format tab buttons
  - Highlight input when invalid
- - Highlight step on hover
  - Highlight the equipped pet/equip
  - Graphically show skill tree
  - Fix input typing
  - Allow invalid inputs
  - Displays differently on mac?
  - Steps get slightly larger with long artifact names
- - Radio button for relics vs steps
- - Spinner for getting steps
  - Spinner for logging in
  - Localization selector
  - Expand pet options to display effects
  - Pair pets by bonus type
  - Pet sorting - by bonus, by type
- - Show hero type
  - Don't necessarily need full hero name
  - "Saved!" animation
  - ? reset upon logout?
- - Space every 5 heroes
  - Sort artifacts by type
 
 ### Things to add
@@ -38,11 +30,12 @@
  - Relics from stage
  - Equipment evaluator
  - Salvage costs
+ - Skill tree explorer
+ - Stats useful for clan consideration (basic MS, damage, or something)
 
 ### Things
  - Don't edit equip bonuses if artifacts input after
  - Option for aa/ab notation
- - Warning if not everything is filled out
  - Cookie management
  - Active skill weighting, option to not consider actives
  - Variable gold conversion factors
@@ -55,7 +48,6 @@
  - Passwords are sent as plaintext
  - Usernames are case sensitive
  - Resetting password
- - "View" user functionality
  - Redux-form
  - Automated ServerVarsModel.cs -> ServerVarsModel.js
  - Google analytics
