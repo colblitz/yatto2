@@ -21,10 +21,11 @@ var JwtStrategy = passportJWT.Strategy;
 var fs    = require('fs');
 var http  = require('http');
 var https = require('https');
+var config = require('./config');
 
 var options = {
-  key  : fs.readFileSync('key.pem'),
-  cert : fs.readFileSync('cert.pem')
+  key  : fs.readFileSync(config.keyPath),
+  cert : fs.readFileSync(config.certPath)
 };
 
 // Get mongoose models
