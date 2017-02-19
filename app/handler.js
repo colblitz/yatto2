@@ -9,11 +9,11 @@ function sumObjectValues(o) {
 }
 
 export function workerGetRelicSteps(gamestate, settings) {
-  if (sumObjectValues(gamestate.heroes.levels) == 0) {
+  if (sumObjectValues(gamestate.heroes.levels) == 0 && settings.method != 0) {
     store.dispatch(updateStepMessage("Fill out your hero levels! Check the FAQ if you're confused on how"));
-  } else if (sumObjectValues(gamestate.pets.levels) == 0) {
+  } else if (sumObjectValues(gamestate.pets.levels) == 0 && settings.method != 0) {
     store.dispatch(updateStepMessage("Fill out your pet levels! Check the FAQ if you're confused on how"));
-  } else if (sumObjectValues(gamestate.skills) == 0) {
+  } else if (sumObjectValues(gamestate.skills) == 0 && settings.method != 0) {
     store.dispatch(updateStepMessage("Fill out your skill levels! Check the FAQ if you're confused on how"));
   } else {
     myWorker.postMessage({
