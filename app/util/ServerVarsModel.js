@@ -3,6 +3,7 @@ export const ServerVarsModel = {
   helperInefficiency: 0.023,
   helperInefficiencySlowDown: 34,
   helperUpgradeBase: 1.082,
+  maxHelperFormulaInt: 34,
   evolveCostMultiplier: 1000,
   petPassiveLevelGap: 5,
   petPassiveLevelIncrement: 0.01,

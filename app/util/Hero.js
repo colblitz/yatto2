@@ -15,8 +15,10 @@ export class Hero {
     this.type = type;
     this.cost = cost;
 
-    var a = 1.0 - ServerVarsModel.helperInefficiency * Math.min(this.order, ServerVarsModel.helperInefficiencySlowDown);
-    this.efficiency = Math.pow(a, this.order);
+    this.formulaOrder = Math.min(this.order, ServerVarsModel.maxHelperFormulaInt);
+    var a = 1.0 - ServerVarsModel.helperInefficiency * Math.min(this.formulaOrder, ServerVarsModel.helperInefficiencySlowDown);
+    this.efficiency = Math.pow(a, this.formulaOrder);
+
     this.constant1 = this.cost * ServerVarsModel.dMGScaleDown * this.efficiency;
     this.skills = {};
   }
