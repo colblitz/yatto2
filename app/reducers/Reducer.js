@@ -319,7 +319,11 @@ const rootReducer = (state = defaultState, action) => {
           .setIn(['options', 'maxstage'], action.newGameState.info.maxStage);
       }));
     case types.STATE_FROM_SERVER:
-      return updateGamestateValues(state.merge(action.stateToMergeIn));
+      return updateGamestateValues(state.withMutations(state => {
+        state.merge(action.stateToMergeIn)
+          .setIn(['ui', 'calculatingSteps'], false)
+          .setIn(['ui', 'stepsProgress'], 0);
+      }));
     case types.UPDATE_GAMESTATE_VALUES:
       return updateGamestateValues(state);
 
