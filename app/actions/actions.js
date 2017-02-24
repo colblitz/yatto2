@@ -194,6 +194,13 @@ export const porderChanged = (porder) => {
   }
 }
 
+export const formatChanged = (format) => {
+  return {
+    type: types.FORMAT_CHANGED,
+    format
+  }
+}
+
 export const optionsChanged = (radio, value) => {
   return {
     type: types.OPTIONS_CHANGED,

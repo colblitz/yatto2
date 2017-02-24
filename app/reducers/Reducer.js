@@ -277,6 +277,8 @@ const rootReducer = (state = defaultState, action) => {
       return state.setIn(['options', 'aorder'], action.aorder);
     case types.PORDER_CHANGED:
       return state.setIn(['options', 'porder'], action.porder);
+    case types.FORMAT_CHANGED:
+      return state.setIn(['ui', 'format'], action.format);
     case types.OPTIONS_CHANGED:
       return state.setIn(['options', action.radio], action.value);
     case types.TOGGLE_ADVANCED:
