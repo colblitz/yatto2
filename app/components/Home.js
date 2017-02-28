@@ -25,6 +25,9 @@ class Home extends React.Component {
             <div className="panel update-panel panel-row">
               <Update />
             </div>
+            <div className="panel error-panel panel-row">
+
+            </div>
             <div className="panel-row">
               <div className="panel-col">
                 <div className="panel-row">

@@ -20,7 +20,7 @@ class AdvancedOptionList extends React.Component {
         { this.props.advanced &&
           <div>
             <OptionInput okey={['options', 'tps']} label="Taps/second"/>
-            <OptionCheck okey={['options', 'useAll']} label="Use all available relics"/>
+            <OptionCheck okey={['options', 'useAll']} label="Use all available relics" disabled={false}/>
             <OptionCheck okey={['options', 'optimize']} label="Optimize first"/>
             <OptionCheck okey={['options', 'actives']} label="Consider Actives"/>
           </div>
@@ -29,7 +29,6 @@ class AdvancedOptionList extends React.Component {
     );
   }
 }
-
 
 const mapStateToProps = (state) => {
   return {

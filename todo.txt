@@ -1,12 +1,9 @@
 ### Issues
  - Advanced options don't do anything
- - Can't navigate directly to other urls
  - Can only have one of each type of equipment
- - Site locks up when calculating instead of using some sort of spinner
  - Need to input artifact levels before equipment information, otherwise the bonuses will get modified by the equipment boosting artifacts
 
 ### UI things
- - Show update if new update
  - Drag and drop
  - Highlight input when invalid
  - Highlight the equipped pet/equip
@@ -15,7 +12,6 @@
  - Allow invalid inputs
  - Displays differently on mac?
  - Steps get slightly larger with long artifact names
- - Spinner for logging in
  - Localization selector
  - Expand pet options to display effects
  - Pair pets by bonus type
@@ -35,17 +31,14 @@
 
 ### Things
  - Don't edit equip bonuses if artifacts input after
- - Option for aa/ab notation
  - Cookie management
  - Active skill weighting, option to not consider actives
- - Variable gold conversion factors
  - Fold tps parameter into gamestate object
  - Check application of equipment boosts in game code
  - Check for "formatBonus" in game code
  - Change notPercentageBonus - not not?
  - Re-check skills<->bonuses, not all are bound
  - Skill level weights for hero level optimizer
- - Passwords are sent as plaintext
  - Usernames are case sensitive
  - Resetting password
  - Redux-form
@@ -54,7 +47,8 @@
 
 ### Code Organization
  - Break up actions.js
+ - "reset UI" method
  - Break up reducers
  - Break up main.less
+ - Standardize action names
  - Get rid of superfluous components
- - Don't need any of the bower stuff

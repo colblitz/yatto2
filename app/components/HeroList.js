@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import { HeroInfo } from '../util/Hero';
 import HeroInput from './HeroInput';
+import { toggleHeroDamage } from '../actions/actions';
 
 class HeroList extends React.Component {
   renderHeroInput(hid) {
@@ -19,11 +21,30 @@ class HeroList extends React.Component {
     const heroes = this.getHeroes();
     return (
       <div className='hero-list'>
-        <h3>Level - Weapons</h3> (Orange is melee, green is ranged, blue is spell)
+        <h3>Level - Weapons</h3>
+        <input type="checkbox"
+               className="input option-check"
+               checked={this.props.showDamage}
+               onChange={this.props.toggleHeroDamage}/> Show Hero Damage Column
+        <div>(Orange is melee, green is ranged, blue is spell)</div>
         { heroes }
       </div>
     );
   }
 }
 
-export default HeroList;
+const mapStateToProps = (state) => {
+  return {
+    showDamage: state.getIn(['options', 'showHeroDamage'], false),
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleHeroDamage: (e) => {
+      dispatch(toggleHeroDamage(e.target.checked));
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeroList);

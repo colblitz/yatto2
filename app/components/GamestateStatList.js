@@ -34,6 +34,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     formatChange: (e) => {
+      console.log(e.target.value);
+      console.log(parseInt(e.target.value));
+      console.log(formatChanged(parseInt(e.target.value)));
       dispatch(formatChanged(parseInt(e.target.value)));
     }
   }

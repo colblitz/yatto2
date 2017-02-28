@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { toggleUpdate, saveIfToken } from '../actions/actions';
 
-const lastUpdate = "2017-02-20-2";
+const lastUpdate = "2017-02-27-1";
 
 class Update extends React.Component {
   render() {
@@ -10,12 +10,10 @@ class Update extends React.Component {
       <div className="update">
         { this.props.showUpdate &&
           <div className="update-stuff">
-            <h3>Update (2/20/2017)</h3>
+            <h3>Update (2/27/2017)</h3>
             <ul>
-              <li><b>Fix has been added for Valentine's equipment. Let me know if you're still having issues with loading save files.</b></li>
-              <li>HTTPS is now enabled (big thanks to <a href="https://www.reddit.com/user/mokrinsky">/u/mokrinsky</a>!) - if you're even reading this, that means that things worked. If you're not reading this, well... ¯\_(ツ)_/¯</li>
-              <li>There have been a couple of bugfixes in the past few days, as always, let me know if you find more</li>
-              <li>There have also been a few QOL things - a notification if some of your stuff isn't filled, a bit of color, tweaks to the artifact buying suggestions</li>
+              <li>Added a column to see specific hero damage - if you're getting recommended the wrong hero damage artifact, try checking your hero levels and damages and see which hero is doing the most damage.</li>
+              <li>Few more QOL things - error message if your save file fails to load, urls directly to FAQ and other pages should work (though reference and formulas are still blank >.>)</li>
             </ul>
           </div>
         }

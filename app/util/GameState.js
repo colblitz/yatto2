@@ -227,6 +227,19 @@ export class GameState {
     return allHeroDamage;
   }
 
+  getHeroDamageMap() {
+    var damages = {};
+    for (var hero in this.heroes.levels) {
+      var heroDamage = HeroInfo[hero].getBaseDamage(this.heroes.levels[hero]) *
+                       this.getBonus(HeroInfo[hero].type) *
+                       this.getBonus(BonusType.AllDamage) *
+                       this.getBonus(BonusType.AllHelperDamage) *
+                       (1 + this.getWeaponMultiplier(hero));
+      damages[hero] = heroDamage;
+    }
+    return damages;
+  }
+
   getTopDamageHeroLevel() {
     var maxDamage = 0;
     var maxLevel = 0;

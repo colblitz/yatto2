@@ -224,6 +224,12 @@ export const toggleUpdate = (show, date) => {
   }
 }
 
+export const toggleHeroDamage = (show) => {
+  return {
+    type: types.TOGGLE_HERO_DAMAGE,
+    show
+  }
+}
 
 export const optionValueChanged = (key, newValue) => {
   return {
@@ -444,6 +450,13 @@ export const test = (value) => {
   return {
     type: types.TEST,
     value
+  }
+}
+
+export const newStateMessage = (message) => {
+  return {
+    type: types.NEW_STATE_MESSAGE,
+    message
   }
 }
 

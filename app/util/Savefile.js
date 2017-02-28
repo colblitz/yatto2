@@ -4,21 +4,25 @@ const DECRYPT_KEY = "4bc07927192f4e9a";
 export function ReadSavefile(f, callback) {
   var r = new FileReader();
   r.onload = function(e) {
-    var contents = e.target.result;
+    try {
+      var contents = e.target.result;
 
-    var key = chars_from_hex(DECRYPT_KEY);
-    var vector = contents.substring(0, 8);
-    var input = contents.substring(8);
+      var key = chars_from_hex(DECRYPT_KEY);
+      var vector = contents.substring(0, 8);
+      var input = contents.substring(8);
 
-    var decrypted = des(key, input, 0, vector ? 1 : 0, vector);
+      var decrypted = des(key, input, 0, vector ? 1 : 0, vector);
 
-    var b = decrypted.indexOf("saveString");
-    var e = decrypted.indexOf("playerData");
-    var s = decrypted.substring(b + 12, e-2);
+      var b = decrypted.indexOf("saveString");
+      var e = decrypted.indexOf("playerData");
+      var s = decrypted.substring(b + 12, e-2);
 
-    var j = JSON.parse(JSON.parse(s), (k, v) => (k === '$type') ? undefined : v);
-    console.log("Done parsing savefile");
-    callback(j);
+      var j = JSON.parse(JSON.parse(s), (k, v) => (k === '$type') ? undefined : v);
+      console.log("Done parsing savefile");
+      callback(null, j);
+    } catch (err) {
+      callback(err, null);
+    }
   }
   r.readAsBinaryString(f);
 }

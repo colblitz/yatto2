@@ -74,7 +74,7 @@ var routes = require('./routes/index')(passport, jwtOptions.secretOrKey);
 app.use('/', routes);
 
 app.all('*', function(req, res) {
-  res.redirect("/");
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // http.createServer(app).listen(80);

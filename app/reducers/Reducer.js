@@ -76,6 +76,8 @@ export const defaultState = Immutable.fromJS({
     tabIndex: 4,
     update: true,
     lastUpdate: "",
+    stepsMessage: "",
+    stateMessage: "",
   },
 });
 
@@ -138,7 +140,8 @@ function updateGamestateValues(state) {
       .setIn(['gamestateStats', 'meleeDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.MeleeHelperDamage) - 1) * 100)
       .setIn(['gamestateStats', 'rangeDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.RangedHelperDamage) - 1) * 100)
       .setIn(['gamestateStats', 'magicDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.SpellHelperDamage) - 1) * 100)
-      .setIn(['gamestateStats', 'goldMultiplier', 'value'], getBonus(gamestate.bonuses, BonusType.GoldAll));
+      .setIn(['gamestateStats', 'goldMultiplier', 'value'], getBonus(gamestate.bonuses, BonusType.GoldAll))
+      .set('heroDamageMap', gamestate.getHeroDamageMap());
   });
 }
 
@@ -290,6 +293,8 @@ const rootReducer = (state = defaultState, action) => {
         state.setIn(['ui', 'update'], action.show)
           .setIn(['ui', 'lastUpdate'], action.date);
       });
+    case types.TOGGLE_HERO_DAMAGE:
+      return state.setIn(['options', 'showHeroDamage'], action.show);
 
     case types.OPTION_VALUE_CHANGED:
       if (JSON.stringify(action.key).includes('gamestate')) {
@@ -318,7 +323,8 @@ const rootReducer = (state = defaultState, action) => {
           .setIn(['gamestate', 'skills'], Immutable.fromJS(action.newGameState.skills))
           .setIn(['gamestate', 'clan'], Immutable.fromJS(action.newGameState.clan))
           .setIn(['options', 'relics'], action.newGameState.info.relics)
-          .setIn(['options', 'maxstage'], action.newGameState.info.maxStage);
+          .setIn(['options', 'maxstage'], action.newGameState.info.maxStage)
+          .setIn(['ui', 'stateMessage'], "");
       }));
     case types.STATE_FROM_SERVER:
       return updateGamestateValues(state.withMutations(state => {
@@ -344,6 +350,11 @@ const rootReducer = (state = defaultState, action) => {
         state.setIn(['auth', 'username'], "")
           .setIn(['auth', 'password'], "")
           .setIn(['auth', 'token'], "");
+      });
+
+    case types.NEW_STATE_MESSAGE:
+      return state.withMutations(state => {
+        state.setIn(['ui', 'stateMessage'], action.message);
       });
 
     case types.TAB_CHANGED:
