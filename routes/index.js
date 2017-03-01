@@ -46,7 +46,7 @@ module.exports = function(passport, jwtSecretOrKey) {
 
     // Check username and password
     var s = checkLoginRequirements(username, password);
-    if (s) { res.status(400).json({ error: s }); }
+    if (s) { res.status(400).json({ error: s }); return; }
 
     User.findOne({ 'username' : username }, function(err, user) {
       // If error or user already exists
