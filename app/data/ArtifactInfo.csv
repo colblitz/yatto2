@@ -23,11 +23,11 @@ Artifact17,0,CritDamageArtifact,HelmetBoost,0.02,0.3,0.65,2,HelmetBoost,Hero's B
 Artifact23,0,ReviveTime,ArmorBoost,0.02,0.3,0.65,2,Armor Boost,Helmet of Madness
 Artifact25,0,MonstersRequiredToAdvance,SwordBoost,0.02,0.3,0.65,2,SwordBoost,Lethe Water
 Artifact28,0,HeroDeathChance,SlashBoost,0.02,0.3,0.65,2,SlashBoost,Amethyst Staff
-Artifact26,0,ArtifactDamageBoost,HSArtifactDamage,0.05,0.3,0.7,2.2,Increase all artifact damage,Heavenly Sword
+Artifact26,0,ArtifactDamageBoost,HSArtifactDamage,0.05,0.3,0.7,2.2,Increase all artifact damage,Heavenly Sword3
 Artifact29,0,TapDamageArtifact,TapDamage,0.05,0.3,0.6,1.7,Increase Tap Damage,Drunken Hammer
 Artifact31,0,,AllDamage,0.02,0.3,1,2,"All damage from prestige count, up to max",Divine Retribution
 Artifact32,0,,MeleeHelperDamage,0.15,0.6,0.7,1.7,Increase Melee helpers damage,Fruit of Eden
-Artifact33,0,,RangedHelperDamage,0.15,0.5,0.7,1.7,Increase Range helpers damage,The Sword of Storms
+Artifact33,0,,RangedHelperDamage,0.15,0.6,0.7,1.7,Increase Range helpers damage,The Sword of Storms
 Artifact34,0,,SpellHelperDamage,0.15,0.6,0.7,1.7,Increase magic helpers' damage,Charm of the Ancient
 Artifact35,0,,AllHelperDamage,0.05,0.5,0.7,1.7,Increase all helpers' damage,Blade of Damocles
 Artifact38,0,,PetDamageMult,0.1,0.3,0.7,2,Increase Pet Damage,Furies Bow
