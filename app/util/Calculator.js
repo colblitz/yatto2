@@ -247,7 +247,8 @@ export function getRelicSteps(gamestate, settings, progressCallback) {
       }
     }
 
-    var costToBuy = nextArtifactCost(Object.keys(currentState.artifacts).length);
+    var owned = Object.keys(currentState.artifacts).filter(k => currentState.artifacts[k] > 0).length;
+    var costToBuy = nextArtifactCost(owned);
     if (options.length > 0) {
       var bestOption = getMax(options, function(o1, o2) {
         return o1.efficiency > o2.efficiency;
