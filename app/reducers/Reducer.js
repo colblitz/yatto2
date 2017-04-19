@@ -132,7 +132,7 @@ function updateGamestateValues(state) {
   return state.withMutations(state => {
     state.setIn(['gamestateStats', 'artifactDamage', 'value'], getBonus(gamestate.bonuses, BonusType.ArtifactDamage) * getBonus(gamestate.bonuses, BonusType.HSArtifactDamage) * 100)
       .setIn(['gamestateStats', 'baseTapDamage', 'value'], gamestate.getBaseTapDamage())
-      .setIn(['gamestateStats', 'averageCritDamage', 'value'], gamestate.getAverageCritDamage())
+      .setIn(['gamestateStats', 'averageCritDamage', 'value'], gamestate.getAverageDamageWithCrits())
       .setIn(['gamestateStats', 'petDamage', 'value'], gamestate.getPetDamage())
       .setIn(['gamestateStats', 'heroDamage', 'value'], gamestate.getHeroDamage())
       .setIn(['gamestateStats', 'allDamageMultiplier', 'value'], getBonus(gamestate.bonuses, BonusType.AllDamage) * 100)
@@ -313,17 +313,38 @@ const rootReducer = (state = defaultState, action) => {
 
     case types.NEW_GAME_STATE:
       return updateGamestateValues(state.withMutations(state => {
-        action.newGameState.fillWithEquipmentBonuses();
-        state.setIn(['gamestate', 'info'], Immutable.fromJS(action.newGameState.info))
-          .setIn(['gamestate', 'swordmaster'], Immutable.fromJS(action.newGameState.swordmaster))
-          .setIn(['gamestate', 'artifacts'], Immutable.fromJS(action.newGameState.artifacts))
-          .setIn(['gamestate', 'heroes'], Immutable.fromJS(action.newGameState.heroes))
-          .setIn(['gamestate', 'equipment'], Immutable.fromJS(action.newGameState.equipment))
-          .setIn(['gamestate', 'pets'], Immutable.fromJS(action.newGameState.pets))
-          .setIn(['gamestate', 'skills'], Immutable.fromJS(action.newGameState.skills))
-          .setIn(['gamestate', 'clan'], Immutable.fromJS(action.newGameState.clan))
-          .setIn(['options', 'relics'], action.newGameState.info.relics)
-          .setIn(['options', 'maxstage'], action.newGameState.info.maxStage)
+        var g = action.newGameState;
+        g.fillWithEquipmentBonuses();
+
+        var updatedSwordmaster = g.swordmaster;
+        var updatedHeroes = g.heroes;
+
+        // Merge levels if from same playerId
+        if (g.info.playerId == state.getIn(['gamestate', 'info', 'playerId'])) {
+          updatedSwordmaster['level'] = Math.max(state.getIn(['gamestate', 'swordmaster', 'level']), updatedSwordmaster['level']);
+          for (var hero in updatedHeroes.levels) {
+            updatedHeroes.levels[hero] = Math.max(updatedHeroes.levels[hero], state.getIn(['gamestate', 'heroes', 'level', hero], 0));
+          }
+          var currentHeroes = state.getIn(['gamestate', 'heroes']).toJS();
+          for (var hero in currentHeroes.levels) {
+            if (hero in updatedHeroes.levels) {
+              updatedHeroes.levels[hero] = Math.max(updatedHeroes.levels[hero], currentHeroes.levels[hero]);
+            } else {
+              updatedHeroes.levels[hero] = currentHeroes.levels[hero];
+            }
+          }
+        }
+
+        state.setIn(['gamestate', 'info'], Immutable.fromJS(g.info))
+          .setIn(['gamestate', 'swordmaster'], Immutable.fromJS(updatedSwordmaster))
+          .setIn(['gamestate', 'artifacts'], Immutable.fromJS(g.artifacts))
+          .setIn(['gamestate', 'heroes'], Immutable.fromJS(updatedHeroes))
+          .setIn(['gamestate', 'equipment'], Immutable.fromJS(g.equipment))
+          .setIn(['gamestate', 'pets'], Immutable.fromJS(g.pets))
+          .setIn(['gamestate', 'skills'], Immutable.fromJS(g.skills))
+          .setIn(['gamestate', 'clan'], Immutable.fromJS(g.clan))
+          .setIn(['options', 'relics'], g.info.relics)
+          .setIn(['options', 'maxstage'], g.info.maxStage)
           .setIn(['ui', 'stateMessage'], "");
       }));
     case types.STATE_FROM_SERVER:

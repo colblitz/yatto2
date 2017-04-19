@@ -30,7 +30,8 @@ class FilePicker extends React.Component {
                  accept=".fadat,.adat"
                  placeholder="Load Information From File"
                  className="file-chooser"
-                 onChange={this.handleChange}>
+                 onChange={this.handleChange}
+                 onClick={(e) => { e.target.value = null }}>
           </input>
           { this.props.stateMessage &&
             <div className="state-message">{this.props.stateMessage}</div>

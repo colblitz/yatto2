@@ -10,7 +10,7 @@ class EquipmentInput extends React.Component {
   render() {
     return (
       <tr className='equipment-row'>
-        <td>
+        <td className='equipment-checkbox'>
           <input type="checkbox"
                  className="input equipment-input"
                  checked={this.props.equipped}

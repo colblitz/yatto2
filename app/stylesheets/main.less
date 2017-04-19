@@ -233,7 +233,11 @@ button:hover:enabled {
   width: 60px;
 }
 
-.hero-list .hero-input-box:nth-child(5n+1) {
+.equipment-checkbox {
+  text-align: center;
+}
+
+.hero-list .hero-input-box:nth-child(6n-3) {
   margin-bottom: 15px;
 }
 
@@ -257,22 +261,29 @@ button:hover:enabled {
   background: #e5f8d5;
 }
 
-.hero-level-input {
-  width: 60px;
-}
-
-.artifact-input {
-  width: 50px;
-}
-
 .artifact-input.at-cap {
   background: #E0FFEA;
 }
 
+// 5 digits
+.hero-level-input {
+  width: 70px;
+}
+
+// 4 digits
+.artifact-input {
+  width: 60px;
+}
+
+// 3 digits
 .hero-weapon-input,
-.pet-level-input,
+.pet-level-input {
+  width: 50px
+}
+
+// 2 digits
 .skill-level-input {
-  width: 40px;
+  width: 45px;
 }
 
 .hero-damage-input {

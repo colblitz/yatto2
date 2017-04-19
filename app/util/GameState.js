@@ -53,6 +53,15 @@ import { getHeroName } from './Localization';
   }
 */
 
+const MonsterClass = {
+  Normal      : 0,
+  Boss        : 1,
+  DungeonBoss : 2,
+  Chesterson  : 3,
+  ManaMonster : 4,
+  Tutorial    : 5,
+};
+
 export class GameState {
   constructor(info, swordmaster, artifacts, heroes, equipment, pets, skills, clan) {
     this.info = info;
@@ -93,7 +102,7 @@ export class GameState {
     this.calculateBonuses();
     printBonuses(this.bonuses);
     console.log("base tap damage: " + this.getBaseTapDamage());
-    console.log("average crit damage: " + this.getAverageCritDamage());
+    console.log("average crit damage: " + this.getAverageDamageWithCrits());
     console.log("pet damage: " + this.getPetDamage());
     console.log("hero damage: " + this.getHeroDamage());
   }
@@ -133,8 +142,19 @@ export class GameState {
     }
 
     // ClanModel.ApplyClanBonus
-    addBonus(allBonuses, BonusType.AllDamage, Math.pow(ServerVarsModel.clanBonusBase, this.clan.score));
-    addBonus(allBonuses, BonusType.Memory, Math.min(ServerVarsModel.maxMemoryAmount, ServerVarsModel.clanMemoryBase * this.clan.score));
+    if (this.clan.score > ServerVarsModel.clanQuestStageNerf) {
+      addBonus(allBonuses, BonusType.AllDamage,
+        Math.pow(ServerVarsModel.clanBonusBase, ServerVarsModel.clanQuestStageNerf) *
+        Math.pow(ServerVarsModel.clanBonusBaseNerf, this.clan.score - ServerVarsModel.clanQuestStageNerf));
+      addBonus(allBonuses, BonusType.Memory,
+        Math.min(
+          ServerVarsModel.maxMemoryAmount,
+          (ServerVarsModel.clanMemoryBase * ServerVarsModel.clanQuestStageNerf +
+           ServerVarsModel.clanMemoryBaseNerf * (this.clan.score - ServerVarsModel.clanQuestStageNerf))));
+    } else {
+      addBonus(allBonuses, BonusType.AllDamage, Math.pow(ServerVarsModel.clanBonusBase, this.clan.score));
+      addBonus(allBonuses, BonusType.Memory, Math.min(ServerVarsModel.maxMemoryAmount, ServerVarsModel.clanMemoryBase * this.clan.score));
+    }
     return allBonuses;
   }
 
@@ -184,7 +204,15 @@ export class GameState {
   }
 
   // PlayerModel.GetCriticalDamage()
-  getAverageCritDamage() {
+  getAverageDamageWithCrits() {
+    var critChance = Math.min(ServerVarsModel.maxCritChance, ServerVarsModel.playerCritChance + this.getBonus(BonusType.CritChance));
+    var critMinMult = ServerVarsModel.playerCritMinMult * this.getBonus(BonusType.CritDamage);
+    var critMaxMult = ServerVarsModel.playerCritMaxMult * this.getBonus(BonusType.CritDamage);
+    return this.getBaseTapDamage() * (1 - critChance + critChance * (critMinMult + critMaxMult) / 2);
+  }
+
+  // PlayerModel.GetPlayerDamageWithAverageCrit()
+  getPlayerDamageWithAverageCrit() {
     var critChance = Math.min(ServerVarsModel.maxCritChance, ServerVarsModel.playerCritChance + this.getBonus(BonusType.CritChance));
     var critMinMult = ServerVarsModel.playerCritMinMult * this.getBonus(BonusType.CritDamage);
     var critMaxMult = ServerVarsModel.playerCritMaxMult * this.getBonus(BonusType.CritDamage);
@@ -198,12 +226,12 @@ export class GameState {
 
   // PetModel.GetPetOfflineDPS()
   getPetOfflineDPS() {
-    return this.getAverageCritDamage() * this.getBonus(BonusType.PetDamage) * this.getBonus(BonusType.PetDamageMult) * ServerVarsModel.petAutoAttackDuration;
+    return this.getPlayerDamageWithAverageCrit() * this.getBonus(BonusType.PetDamage) * this.getBonus(BonusType.PetDamageMult) / ServerVarsModel.petAutoAttackDuration;
   }
 
   // PetModel.RefreshCurrentDamage()
   getPetDamage() {
-    return this.getAverageCritDamage() * this.getBonus(BonusType.PetDamage) * this.getBonus(BonusType.PetDamageMult);
+    return this.getPlayerDamageWithAverageCrit() * this.getBonus(BonusType.PetDamage) * this.getBonus(BonusType.PetDamageMult);
   }
 
   getWeaponMultiplier(hero) {
@@ -259,7 +287,7 @@ export class GameState {
 
   getDPS(tps) {
     // TODO: fire strike
-    var tapDPS = tps * this.getAverageCritDamage();
+    var tapDPS = tps * this.getAverageDamageWithCrits();
     // TODO: war cry
     var petDPS = this.getPetTotalLevels() > ServerVarsModel.petAutoAttackLevel ?
       this.getPetDamage() / ServerVarsModel.petAutoAttackDuration :
@@ -380,6 +408,41 @@ export class GameState {
       Math.pow(ServerVarsModel.monsterHPBase2, Math.max(stage - ServerVarsModel.monsterHPLevelOff, 0));
   }
 
+  // MonsterModel.GetMonsterHP
+  getMonsterHP(stage, mClass) {
+    var num = this.getBaseMonsterHP(stage) * this.getBonus(BonusType.MonsterHP);
+    if (mClass == MonsterClass.Boss && stage >= 1) {
+      num = num * ServerVarsModel.themeMultiplierSequence[(stage - 1) % 5] * Math.min(2.5, Math.pow(ServerVarsModel.bossHPModBase, Math.floor(stageNum / 200)));
+    }
+    return num;
+  }
+
+  // TODO: refactor getMonsterGold/getBossGold with this or use this
+  getMonsterGoldDrop(stage, mClass) {
+    var num =
+      (this.getMonsterHP(stage, mClass) * ServerVarsModel.monsterGoldMultiplier +
+       ServerVarsModel.monsterGoldSlope * Math.min(stage, ServerVarsModel.noMoreMonsterGoldSlope)) *
+      this.getBonus(BonusType.GoldAll);
+    if (mClass == MonsterClass.Chesterson) {
+      // BonusModel.GetChestersonMultiplier()
+      num = num * ServerVarsModel.treasureGold * this.getBonus(BonusType.ChestAmount);
+    } else if (mClass == MonsterClass.Boss) {
+      num = num *
+        Math.max(
+          ServerVarsModel.maxBossGoldMultiplier,
+          Math.min(
+            1,
+            Math.ceiling((stage - 5) / 5) * ServerVarsModel.bossGoldMultiplierSlope)) *
+        this.getBonus(BonusType.GoldBoss);
+    } else {
+      num = num * this.getBonus(BonusType.GoldMonster);
+    }
+    if (num < 100) {
+      num = Math.ceiling(num);
+    }
+    return Math.max(this.getBonus(BonusType.GoldAll), num);
+  }
+
   // StageLogic.GetEnemyCount()
   getMonsterCount(stage) {
     return Math.max(
@@ -398,134 +461,18 @@ export class GameState {
     return this.getHeroDamage() / a + this.getPetOfflineDPS() * this.getBonus(BonusType.PetOfflineDamage);
   }
 
-  // InactiveGameplayModel.CollectInactiveGold()
-  getOfflineGold(time) {
-
-// // InactiveGameplayModel.AdvanceStage
-//   double num = (double)dictionary["goldAccumulated"];
-//   int num2 = (int)dictionary["targetStage"];
-//   int num3 = (int)dictionary["killCount"];
-//   if (num > 0.0)
-//   {
-//     this.uncollectedInactiveGold += num * Singleton<BonusModel>.instance.GetBonus(BonusType.InactiveGold);
-//     double val = Singleton<MonsterModel>.instance.GetMonsterGoldDrop(num2, MonsterClass.Normal) * (double)ServerVarsModel.inactiveGoldMonsterCap;
-//     this.uncollectedInactiveGold = Math.Min(this.uncollectedInactiveGold, val);
-//   }
-
-
-// // InactiveGameplayModel
-// public Dictionary<string, object> CalculateStageAdvance(float timeElapsed)
-// {
-//   Dictionary<string, object> dictionary = new Dictionary<string, object>();
-//   double totalDPS = this.GetTotalDPS();
-//   if (totalDPS <= 0.0)
-//   {
-//     return null;
-//   }
-//   double num = (double)timeElapsed;
-//   int num2 = Singleton<StageLogicController>.instance.currentStage;
-//   int num3 = num2;
-//   int num4 = Singleton<StageLogicController>.instance.enemyKillCount;
-//   float offlineKillAnimationTime = ServerVarsModel.offlineKillAnimationTime;
-//   double num5 = 30.0 + Singleton<BonusModel>.instance.GetBonus(BonusType.BossTimer);
-//   double bonus = Singleton<BonusModel>.instance.GetBonus(BonusType.InactiveAdvance);
-//   double num6 = (double)Singleton<ActiveSkillModel>.instance.GetBankedDoubleDamageTime();
-//   double num7 = 0.0;
-//   bool flag = true;
-//   while (num > 0.0)
-//   {
-//     bool flag2 = num6 > 0.0;
-//     double num8 = totalDPS * (double)((!flag2) ? 1 : 2);
-//     int monsterCount = Singleton<StageLogicController>.instance.GetMonsterCount(num3);
-//     double monsterHP = Singleton<MonsterModel>.instance.GetMonsterHP(num3, MonsterClass.Normal);
-//     double monsterHP2 = Singleton<MonsterModel>.instance.GetMonsterHP(num3, MonsterClass.Boss);
-//     double num9 = monsterHP / num8;
-//     double num10 = num9 + (double)offlineKillAnimationTime;
-//     double inactiveMonsterGoldDrop = Singleton<MonsterModel>.instance.GetInactiveMonsterGoldDrop(num3);
-//     double num11 = monsterHP2 / num8;
-//     double num12 = num11 + (double)offlineKillAnimationTime;
-//     double monsterGoldDrop = Singleton<MonsterModel>.instance.GetMonsterGoldDrop(num3, MonsterClass.Boss);
-//     double num13 = (!flag2) ? num : num6;
-//     if (flag && Singleton<TournamentModel>.instance.tournamentStatus == TournamentStatus.Active)
-//     {
-//       flag = false;
-//     }
-//     if (flag && (double)num3 >= bonus)
-//     {
-//       flag = false;
-//     }
-//     int num14 = (int)Math.Floor(num13 / num10);
-//     if (num14 <= 0)
-//     {
-//       if (flag2)
-//       {
-//         num6 = 0.0;
-//       }
-//       else
-//       {
-//         num = 0.0;
-//       }
-//     }
-//     else
-//     {
-//       if (flag)
-//       {
-//         num14 = Math.Min(num14, monsterCount - num4);
-//       }
-//       num13 -= (double)num14 * num10;
-//       num -= (double)num14 * num10;
-//       num6 -= (double)num14 * num10;
-//       num7 += (double)num14 * inactiveMonsterGoldDrop;
-//       num4 = Math.Min(num4 + num14, monsterCount);
-//       if (flag && num4 < monsterCount)
-//       {
-//         if (flag2)
-//         {
-//           num6 = 0.0;
-//           continue;
-//         }
-//         flag = false;
-//       }
-//       if (flag && (num13 < num11 || num11 >= num5))
-//       {
-//         if (flag2)
-//         {
-//           num6 = 0.0;
-//           continue;
-//         }
-//         flag = false;
-//       }
-//       if (flag)
-//       {
-//         num -= num12;
-//         num6 -= num12;
-//         num7 += monsterGoldDrop;
-//         num3++;
-//         num4 = 0;
-//       }
-//     }
-//   }
-//   dictionary.Add("goldAccumulated", num7);
-//   dictionary.Add("targetStage", num3);
-//   dictionary.Add("killCount", num4);
-//   return dictionary;
-// }
-
-// // MonsterModel
-// public double GetInactiveMonsterGoldDrop(int stageNum)
-// {
-//   double monsterGoldDrop = this.GetMonsterGoldDrop(stageNum, MonsterClass.Normal);
-//   return this.GetMonsterGoldDrop(stageNum, MonsterClass.Normal) * (double)(1f + Singleton<BonusModel>.instance.Get10xGoldChance() * 9f) * (1.0 + (double)Singleton<BonusModel>.instance.GetChestersonChance() * (Singleton<BonusModel>.instance.GetChestersonMultiplier() - 1.0)) * (double)(1f + Singleton<BonusModel>.instance.GetMultiMonsterChance() * 2.5f);
-// }
-  }
-
-  getSplashGold(numSplashed, stage) {
-    return numSplashed * this.getInactiveMonsterGoldDrop(stage);
+  // InactiveGameplayModel.AdvanceStage()
+  getOfflineGold(timeElapsed) {
+    var d = this.calculateStageAdvance(timeElapsed);
+    var baseOfflineGold = d["goldAccumulated"] * this.getBonus(BonusType.InactiveGold);
+    var baseOfflineStage = d["targetStage"];
+    var v = this.getMonsterGoldDrop(baseOfflineStage, MonsterClass.Normal) * ServerVarsModel.inactiveGoldMonsterCap;
+    return Math.min(baseOfflineGold, v);
   }
 
   // MonsterModel.GetInactiveMonsterGoldDrop
   getInactiveMonsterGoldDrop(stageNum) {
-    var monsterGoldDrop = this.getMonsterGoldDrop(stageNum); //, MonsterClass.Normal);
+    var monsterGoldDrop = this.getMonsterGoldDrop(stageNum, MonsterClass.Normal);
 
     var goldx10Chance = ServerVarsModel.goldx10Chance + this.getBonus(BonusType.Goldx10Chance);
     var goldx10Multiplier = ((goldx10Chance * 9) + 1);
@@ -539,31 +486,107 @@ export class GameState {
     return monsterGoldDrop * goldx10Multiplier * (1.0 + chestersonChance * (chestersonMultiplier - 1.0)) * familyMultiplier;
   }
 
-  // MonsterModel.GetMonsterGoldDrop
-  getMonsterGoldDrop(stageNum) {//, MonsterClass monsterClass) {
-    // double num = (this.GetMonsterHP(stageNum, monsterClass) * (double)ServerVarsModel.monsterGoldMultiplier + (double)(ServerVarsModel.monsterGoldSlope * Math.Min((float)stageNum, ServerVarsModel.noMoreMonsterGoldSlope))) * Singleton<BonusModel>.instance.GetBonus(BonusType.GoldAll);
-    // if (monsterClass == MonsterClass.Chesterson)
-    // {
-    //   num *= Singleton<BonusModel>.instance.GetChestersonMultiplier();
-    // }
-    // else if (monsterClass == MonsterClass.Boss)
-    // {
-    //   num *= Math.Max((double)ServerVarsModel.maxBossGoldMultiplier, Math.Min(1.0, Math.Ceiling((double)((stageNum - 5) / 5)) * (double)ServerVarsModel.bossGoldMultiplierSlope)) * Singleton<BonusModel>.instance.GetBonus(BonusType.GoldBoss);
-    // }
-    // else
-    // {
-    //   num *= Singleton<BonusModel>.instance.GetBonus(BonusType.GoldMonster);
-    // }
-    // if (num < 100.0)
-    // {
-    //   num = Math.Ceiling(num);
-    // }
-    // return Math.Max(Singleton<BonusModel>.instance.GetBonus(BonusType.GoldAll), num);
+  // InactiveGameplayModel.CalculateStageAdvance - quality variable naming right here
+  calculateStageAdvance(timeElapsed, startStage) {
+    var timeLeft = timeElapsed;
+    var currentStage = startStage;
+    var stageProgress = 0;
+    var goldAccumulated = 0;
+
+    var totalDPS = this.getOfflineDPS();
+    var offlineKillAnimationTime = ServerVarsModel.offlineKillAnimationTime;
+
+    var bossTimer = 30 + this.getBonus(BonusType.BossTimer);
+    var silentMarchStage = this.getBonus(BonusType.InactiveAdvance);
+    if (silentMarchStage > ServerVarsModel.maxStage) {
+      silentMarchStage = ServerVarsModel.maxStage;
+    }
+    var doubleDamageTimeLeft = doubleDamageTime;
+
+    var canAdvance = true;
+    while (timeLeft > 0) {
+      var hasDoubleDamage = doubleDamageTimeLeft > 0;
+      var dps = totalDPS * (!hasDoubleDamage ? 1 : 2);
+      var monsterCount = this.getMonsterCount(currentStage);
+
+      var timeToKillNormalMonster = this.getMonsterHP(currentStage, MonsterClass.Normal) / dps + offlineKillAnimationTime;
+      var timeToKillBoss = this.getMonsterHP(currentStage, MonsterClass.Boss) / dps + offlineKillAnimationTime;
+
+      var timeLeftForLoop = !hasDoubleDamage ? timeLeft : doubleDamageTimeLeft;
+      if (canAdvance && activeTournament) {
+        canAdvance = false;
+      }
+      if (canAdvance && currentStage >= silentMarchStage) {
+        canAdvance = false;
+      }
+
+      var normalMonstersKilled = Math.floor(timeLeftForLoop / timeToKillNormalMonster);
+      if (normalMonstersKilled <= 0)  {
+        if (hasDoubleDamage) {
+          doubleDamageTimeLeft = 0;
+        } else {
+          timeLeft = 0;
+        }
+      } else {
+        if (canAdvance) {
+          normalMonstersKilled = Math.min(normalMonstersKilled, monsterCount - stageProgress);
+        }
+        timeLeftForLoop -= normalMonstersKilled * timeToKillNormalMonster;
+        timeLeft -= normalMonstersKilled * timeToKillNormalMonster;
+        doubleDamageTimeLeft -= normalMonstersKilled * timeToKillNormalMonster;
+        goldAccumulated += normalMonstersKilled * this.getInactiveMonsterGoldDrop(currentStage);
+        stageProgress = Math.min(stageProgress + normalMonstersKilled, monsterCount);
+        if (canAdvance && stageProgress < monsterCount) {
+          if (hasDoubleDamage) {
+            doubleDamageTimeLeft = 0;
+            continue;
+          }
+          canAdvance = false;
+        }
+        if (canAdvance && (timeLeftForLoop < num12 || num12 >= bossTimer)) {
+          if (hasDoubleDamage) {
+            doubleDamageTimeLeft = 0;
+            continue;
+          }
+          canAdvance = false;
+        }
+        if (canAdvance) {
+          timeLeft -= timeToKillBoss;
+          doubleDamageTimeLeft -= timeToKillBoss;
+          goldAccumulated += this.getMonsterGoldDrop(currentStage, MonsterClass.Boss);
+          currentStage++;
+          stageProgress = 0;
+        }
+      }
+    }
+    return {
+      goldAccumulated : goldAccumulated,
+      targetStage : currentStage,
+      killCount : stageProgress
+    };
   }
 
+  // StageLogic.AddSplashDamage
+  // StageLogic.OnMonsterDeath
+
+  // StageLogic.ApllySplashDamageOverKill [sic]
+  getSplashGold(numSplashed, stage) {
+    return numSplashed * this.getInactiveMonsterGoldDrop(stage);
+  }
+
+  // PrestigeModel.GetBonusRelicsFromStageCount
   getRelicsFromStage(stage) {
-
+    var num = 0;
+    if (stage > ServerVarsModel.relicFromStageBaseline) {
+      num =
+        ServerVarsModel.relicFromStageMult *
+        Math.pow(
+          ((stage - ServerVarsModel.relicFromStageBaseline) / ServerVarsModel.relicFromStageDivider),
+          ServerVarsModel.relicFromStagePower);
+    }
+    return Math.max(0, num);
   }
+
 }
 
 // For swordmaster levels, hero levels, artifact levels

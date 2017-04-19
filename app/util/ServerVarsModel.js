@@ -16,6 +16,9 @@ export const ServerVarsModel = {
   playerCritMaxMult: 20,
   clanBonusBase: 1.1,
   clanMemoryBase: 0.001,
+  clanBonusBaseNerf: 1.05,
+  clanMemoryBaseNerf: 0.0005,
+  clanQuestStageNerf: 200,
   maxMemoryAmount: 0.5,
   petTapAmount: 20,
   petAutoAttackLevel: 500,
@@ -46,4 +49,7 @@ export const ServerVarsModel = {
   relicFromStageDivider: 14,
   relicFromStagePower: 1.75,
   bossHPModBase: 1.1,
+  inactiveGoldMonsterCap: 30000,
+  offlineKillAnimationTime: 1,
+  maxStage: 3500,
 };

@@ -46,7 +46,7 @@ function getValue(gamestate, settings) {
     case optimizationType.AD     : return gamestate.getBonus(BonusType.ArtifactDamage) * gamestate.getBonus(BonusType.HSArtifactDamage);
     case optimizationType.Gold   : return gamestate.getGoldMultiplier();
     case optimizationType.Pet    : return gamestate.getPetDamage();
-    case optimizationType.Tap    : return gamestate.getAverageCritDamage();
+    case optimizationType.Tap    : return gamestate.getAverageDamageWithCrits();
     case optimizationType.Hero   : return gamestate.getHeroDamage();
     case optimizationType.DmgE   : return gamestate.getDamageEquivalent(settings.tps, settings.reload);
     case optimizationType.RelicE : return [gamestate.getDamageEquivalent(settings.tps, settings.reload), gamestate.getBonus(BonusType.PrestigeRelic)];
