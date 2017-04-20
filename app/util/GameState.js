@@ -98,6 +98,64 @@ export class GameState {
     );
   }
 
+
+// Name: lakjalkjsdf
+
+// Clan (CQ): lakjslkd (25)
+
+// Artifact|Level|Artifact|Level|Artifact|Level
+// --|--|--|--|--|--
+// Book of Shadows |  | Parchment of Foresight |  | Elixir of Eden |
+//  |  | Aegis |  | Swamp Gauntlet |
+// Blade of Damocles |  | The Arcana Cloak |  | Hunter's Ointment |
+// Fruit of Eden |  |  |  |  |
+// The Sword of Storms |  | Laborer's Pendant |  | Bringer of Ragnarok |
+// Charm of the Ancient |  | Ring of Fealty |  | Glacial Axe |
+//  |  | Titan Spear |  | Oak Staff |
+// Heavenly Sword3 |  |  |  |  |
+// Drunken Hammer |  | Book of Prophecy |  | Titan's Mask |
+// Divine Retribution |  | Heroic Shield |  | Infinity Pendulum |
+// Furies Bow |  | Stone of the Valrunes |  |  |
+//  |  |  |  | Forbidden Scroll |
+// Hero's Blade |  | Egg of Fortune |  | Glove of Kuma |
+// Helmet of Madness |  | Chest of Contentment |  |  |
+// Lethe Water |  | Divine Chalice |  | Axe of Muerte |
+// Amethyst Staff |  | Staff of Radiance |  | Invader's Shield |
+
+// Heroes|Level
+// --|--
+// ad|12
+// lkj|2352
+
+// Equipment|Bonus
+// --|--
+// 235|235
+
+// Pets|Level
+// --|--
+// alk|2352
+
+// Skills|Level
+// --|--
+// lkj|235
+
+// All-time statistics|Value
+// --|--
+// asdf|Asdf
+// asdf|asdf
+
+
+  getAsRedditString() {
+    return "Time played: " + this.info.totalActiveGameTime + "\n\n" +
+           "Max stage: " + this.info.maxStage + "\n\n" +
+           "Artifacts: \n\n" +
+           "Artifact | Level\n" +
+           "--|--\n" +
+           "asdf | 2532\n" +
+           "lkjseg | 124\n";
+    // return "lkajsldjfljsdf " + "\n\n" + JSON.stringify(this.info);
+  }
+
   printStats() {
     this.calculateBonuses();
     printBonuses(this.bonuses);

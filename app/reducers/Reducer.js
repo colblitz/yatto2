@@ -141,6 +141,7 @@ function updateGamestateValues(state) {
       .setIn(['gamestateStats', 'rangeDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.RangedHelperDamage) - 1) * 100)
       .setIn(['gamestateStats', 'magicDamageMultiplier', 'value'], (getBonus(gamestate.bonuses, BonusType.SpellHelperDamage) - 1) * 100)
       .setIn(['gamestateStats', 'goldMultiplier', 'value'], getBonus(gamestate.bonuses, BonusType.GoldAll))
+      .set('stateString', gamestate.getAsRedditString())
       .set('heroDamageMap', gamestate.getHeroDamageMap());
   });
 }

@@ -31,6 +31,10 @@ button {
   font-weight: bold;
 }
 
+button:disabled {
+  opacity: 0.4;
+}
+
 button:hover:enabled {
   cursor: pointer;
   color: white;
@@ -218,15 +222,24 @@ button:hover:enabled {
   padding: 10px;
 }
 
-.gamestate-stat-list {
-  width: 300px;
+.gamestate-stat-list,
+.state-string {
+  width: 315px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .gamestate-stat-display-box {
   width: 100%;
-  height: 33px;
+  height: 30px;
+}
+
+.state-string-box {
+  display: flex;
+}
+
+.state-string-textarea {
+  flex-grow: 1;
 }
 
 .equipment-bonus-input {

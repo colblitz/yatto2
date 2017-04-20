@@ -12,12 +12,15 @@ import AdvancedOptionList from './AdvancedOptionList';
 import StepList from './StepList';
 import StepButton from './StepButton';
 import MethodOptions from './MethodOptions';
+import DisplayOptions from './DisplayOptions';
 import TabbedPanel from './TabbedPanel';
 import Update from './Update';
+import StateString from './StateString';
 import Test from './Test';
 
 class Home extends React.Component {
   render() {
+    console.log(this.props);
     return (
       <div className="main-page home-page">
         <div className="panels">
@@ -35,18 +38,18 @@ class Home extends React.Component {
                     </div>
                     <div className="panel panel-row panel-grow">
                       <div className="panel-col">
-                        <div className="panel-row">
-                          <OptionList />
-                          <MethodOptions />
-                        </div>
-                        <div className="panel-row">
-                          <AdvancedOptionList />
-                        </div>
+                        <OptionList />
+                        <AdvancedOptionList />
+                      </div>
+                      <div className="panel-col">
+                        <MethodOptions />
+                        <DisplayOptions />
                       </div>
                     </div>
                   </div>
                   <div className="panel panel-col">
                     <GamestateStatList />
+                    <StateString />
                   </div>
                 </div>
                 <div className="panel panel-row">

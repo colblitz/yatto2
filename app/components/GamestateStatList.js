@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { formatChanged } from '../actions/actions';
+// import { formatChanged } from '../actions/actions';
 import GamestateStatDisplay from './GamestateStatDisplay';
 
 class GamestateStatList extends React.Component {
@@ -10,8 +10,6 @@ class GamestateStatList extends React.Component {
         <h3>
           Statistics
         </h3>
-        <input type="radio" value={0} name="format" checked={this.props.format == 0} onChange={this.props.formatChange}/>Scientific
-        <input type="radio" value={1} name="format" checked={this.props.format == 1} onChange={this.props.formatChange}/>Letters
         {
           this.props.stats.map(function(stat, i) {
             return <GamestateStatDisplay key={i} skey={stat} format={this.props.format} />;
@@ -21,6 +19,9 @@ class GamestateStatList extends React.Component {
     );
   }
 }
+
+// <input type="radio" value={0} name="format" checked={this.props.format == 0} onChange={this.props.formatChange}/>Scientific
+//         <input type="radio" value={1} name="format" checked={this.props.format == 1} onChange={this.props.formatChange}/>Letters
 
 const mapStateToProps = (state) => {
   return {
@@ -33,12 +34,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    formatChange: (e) => {
-      console.log(e.target.value);
-      console.log(parseInt(e.target.value));
-      console.log(formatChanged(parseInt(e.target.value)));
-      dispatch(formatChanged(parseInt(e.target.value)));
-    }
+    // formatChange: (e) => {
+    //   console.log(e.target.value);
+    //   console.log(parseInt(e.target.value));
+    //   console.log(formatChanged(parseInt(e.target.value)));
+    //   dispatch(formatChanged(parseInt(e.target.value)));
+    // }
   }
 }
 

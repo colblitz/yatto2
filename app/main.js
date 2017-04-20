@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 
 import store from './store';
 
-import { loadedCSV, tokenChanged, usernameChanged, getUserState, updateGamestateValues, toggleUpdate } from './actions/actions';
+import { loadedCSV, tokenChanged, usernameChanged, login, getUserState, updateGamestateValues, toggleUpdate } from './actions/actions';
 
 import App from './components/App';
 import Home from './components/Home';
@@ -40,6 +40,13 @@ if (token) {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
   }
+}
+
+var url = window.location.href;
+if (url.indexOf("/u/") > 0) {
+  var username = url.substring(url.indexOf("/u/") + 3);
+  store.dispatch(usernameChanged(username));
+  store.dispatch(login());
 }
 
 console.log("calling loadArtifactInfo");
@@ -80,6 +87,7 @@ render((
         <Route path="faq" component={FAQ}/>
         <Route path="ref" component={Reference}/>
         <Route path="for" component={Formulas}/>
+        <Route path="*" component={Home}/>
       </Route>
     </Router>
   </Provider>
