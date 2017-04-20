@@ -220,6 +220,48 @@ export const notPercentageBonuses = {
   [BonusType.MultiMonster             ]: false,
 };
 
+export function getBonusOperator(bonusType) {
+  if (bonusType in additiveBonuses) {
+    return "+";
+  } else {
+    return "x";
+  }
+}
+
+// TODO: localization
+export function getBonusString(bonusType) {
+  switch (bonusType) {
+    case BonusType.ChestChance:
+      return "Chesterson Chance";
+    case BonusType.CritChance:
+      return "Critical Strike Chance";
+    case BonusType.MonsterHP:
+      return "Titan HP";
+    case BonusType.RangedHelperDamage:
+      return "Ranged Hero Damage";
+    case BonusType.MeleeHelperDamage:
+      return "Melee Hero Damage";
+    case BonusType.SpellHelperDamage:
+      return "Spell Hero Damage";
+    case BonusType.TapDamage:
+      return "Tap Damage";
+    case BonusType.PetDamageMult:
+      return "Pet Damage";
+    case BonusType.GoldAll:
+      return "All Gold";
+    case BonusType.ChestAmount:
+      return "Chesterson Gold Amount";
+    case BonusType.AllDamage:
+      return "All Damage";
+    case BonusType.AllHelperDamage:
+      return "All Hero Damage";
+    case BonusType.CritDamage:
+      return "Critical Damage";
+    default:
+      return "";
+  }
+}
+
 export function addBonus(allBonuses, bonusType, magnitude) {
   if (bonusType in allBonuses) {
     if (bonusType in additiveBonuses) {

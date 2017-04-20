@@ -113,6 +113,8 @@ export class GameState {
 // The Sword of Storms |  | Laborer's Pendant |  | Bringer of Ragnarok |
 // Charm of the Ancient |  | Ring of Fealty |  | Glacial Axe |
 //  |  | Titan Spear |  | Oak Staff |
+
+
 // Heavenly Sword3 |  |  |  |  |
 // Drunken Hammer |  | Book of Prophecy |  | Titan's Mask |
 // Divine Retribution |  | Heroic Shield |  | Infinity Pendulum |
@@ -146,15 +148,95 @@ export class GameState {
 // asdf|asdf
 
 
+
   getAsRedditString() {
-    return "Time played: " + this.info.totalActiveGameTime + "\n\n" +
-           "Max stage: " + this.info.maxStage + "\n\n" +
-           "Artifacts: \n\n" +
-           "Artifact | Level\n" +
-           "--|--\n" +
-           "asdf | 2532\n" +
-           "lkjseg | 124\n";
-    // return "lkajsldjfljsdf " + "\n\n" + JSON.stringify(this.info);
+    var s = "";
+    function addToRedditString(field, value) {
+      if (value) {
+        s += field + ": " + value + "\n\n";
+      }
+    }
+
+    function addRow(field, value) {
+      if (value) {
+        s += field + " | " + value + "\n";
+      }
+    }
+
+    addToRedditString("Username", this.info.displayName);
+    if (this.clan.name) {
+      s += "Clan (CQ): " + this.clan.name + "(" + this.clan.score + ")";
+    }
+
+    // Stats
+    if (this.info.numPrestiges) {
+      s += "\n\n---\n\n";
+      s += "All-time statistics|Value\n";
+      s += "--|--\n";
+      addRow("Tap Count", this.info.tapCount);
+      addRow("Tournament Count", this.info.numTournaments);
+      addRow("Prestige Count", this.info.numPrestiges);
+      addRow("Total Skill Points", this.info.totalSkillPoints);
+      addRow("Equipment Collected", this.info.equipCollected);
+      addRow("Total Time Played", this.info.totalActiveGameTime);
+      s += "\n\n";
+    }
+
+    // Artifacts
+    if (this.artifacts) {
+      var aRow = function(aList, aid) {
+        return ArtifactInfo[aid].name + " | " + (aList[aid] || 0);
+      }
+      var blank = function() {
+        return " | ";
+      }
+      var getRow = function(aList, a1, a2, a3) {
+        return (a1 == 0 ? blank() : aRow(aList, "Artifact" + a1)) + " | " +
+               (a2 == 0 ? blank() : aRow(aList, "Artifact" + a2)) + " | " +
+               (a3 == 0 ? blank() : aRow(aList, "Artifact" + a3)) + "\n";
+      }
+      s += "\n\n---\n\n";
+      s += "Artifact|Level|Artifact|Level|Artifact|Level\n";
+      s += "--|--|--|--|--|--\n";
+      s += getRow(this.artifacts, 22, 7, 6);
+      s += getRow(this.artifacts, 0, 14, 12);
+      s += getRow(this.artifacts, 35, 3, 8);
+      s += getRow(this.artifacts, 32, 0, 0);
+      s += getRow(this.artifacts, 33, 9, 10);
+      s += getRow(this.artifacts, 34, 15, 16);
+      s += getRow(this.artifacts, 0, 39, 37);
+      s += getRow(this.artifacts, 26, 0, 0);
+      s += getRow(this.artifacts, 29, 20, 11);
+      s += getRow(this.artifacts, 31, 1, 36);
+      s += getRow(this.artifacts, 38, 2, 0);
+      s += getRow(this.artifacts, 0, 0, 13);
+      s += getRow(this.artifacts, 17, 18, 27);
+      s += getRow(this.artifacts, 23, 19, 0);
+      s += getRow(this.artifacts, 25, 21, 4);
+      s += getRow(this.artifacts, 28, 24, 5);
+    }
+
+    // Equipment
+    if (this.equipment) {
+      s += "\n\n---\n\n";
+      s += "Equipment | Bonus\n";
+      s += "--|--\n";
+      var e4 = this.getEquippedEquipmentString(4);
+      if (e4) { s += "Weapon | " + e4 + "\n"; }
+      var e1 = this.getEquippedEquipmentString(1);
+      if (e1) { s += "Hat | " + e1 + "\n"; }
+      var e3 = this.getEquippedEquipmentString(3);
+      if (e3) { s += "Suit | " + e3 + "\n"; }
+      var e0 = this.getEquippedEquipmentString(0);
+      if (e0) { s += "Aura | " + e0 + "\n"; }
+      var e2 = this.getEquippedEquipmentString(2);
+      if (e2) { s += "Slash | " + e2 + "\n"; }
+    }
+    // Pets
+    // Skills
+    // Heroes
+
+    return s;
   }
 
   printStats() {
@@ -164,6 +246,15 @@ export class GameState {
     console.log("average crit damage: " + this.getAverageDamageWithCrits());
     console.log("pet damage: " + this.getPetDamage());
     console.log("hero damage: " + this.getHeroDamage());
+  }
+
+  getEquippedEquipmentString(category) {
+    for (var equip in this.equipment) {
+      if (this.equipment[equip].equipped && EquipmentInfo[equip].category == category) {
+        var boost = getBonus(this.bonuses, eCategoryToBoostBonus[EquipmentInfo[equip].category]);
+        return EquipmentInfo[equip].getBonusString(this.equipment[equip].level, boost);
+      }
+    }
   }
 
   getBonuses() {
@@ -718,6 +809,14 @@ export function fromSaveFile(saveJSON) {
     // info
     {
       playerId            : saveJSON.AccountModel.playerID.$content,
+      displayName         : saveJSON.AccountModel.displayName.$content,
+      countryCode         : saveJSON.AccountModel.countryCode.$content,
+      tapCount            : saveJSON.AchievementModel.TapCountprogress.$content,
+      numTournaments      : saveJSON.AchievementModel.ParticipatedTournamentprogress.$content,
+      equipCollected      : saveJSON.AchievementModel.EquipmentCollectedprogress.$content,
+      numPrestiges        : saveJSON.AchievementModel.PrestigeCountprogress.$content,
+      totalSkillPoints    : saveJSON.AchievementModel.TotalSkillPointsprogress.$content,
+      numWeapons          : saveJSON.AchievementModel.Weaponsprogress.$content,
       supportCode         : saveJSON.AccountModel.supportCode.$content,
       reportedPlayers     : saveJSON.PlayerModel.reportedPlayers.$content.slice(),
       totalActiveGameTime : saveJSON.GHTime.totalActiveGameTime.$content,

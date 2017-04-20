@@ -1,4 +1,4 @@
-import { BonusType, addBonus, stringToBonus } from './BonusType';
+import { BonusType, addBonus, stringToBonus, getBonusString, getBonusOperator } from './BonusType';
 var parse = require('csv-parse');
 
 var equipmentCSV = require('../data/EquipmentInfo.csv');
@@ -35,6 +35,10 @@ export class Equipment {
     this.bonusType = bonusType;
     this.bonusBase = bonusBase;
     this.bonusInc = bonusInc;
+  }
+
+  getBonusString(level, boostFromArtifact = 1) {
+    return getBonusOperator(this.bonusType) + (boostFromArtifact * (this.bonusBase + level * this.bonusInc)).toFixed(2) + " " + getBonusString(this.bonusType);
   }
 
   getBonus(level, allBonuses = {}, boostFromArtifact = 1) {
