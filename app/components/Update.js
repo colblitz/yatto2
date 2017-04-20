@@ -11,8 +11,11 @@ class Update extends React.Component {
         { this.props.showUpdate &&
           <div className="update-stuff">
             <h3>Update (4/19/2017)</h3>
-            Update for 1.3.1 and a few other minor changes :D
+            Update for 1.3.1 and a few other minor changes :D If you see any more problems, let me know (and when you contact me be sure to include your YATTWO username if you have one).
             <ul>
+              <li><b>A few people have been reporting issues when using Safari 10.1</b> - I don't have access to 10.1 at the moment, so I'm not sure when I'll be able to get around to fixing that (if any devs with 10.1 want to help me with this, feel free :P), but for now try using Chrome if you can.</li>
+              <li>You can now go to a user's yattwo page with <a href="https://yattwo.me/u/asdf">yattwo.me/u/asdf</a></li>
+              <li>Added a textbox with values in a Reddit-friendly format that you can copy into a post or comment.</li>
               <li>A few people have mentioned values being off (thanks <a href="http://www.reddit.com/user/JonSnow84">/u/JonSnow84</a>!)- this should be fixed now after updating the clan multiplier formula for 1.3.1</li>
               <li>Adjusted column widths of a few inputs (thanks <a href="http://www.reddit.com/user/Doly_TTM_GM">/u/Doly_TTM_GM</a>!), and spacing of heroes (thanks <a href="http://www.reddit.com/user/jerbookins">/u/jerbookins</a>!)</li>
               <li>Fixed a few formulas (thanks @MetxChris!)</li>
