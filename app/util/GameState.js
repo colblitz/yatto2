@@ -99,56 +99,6 @@ export class GameState {
     );
   }
 
-
-// Name: lakjalkjsdf
-
-// Clan (CQ): lakjslkd (25)
-
-// Artifact|Level|Artifact|Level|Artifact|Level
-// --|--|--|--|--|--
-// Book of Shadows |  | Parchment of Foresight |  | Elixir of Eden |
-//  |  | Aegis |  | Swamp Gauntlet |
-// Blade of Damocles |  | The Arcana Cloak |  | Hunter's Ointment |
-// Fruit of Eden |  |  |  |  |
-// The Sword of Storms |  | Laborer's Pendant |  | Bringer of Ragnarok |
-// Charm of the Ancient |  | Ring of Fealty |  | Glacial Axe |
-//  |  | Titan Spear |  | Oak Staff |
-
-
-// Heavenly Sword3 |  |  |  |  |
-// Drunken Hammer |  | Book of Prophecy |  | Titan's Mask |
-// Divine Retribution |  | Heroic Shield |  | Infinity Pendulum |
-// Furies Bow |  | Stone of the Valrunes |  |  |
-//  |  |  |  | Forbidden Scroll |
-// Hero's Blade |  | Egg of Fortune |  | Glove of Kuma |
-// Helmet of Madness |  | Chest of Contentment |  |  |
-// Lethe Water |  | Divine Chalice |  | Axe of Muerte |
-// Amethyst Staff |  | Staff of Radiance |  | Invader's Shield |
-
-// Heroes|Level
-// --|--
-// ad|12
-// lkj|2352
-
-// Equipment|Bonus
-// --|--
-// 235|235
-
-// Pets|Level
-// --|--
-// alk|2352
-
-// Skills|Level
-// --|--
-// lkj|235
-
-// All-time statistics|Value
-// --|--
-// asdf|Asdf
-// asdf|asdf
-
-
-
   getAsRedditString() {
     var s = "";
     function addToRedditString(field, value) {
@@ -170,7 +120,6 @@ export class GameState {
 
     // Stats
     if (this.info.numPrestiges) {
-      s += "\n\n---\n\n";
       s += "All-time statistics|Value\n";
       s += "--|--\n";
       addRow("Tap Count", this.info.tapCount);
@@ -195,7 +144,6 @@ export class GameState {
                (a2 == 0 ? blank() : aRow(aList, "Artifact" + a2)) + " | " +
                (a3 == 0 ? blank() : aRow(aList, "Artifact" + a3)) + "\n";
       }
-      s += "\n\n---\n\n";
       s += "Artifact|Level|Artifact|Level|Artifact|Level\n";
       s += "--|--|--|--|--|--\n";
       s += getRow(this.artifacts, 22, 7, 6);
@@ -214,11 +162,11 @@ export class GameState {
       s += getRow(this.artifacts, 23, 19, 0);
       s += getRow(this.artifacts, 25, 21, 4);
       s += getRow(this.artifacts, 28, 24, 5);
+      s += "\n\n";
     }
 
     // Equipment
     if (this.equipment) {
-      s += "\n\n---\n\n";
       s += "Equipment | Bonus\n";
       s += "--|--\n";
       var e4 = this.getEquippedEquipmentString(4);
@@ -231,6 +179,7 @@ export class GameState {
       if (e0) { s += "Aura | " + e0 + "\n"; }
       var e2 = this.getEquippedEquipmentString(2);
       if (e2) { s += "Slash | " + e2 + "\n"; }
+      s += "\n\n";
     }
 
     // Skills
@@ -254,7 +203,6 @@ export class GameState {
                (s5 === "" ? blank() : skillL(sList, s5)) + " | " +
                (s6 === "" ? blank() : skillR(sList, s6)) + "\n";
       }
-      s += "\n\n---\n\n";
       s += "Skill | Value | Value | Skill | Sep | Skill | Value | Value | Skill | Sep | Skill | Value | Value | Skill\n";
       s += "--|--|--|--|--|--|--|--|--|--|--|--|--|--\n";
       s += getRow(this.skills, "PetQTE", "", "", "OfflineGold", "", "BurstSkillBoost");
@@ -263,6 +211,7 @@ export class GameState {
       s += getRow(this.skills, "HelperDmgQTE", "Fairy", "SplashDmg", "RangedHelperDmg", "ManaStealSkillBoost", "MidasSkillBoost");
       s += getRow(this.skills, "HelperCountQTE", "BossTimer", "AutoAdvance", "MultiMonsters", "CloneSkillBoost", "CritSkillBoost");
       s += getRow(this.skills, "ClanQTE", "", "PetOfflineDmg", "", "ManaMonster", "");
+      s += "\n\n";
     }
 
     // Pets
@@ -276,13 +225,13 @@ export class GameState {
                pRow(pList, "Pet" + p3) + " | " +
                pRow(pList, "Pet" + p4) + "\n";
       }
-      s += "\n\n---\n\n";
       s += "Pet | Level | Pet | Level | Pet | Level | Pet | Level\n";
       s += "--|--|--|--|--|--|--|--\n";
       s += getRow(this.pets, 1, 2, 3, 4);
       s += getRow(this.pets, 5, 6, 7, 8);
       s += getRow(this.pets, 9, 10, 11, 12);
       s += getRow(this.pets, 13, 14, 15, 16);
+      s += "\n\n";
     }
 
     // Heroes
@@ -294,7 +243,6 @@ export class GameState {
         return hRow(hList, "H" + h1) + " | " +
                hRow(hList, "H" + h2) + "\n";
       }
-      s += "\n\n---\n\n";
       s += "Hero | Level | Weapons | Hero | Level | Weapons\n";
       s += "--|--|--|--|--|--\n";
       s += getRow(this.heroes, "18", "29");
@@ -316,6 +264,7 @@ export class GameState {
       s += getRow(this.heroes, "05", "14");
       s += getRow(this.heroes, "13", "36");
       s += hRow(this.heroes, "H19") + " | | | \n";
+      s += "\n\n";
     }
 
     return s;
