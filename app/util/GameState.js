@@ -494,7 +494,7 @@ export class GameState {
     var b1 = new BigNumber(1);
     var bg = new BigNumber(goldM.toFixed(15));
     // https://www.reddit.com/r/TapTitans2/comments/668gdl/math_deriving_a_gold_to_damage_multiplier_formula/
-    var extraLevels = bg.minus(1).times(b1.minus(br.pow(-L))).plus(1).toNumber();
+    var extraLevels = Math.log(bg.minus(1).times(b1.minus(br.pow(-L))).plus(1).toNumber()) / Math.log(r);
 
     // var extraLevels = Math.log(1 + goldM - goldM/r) / Math.log(r);
     var a = getHeroCurrentA(L) * skew + getPlayerCurrentA(this.swordmaster.level)  * (1 - skew);
