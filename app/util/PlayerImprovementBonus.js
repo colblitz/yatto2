@@ -49,7 +49,7 @@ export function getPlayerImprovementBonus(cLevel) {
     answer = getPlayerImprovementBonus(MAX_LEVEL);
   } else {
     var tLevel = Math.floor(cLevel / 10) * 10;
-    while (!(tLevel in PlayerImprovementsTotals)) {
+    while (!(tLevel in PlayerImprovementsTotals) || isNaN(PlayerImprovementsTotals[tLevel])) {
       tLevel -= 10;
     }
     answer = PlayerImprovementsTotals[tLevel];
@@ -71,7 +71,7 @@ export function getNextPlayerImprovement(cLevel) {
     answer = Infinity;
   } else {
     var tLevel = Math.floor(cLevel / 10) * 10;
-    while (!(tLevel in PlayerImprovementsTotals) || cLevel >= tLevel) {
+    while (!(tLevel in PlayerImprovementsTotals) || isNaN(PlayerImprovementsTotals[tLevel]) || cLevel >= tLevel) {
       tLevel += 10;
     }
     answer = tLevel;

@@ -49,7 +49,7 @@ export function getHeroImprovementBonus(cLevel) {
     answer = getHeroImprovementBonus(MAX_LEVEL);
   } else {
     var tLevel = Math.floor(cLevel / 10) * 10;
-    while (!(tLevel in HeroImprovementsTotals)) {
+    while (!(tLevel in HeroImprovementsTotals) || isNaN(HeroImprovementsTotals[tLevel])) {
       tLevel -= 10;
     }
     answer = HeroImprovementsTotals[tLevel];
@@ -71,7 +71,7 @@ export function getNextHeroImprovement(cLevel) {
     answer = Infinity;
   } else {
     var tLevel = Math.floor(cLevel / 10) * 10;
-    while (!(tLevel in HeroImprovementsTotals) || cLevel >= tLevel) {
+    while (!(tLevel in HeroImprovementsTotals) || isNaN(HeroImprovementsTotals[tLevel]) || cLevel >= tLevel) {
       tLevel += 10;
     }
     answer = tLevel;
