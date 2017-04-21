@@ -116,6 +116,7 @@ export class GameState {
     addToRedditString("Username", this.info.displayName);
     if (this.clan.name) {
       s += "Clan (CQ): " + this.clan.name + " (" + this.clan.score + ")";
+      s += "\n\n";
     }
 
     // Stats
