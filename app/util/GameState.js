@@ -7,7 +7,7 @@ import { getHeroImprovementBonus, getHeroCurrentA } from './HeroImprovementBonus
 import { getPlayerImprovementBonus, getPlayerCurrentA } from './PlayerImprovementBonus';
 import { ServerVarsModel } from './ServerVarsModel';
 import { BonusType, addBonus, getBonus, printBonuses } from './BonusType';
-import { getHeroName } from './Localization';
+import { getHeroName, getPetName, getSkillName } from './Localization';
 var BigNumber = require('bignumber.js');
 
 /*
@@ -165,7 +165,7 @@ export class GameState {
 
     addToRedditString("Username", this.info.displayName);
     if (this.clan.name) {
-      s += "Clan (CQ): " + this.clan.name + "(" + this.clan.score + ")";
+      s += "Clan (CQ): " + this.clan.name + " (" + this.clan.score + ")";
     }
 
     // Stats
@@ -232,9 +232,91 @@ export class GameState {
       var e2 = this.getEquippedEquipmentString(2);
       if (e2) { s += "Slash | " + e2 + "\n"; }
     }
-    // Pets
+
     // Skills
+    if (this.skills) {
+      var skillL = function(sList, sid) {
+        return getSkillName(sid) + " | " + (sList[sid] || 0);
+      }
+      var skillR = function(sList, sid) {
+        return (sList[sid] || 0) + " | " + getSkillName(sid);
+      }
+      var blank = function() {
+        return " | ";
+      }
+      var getRow = function(sList, s1, s2, s3, s4, s5, s6) {
+        console.log("asdfasdf");
+        console.log(s1, s2, s3, s4, s5, s6);
+        return (s1 === "" ? blank() : skillL(sList, s1)) + " | " +
+               (s2 === "" ? blank() : skillR(sList, s2)) + " | " + blank() +
+               (s3 === "" ? blank() : skillL(sList, s3)) + " | " +
+               (s4 === "" ? blank() : skillR(sList, s4)) + " | " + blank() +
+               (s5 === "" ? blank() : skillL(sList, s5)) + " | " +
+               (s6 === "" ? blank() : skillR(sList, s6)) + "\n";
+      }
+      s += "\n\n---\n\n";
+      s += "Skill | Value | Value | Skill | Sep | Skill | Value | Value | Skill | Sep | Skill | Value | Value | Skill\n";
+      s += "--|--|--|--|--|--|--|--|--|--|--|--|--|--\n";
+      s += getRow(this.skills, "PetQTE", "", "", "OfflineGold", "", "BurstSkillBoost");
+      s += getRow(this.skills, "PetGoldQTE", "BossDmgQTE", "PetDmg", "MeleeHelperDmg", "MPRegenBoost", "FireTapSkillBoost");
+      s += getRow(this.skills, "", "", "LessMonsters", "SpellHelperDmg", "MPCapacityBoost", "HelperDmgSkillBoost");
+      s += getRow(this.skills, "HelperDmgQTE", "Fairy", "SplashDmg", "RangedHelperDmg", "ManaStealSkillBoost", "MidasSkillBoost");
+      s += getRow(this.skills, "HelperCountQTE", "BossTimer", "AutoAdvance", "MultiMonsters", "CloneSkillBoost", "CritSkillBoost");
+      s += getRow(this.skills, "ClanQTE", "", "PetOfflineDmg", "", "ManaMonster", "");
+    }
+
+    // Pets
+    if (this.pets) {
+      var pRow = function(pList, pid) {
+        return getPetName(pid) + " | " + (pList.levels[pid] || 0);
+      }
+      var getRow = function(pList, p1, p2, p3, p4) {
+        return pRow(pList, "Pet" + p1) + " | " +
+               pRow(pList, "Pet" + p2) + " | " +
+               pRow(pList, "Pet" + p3) + " | " +
+               pRow(pList, "Pet" + p4) + "\n";
+      }
+      s += "\n\n---\n\n";
+      s += "Pet | Level | Pet | Level | Pet | Level | Pet | Level\n";
+      s += "--|--|--|--|--|--|--|--\n";
+      s += getRow(this.pets, 1, 2, 3, 4);
+      s += getRow(this.pets, 5, 6, 7, 8);
+      s += getRow(this.pets, 9, 10, 11, 12);
+      s += getRow(this.pets, 13, 14, 15, 16);
+    }
+
     // Heroes
+    if (this.heroes) {
+      var hRow = function(hList, hid) {
+        return getHeroName(hid) + " | " + (hList.levels[hid] || 0) + " | " + (hList.weapons[hid] || 0);
+      }
+      var getRow = function(hList, h1, h2) {
+        return hRow(hList, "H" + h1) + " | " +
+               hRow(hList, "H" + h2) + "\n";
+      }
+      s += "\n\n---\n\n";
+      s += "Hero | Level | Weapons | Hero | Level | Weapons\n";
+      s += "--|--|--|--|--|--\n";
+      s += getRow(this.heroes, "18", "29");
+      s += getRow(this.heroes, "01", "12");
+      s += getRow(this.heroes, "21", "23");
+      s += getRow(this.heroes, "02", "30");
+      s += getRow(this.heroes, "06", "11");
+      s += getRow(this.heroes, "24", "07");
+      s += getRow(this.heroes, "08", "32");
+      s += getRow(this.heroes, "26", "31");
+      s += getRow(this.heroes, "09", "34");
+      s += getRow(this.heroes, "04", "15");
+      s += getRow(this.heroes, "20", "17");
+      s += getRow(this.heroes, "10", "28");
+      s += getRow(this.heroes, "03", "37");
+      s += getRow(this.heroes, "25", "35");
+      s += getRow(this.heroes, "27", "16");
+      s += getRow(this.heroes, "22", "33");
+      s += getRow(this.heroes, "05", "14");
+      s += getRow(this.heroes, "13", "36");
+      s += hRow(this.heroes, "H19") + " | | | \n";
+    }
 
     return s;
   }
