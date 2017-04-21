@@ -13,6 +13,6 @@ const loggerMiddleware = createLogger({
 });
 
 // const store = createStore(rootReducer, defaultState);
-const store = createStore(rootReducer, defaultState, applyMiddleware(thunkMiddleware, loggerMiddleware));
+const store = createStore(rootReducer, defaultState, applyMiddleware(thunkMiddleware));
 
 export default store;
