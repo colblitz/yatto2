@@ -490,7 +490,7 @@ export class GameState {
 
     var L = this.getTopDamageHeroLevel();
 
-    var br = new BigNumber(r);
+    var br = new BigNumber(r.toFixed(15));
     var b1 = new BigNumber(1);
     var bg = new BigNumber(goldM.toFixed(15));
     // https://www.reddit.com/r/TapTitans2/comments/668gdl/math_deriving_a_gold_to_damage_multiplier_formula/
