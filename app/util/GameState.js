@@ -301,6 +301,9 @@ export class GameState {
       HeroInfo[hero].getAllBonuses(this.heroes.levels[hero], allBonuses);
     }
 
+    // HelperModel.RefreshHelperWeaponSet
+    addBonus(allBonuses, BonusType.AllDamage, this.getWeaponSets() * 10);
+
     for (var equip in this.equipment) {
       if (this.equipment[equip].equipped) {
         // EquipmentInfo.GetBonusAmount
@@ -414,6 +417,15 @@ export class GameState {
   // PetModel.RefreshCurrentDamage()
   getPetDamage() {
     return this.getPlayerDamageWithAverageCrit() * this.getBonus(BonusType.PetDamage) * this.getBonus(BonusType.PetDamageMult);
+  }
+
+  getWeaponSets() {
+    var weapons = Object.keys(this.heroes.weapons).map((k) => this.heroes.weapons[k]);
+    if (weapons.length == 0) {
+      return 0;
+    } else {
+      return Math.min.apply(null, weapons);
+    }
   }
 
   getWeaponMultiplier(hero) {
