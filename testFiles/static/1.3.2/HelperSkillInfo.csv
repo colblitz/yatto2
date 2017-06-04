@@ -339,11 +339,11 @@ HelperSkillID,Owner,Name,BonusType,Magnitude,RequiredLevel
 338,H16,Merciless,TapDamage,2,2000
 339,H16,Devilish Charmer,CritDamage,1.1,3000
 340,H16,Dungeon Trapper,ChestAmount,1.1,4000
-341,H33,Custom Machinery,RangedHelperDamage,1.1,20
-342,H33,Methodically Manic,RangedHelperDamage,1.1,40
-343,H33,Sphinx Presence,RangedHelperDamage,1.1,60
-344,H33,Panther's Touch,RangedHelperDamage,1.1,100
-345,H33,Copper Skin,RangedHelperDamage,1.1,200
+341,H33,Custom Machinery,SpellHelperDamage,1.1,20
+342,H33,Methodically Manic,SpellHelperDamage,1.1,40
+343,H33,Sphinx Presence,SpellHelperDamage,1.1,60
+344,H33,Panther's Touch,SpellHelperDamage,1.1,100
+345,H33,Copper Skin,SpellHelperDamage,1.1,200
 346,H33,Special Fighter,GoldMonster,1.2,500
 347,H33,Skull Cap,GoldBoss,1.2,1000
 348,H33,Master Manipulator,AllHelperDamage,1.2,2000
@@ -359,11 +359,11 @@ HelperSkillID,Owner,Name,BonusType,Magnitude,RequiredLevel
 358,H14,Viking Slash Force,AllHelperDamage,1.2,2000
 359,H14,Rune Enabler,GoldAll,1.2,3000
 360,H14,Bearded Fortitude,AllDamage,1.2,4000
-361,H36,Spirit Vessel,SpellHelperDamage,1.1,20
-362,H36,Essence of Valhalla,SpellHelperDamage,1.1,40
-363,H36,Warrior Loyalty,SpellHelperDamage,1.1,60
-364,H36,Bolt Block Brigade,SpellHelperDamage,1.1,100
-365,H36,Analog Cloud,SpellHelperDamage,1.1,200
+361,H36,Spirit Vessel,RangedHelperDamage,1.1,20
+362,H36,Essence of Valhalla,RangedHelperDamage,1.1,40
+363,H36,Warrior Loyalty,RangedHelperDamage,1.1,60
+364,H36,Bolt Block Brigade,RangedHelperDamage,1.1,100
+365,H36,Analog Cloud,RangedHelperDamage,1.1,200
 366,H36,Strength in Numbers,GoldMonster,1.2,500
 367,H36,Tough as Bolts,GoldBoss,1.2,1000
 368,H36,Steel Heart,AllHelperDamage,1.2,2000
