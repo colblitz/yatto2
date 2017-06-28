@@ -1,0 +1,7 @@
+var config = {
+    keyPath: './unencrypted-key.pem',
+    certPath: './cert.pem',
+    jwtSecretOrKey: 'BlahBlahYayYattwo'
+};
+
+module.exports = config

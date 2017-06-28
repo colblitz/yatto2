@@ -38,7 +38,7 @@ mongoose.connect('mongodb://localhost:27017/yattwo');
 // Set up passport stuff
 var jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeader();
-jwtOptions.secretOrKey = 'BlahBlahYayYattwo';
+jwtOptions.secretOrKey = config.jwtSecretOrKey;
 
 var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
   console.log('payload received', jwt_payload);
