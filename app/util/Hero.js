@@ -90,7 +90,6 @@ export function loadHeroInfo(callback) {
       );
     }
     callback(true);
-    console.log("Done loading HelperInfo");
   });
 }
 
@@ -103,6 +102,5 @@ export function loadHeroSkillInfo(callback) {
         parseFloat(skill.Magnitude));
     }
     callback(true);
-    console.log("Done loading HelperSkillInfo");
   });
 }

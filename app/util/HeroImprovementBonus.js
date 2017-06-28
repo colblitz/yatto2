@@ -17,7 +17,6 @@ export function loadHeroImprovementInfo(callback) {
     for (var row of data) {
       HeroImprovementsInfo[row.Level] = row.Amount;
     }
-    console.log("Done loading HeroImprovementsInfo");
     MIN_LEVEL = Math.min.apply(null, Object.keys(HeroImprovementsInfo));
     MAX_LEVEL = Math.max.apply(null, Object.keys(HeroImprovementsInfo));
 
@@ -32,7 +31,6 @@ export function loadHeroImprovementInfo(callback) {
       }
     }
     callback(true);
-    console.log("Done loading HeroImprovementsTotals");
   });
 }
 

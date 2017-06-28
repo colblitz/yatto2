@@ -195,8 +195,6 @@ export class GameState {
         return " | ";
       }
       var getRow = function(sList, s1, s2, s3, s4, s5, s6) {
-        console.log("asdfasdf");
-        console.log(s1, s2, s3, s4, s5, s6);
         return (s1 === "" ? blank() : skillL(sList, s1)) + " | " +
                (s2 === "" ? blank() : skillR(sList, s2)) + " | " + blank() +
                (s3 === "" ? blank() : skillL(sList, s3)) + " | " +
@@ -274,10 +272,6 @@ export class GameState {
   printStats() {
     this.calculateBonuses();
     printBonuses(this.bonuses);
-    console.log("base tap damage: " + this.getBaseTapDamage());
-    console.log("average crit damage: " + this.getAverageDamageWithCrits());
-    console.log("pet damage: " + this.getPetDamage());
-    console.log("hero damage: " + this.getHeroDamage());
   }
 
   getEquippedEquipmentString(category) {

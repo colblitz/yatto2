@@ -16,7 +16,6 @@ export function loadPlayerImprovementInfo(callback) {
     for (var row of data) {
       PlayerImprovementsInfo[row.Level] = row.Amount;
     }
-    console.log("Done loading PlayerImprovementsInfo");
     MIN_LEVEL = Math.min.apply(null, Object.keys(PlayerImprovementsInfo));
     MAX_LEVEL = Math.max.apply(null, Object.keys(PlayerImprovementsInfo));
 
@@ -32,7 +31,6 @@ export function loadPlayerImprovementInfo(callback) {
     }
 
     callback(true);
-    console.log("done loading PlayerImprovementsTotals");
   });
 }
 
