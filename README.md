@@ -11,6 +11,21 @@ Read the FAQ page
 After pulling the repo, install the dependencies. Then compile with gulp and then run with npm
 
 ```
+#install mongo
+sudo apt-get install -y mongodb-org
+# Windows needs to download the .msi or use Chocolatey
+choco install mongodb
+
+# setup config
+cp config.default config
+# Windows
+copy config.default config
+
+# create self-signed cert
+openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 999
+openssl rsa -in key.pem -out unencrypted-key.pem
+
+
 # install things
 npm install -g gulp
 npm install -g nodemon

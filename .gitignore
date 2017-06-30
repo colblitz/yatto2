@@ -41,3 +41,8 @@ scripts/output.txt
 data/
 
 mongodb.log*
+
+# Don't check in cert stuff
+*.pem
+
+config
